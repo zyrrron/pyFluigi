@@ -1,0 +1,6 @@
+[submodule "pyMINT"]
+	path = pyMINT
+	url = https://github.com/CIDARLAB/pyMINT.git
+[submodule "pyparchmint"]
+	path = pyparchmint
+	url = https://github.com/CIDARLAB/pyparchmint.git
