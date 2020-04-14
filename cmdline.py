@@ -6,6 +6,8 @@ from antlr4 import *
 import argparse
 import parameters
 
+import utils
+
 from pyMINT.antlr.mintLexer import mintLexer
 from pyMINT.antlr.mintParser import mintParser
 from pyMINT.mintcompiler import MINTCompiler
@@ -51,6 +53,9 @@ def main():
     listener = MINTCompiler()
 
     walker.walk(listener, tree)
+
+    print(listener.currentdevice.G.edges)
+    utils.printgraph(listener.currentdevice.G, "TEST")
 
 if __name__ == "__main__":
     main()
