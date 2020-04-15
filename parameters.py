@@ -1,2 +1,2 @@
 # Global Variables
-OUTPUT_DIR = "./"
+OUTPUT_DIR = ""

@@ -10,6 +10,9 @@ name = "pypi"
 "antlr4-python3-runtime" = "*"
 networkx = "*"
 argparse = "*"
+hypernetx = "*"
+pydot = "*"
+matplotlib = "*"
 
 
 [dev-packages]

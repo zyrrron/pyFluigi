@@ -1,3 +1,4 @@
+from pnr.layout import Layout
 import sys
 import os
 from pathlib import Path
@@ -12,6 +13,8 @@ from pyMINT.antlr.mintLexer import mintLexer
 from pyMINT.antlr.mintParser import mintParser
 from pyMINT.mintcompiler import MINTCompiler
 
+from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -23,7 +26,7 @@ def main():
 
     args = parser.parse_args()
     print("output dir:", args.outpath)
-    print(args.input)
+    print("Running File: "+args.input)
 
     extension = Path(args.input).suffix
     if extension != '.mint' and extension != '.uf' :
@@ -55,7 +58,16 @@ def main():
     walker.walk(listener, tree)
 
     print(listener.currentdevice.G.edges)
-    utils.printgraph(listener.currentdevice.G, "TEST")
+    utils.printgraph(listener.currentdevice.G, listener.currentdevice.name+'.dot')
+
+    layout = Layout()
+    layout.importMINTwithoutConstraints(listener.currentdevice)
+    
+    generateSpectralLayout(layout)
+
+    utils.printgraph(layout.G, listener.currentdevice.name+'.layout.dot')
+
+
 
 if __name__ == "__main__":
     main()
