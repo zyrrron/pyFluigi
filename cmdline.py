@@ -57,15 +57,15 @@ def main():
 
     walker.walk(listener, tree)
 
-    print(listener.currentdevice.G.edges)
-    utils.printgraph(listener.currentdevice.G, listener.currentdevice.name+'.dot')
+    print(listener.current_device.G.edges)
+    utils.printgraph(listener.current_device.G, listener.current_device.name+'.dot')
 
     layout = Layout()
-    layout.importMINTwithoutConstraints(listener.currentdevice)
+    layout.importMINTwithoutConstraints(listener.current_device)
     
     generateSpectralLayout(layout)
 
-    utils.printgraph(layout.G, listener.currentdevice.name+'.layout.dot')
+    utils.printgraph(layout.G, listener.current_device.name+'.layout.dot')
 
 
 

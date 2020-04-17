@@ -9,11 +9,16 @@ def generatePlanarLayout(layout: Layout):
     print(positions)
     nx.draw(layout.G, positions)
     plt.show()
-    # plt.savefig('test.png')
+    plt.savefig('test.png')
 
 
 def generateSpectralLayout(layout: Layout):
     positions = nx.spectral_layout(layout.G)
+    print(positions)
+    nx.draw(layout.G, positions)
+    plt.show()
+
+    positions = nx.planar_layout(layout.G)
     print(positions)
     nx.draw(layout.G, positions)
     plt.show()
@@ -23,15 +28,15 @@ def generateSpectralLayout(layout: Layout):
     nx.draw(layout.G, positions)
     plt.show()
 
-    # positions = nx.bipartite_layout(layout.G)
-    # print(positions)
-    # nx.draw(layout.G, positions)
-    # plt.show()
+    positions = nx.bipartite_layout(layout.G)
+    print(positions)
+    nx.draw(layout.G, positions)
+    plt.show()
 
-    # positions = nx.rescale_layout(layout.G)
-    # print(positions)
-    # nx.draw(layout.G, positions)
-    # plt.show()
+    positions = nx.rescale_layout(layout.G)
+    print(positions)
+    nx.draw(layout.G, positions)
+    plt.show()
     
     positions = nx.shell_layout(layout.G)
     print(positions)
@@ -43,10 +48,10 @@ def generateSpectralLayout(layout: Layout):
     nx.draw(layout.G, positions)
     plt.show()
 
-    # positions = nx.spiral_layout(layout.G)
-    # print(positions)
-    # nx.draw(layout.G, positions)
-    # plt.show()
+    positions = nx.spiral_layout(layout.G)
+    print(positions)
+    nx.draw(layout.G, positions)
+    plt.show()
 
 
     # plt.savefig('test.png')
