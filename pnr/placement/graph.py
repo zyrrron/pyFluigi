@@ -28,12 +28,7 @@ def generateSpectralLayout(layout: Layout):
     nx.draw(layout.G, positions)
     plt.show()
 
-    positions = nx.bipartite_layout(layout.G)
-    print(positions)
-    nx.draw(layout.G, positions)
-    plt.show()
-
-    positions = nx.rescale_layout(layout.G)
+    positions = nx.bipartite_layout(layout.G, nx.bipartite.sets(layout.G)[0])
     print(positions)
     nx.draw(layout.G, positions)
     plt.show()
