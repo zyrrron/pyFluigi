@@ -8,6 +8,7 @@ import argparse
 import parameters
 
 import utils
+import networkx as nx
 
 from pyMINT.antlr.mintLexer import mintLexer
 from pyMINT.antlr.mintParser import mintParser
@@ -56,6 +57,14 @@ def main():
     listener = MINTCompiler()
 
     walker.walk(listener, tree)
+
+    #Check if the device netlist is planar
+    graph = listener.current_device.G
+
+    if nx.algorithms.check_planarity(graph):
+        print('Error - Non-planar graph seen')
+        sys.exit(0)
+
 
     print(listener.current_device.G.edges)
     utils.printgraph(listener.current_device.G, listener.current_device.name+'.dot')
