@@ -1,5 +1,5 @@
 import networkx as nx
-
+from typing import Optional
 from .net import Net
 from .cell import Cell
 from pyMINT.mintdevice import MINTDevice
@@ -12,7 +12,7 @@ class Layout:
         self.nets = dict()
         self.G = nx.MultiDiGraph()
 
-    def importMINTwithoutConstraints(self, device: MINTDevice) -> None:
+    def importMINTwithoutConstraints(self, device: Optional[MINTDevice]) -> None:
         for component in device.components:
             cell = Cell(component.ID, 0, 0, 1000, 1000)
             self.cells[cell.ID] = cell

@@ -137,4 +137,4 @@ antlr/
 .vscode/settings.json
 Verilog2001.g4
 
-test
+primitives/*

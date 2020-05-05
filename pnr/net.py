@@ -3,3 +3,9 @@ class Net:
         self.ID = ID
         self.source = source
         self.sinks = sinks
+
+    def __eq__(self, o: object) -> bool:
+        if isinstance(o, Net) and o.ID == self.ID:
+            return True
+        else:
+            return False

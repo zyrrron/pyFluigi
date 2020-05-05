@@ -1,12 +1,13 @@
+from primitives import pull_defaults, pull_dimensions
 from pnr.layout import Layout
 import sys
 import os
 from pathlib import Path
 import time
-from antlr4 import *
+from antlr4 import CommonTokenStream, ParseTreeWalker, FileStream
 import argparse
 import parameters
-
+import json
 import utils
 import networkx as nx
 
@@ -61,20 +62,32 @@ def main():
     #Check if the device netlist is planar
     graph = listener.current_device.G
 
-    if nx.algorithms.check_planarity(graph):
+
+    if nx.algorithms.check_planarity(graph) == False:
         print('Error - Non-planar graph seen')
         sys.exit(0)
 
 
+
+    current_device = listener.current_device
+
+    pull_defaults(listener.current_device)
+    pull_dimensions(listener.current_device)
+
+
+    tt = os.path.join(parameters.OUTPUT_DIR, '{}_no_par.json'.format(current_device.name))
+    with open(tt, 'w') as f:
+        json.dump(current_device.toParchMintV1(), f)
+
     print(listener.current_device.G.edges)
-    utils.printgraph(listener.current_device.G, listener.current_device.name+'.dot')
+    utils.printgraph(listener.current_device.G, current_device.name+'.dot')
 
     layout = Layout()
-    layout.importMINTwithoutConstraints(listener.current_device)
+    layout.importMINTwithoutConstraints(current_device)
     
     generateSpectralLayout(layout)
 
-    utils.printgraph(layout.G, listener.current_device.name+'.layout.dot')
+    utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
 
 

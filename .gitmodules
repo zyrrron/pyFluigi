@@ -5,5 +5,5 @@
 	path = pyparchmint
 	url = https://github.com/CIDARLAB/pyparchmint.git
 [submodule "MINT-TestCases"]
-	path = MINT-TestCases
+	path = test
 	url = https://github.com/CIDARLAB/MINT-TestCases.git
