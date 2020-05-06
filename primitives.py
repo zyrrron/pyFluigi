@@ -52,12 +52,12 @@ def pull_defaults(device: MINTDevice):
 
 def pull_dimensions(device:MINTDevice):
     for component in device.components:
-        defaults = get_dimensions(component.entity, component.params)
-        if defaults is None:
+        dims = get_dimensions(component.entity, component.params)
+        if dims is None:
             print("Warning: Could not pull default values for {} of type :{}".format(component.name, component.entity))
             continue
         
-        #Fills out all the missing params
-        for key in defaults.keys():
-            if not component.params.exists(key):
-                component.params.setParam(key, defaults[key])
+        #Assign the xspan and yspan
+        component.xspan = dims["x-span"]
+        component.yspan = dims["y-span"]
+        
