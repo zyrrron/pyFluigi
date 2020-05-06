@@ -71,21 +71,26 @@ def main():
 
     current_device = listener.current_device
 
-    pull_defaults(listener.current_device)
-    pull_dimensions(listener.current_device)
+    print(current_device.G.edges)
+    utils.printgraph(current_device.G, current_device.name+'.dot')
 
+    layout = Layout()
+    layout.importMINTwithoutConstraints(current_device)
+
+
+    pull_defaults(current_device)
+    pull_dimensions(current_device)
+
+    generateSpringLayout(layout)
+
+    layout.applyLayout()
 
     tt = os.path.join(parameters.OUTPUT_DIR, '{}_no_par.json'.format(current_device.name))
     with open(tt, 'w') as f:
         json.dump(current_device.toParchMintV1(), f)
 
-    print(listener.current_device.G.edges)
-    utils.printgraph(listener.current_device.G, current_device.name+'.dot')
-
-    layout = Layout()
-    layout.importMINTwithoutConstraints(current_device)
     
-    generateSpectralLayout(layout)
+    # generateSpectralLayout(layout)
 
     utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
