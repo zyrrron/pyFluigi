@@ -1,2 +1,4 @@
 # Global Variables
 OUTPUT_DIR = ""
+DEVICE_X_DIM = 70000
+DEVICE_Y_DIM = 70000

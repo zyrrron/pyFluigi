@@ -105,6 +105,16 @@ def main():
         print('Error getting Primitive data: {}'.format(e))
 
 
+    layout = Layout()
+    layout.importMINTwithoutConstraints(current_device)
+
+
+    pull_defaults(current_device)
+    pull_dimensions(current_device)
+
+    generateSpringLayout(layout)
+
+    layout.applyLayout()
 
     tt = os.path.join(parameters.OUTPUT_DIR, '{}_no_par.json'.format(current_device.name))
     with open(tt, 'w') as f:
@@ -122,7 +132,7 @@ def main():
     layout = Layout()
     layout.importMINTwithoutConstraints(current_device)
     
-    generateSpectralLayout(layout)
+    # generateSpectralLayout(layout)
 
     utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
