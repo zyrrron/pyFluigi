@@ -3,6 +3,7 @@ from typing import Optional
 from .net import Net
 from .cell import Cell
 from pyMINT.mintdevice import MINTDevice
+import sys
 
 
 class Layout:
@@ -21,7 +22,25 @@ class Layout:
             cell = self.cells[ID]
             component.params.setParam("position", [cell.x, cell.y])
     
-    
+    def ensureLegalCoordinates(self):
+        #Make sure all the cell coordinates are positive
+        minx = sys.maxsize
+        miny = sys.maxsize
+        maxx = -sys.maxsize
+        maxy = -sys.maxsize
+
+        for cell in [self.cells[id] for id in list(self.cells)]:
+            if cell.x < minx:
+                minx = cell.x
+            if cell.x + cell.xdim > maxx:
+                maxx = cell.x + cell.xdim
+            
+            if cell.y < miny:
+                miny = cell.y
+            if cell.y + cell.ydim >maxy:
+                maxy = cell.y + cell.ydim
+            
+
     def importMINTwithoutConstraints(self, device: Optional[MINTDevice]) -> None:
         
         self.__original_device = device

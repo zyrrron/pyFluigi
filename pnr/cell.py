@@ -12,7 +12,6 @@ class Cell:
         self.bottomterminals = []
         self.leftterminals = []
 
-    
     def sort_terminals(self):
         for terminal in self.terminals:
             pass
@@ -23,3 +22,6 @@ class Cell:
             return True
         else:
             return False
+
+    def __hash__(self):
+        return hash(self.ID)

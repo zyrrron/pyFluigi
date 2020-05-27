@@ -22,7 +22,7 @@ from pyMINT.antlr.mintLexer import mintLexer
 from pyMINT.antlr.mintParser import mintParser
 from pyMINT.mintcompiler import MINTCompiler
 
-from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout
+from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout, generateHOLALayout
 
 
 def main():
@@ -133,6 +133,13 @@ def main():
     layout.importMINTwithoutConstraints(current_device)
     
     # generateSpectralLayout(layout)
+    generateHOLALayout(layout)
+    layout.applyLayout()
+    layout.ensureLegalCoordinates()
+
+    tt = os.path.join(parameters.OUTPUT_DIR, '{}_hola_par.json'.format(current_device.name))
+    with open(tt, 'w') as f:
+        json.dump(current_device.toParchMintV1(), f)
 
     utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
