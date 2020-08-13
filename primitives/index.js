@@ -21,6 +21,8 @@ import Valve3D from "./library/valve3D";
 import Via from "./library/via";
 import Tree from "./library/tree";
 import YTree from "./library/ytree";
+import Node from "./library/node";
+
 import paper from "paper";
 
 paper.setup([640, 480]);
@@ -48,6 +50,7 @@ let valve3D = new Valve3D();
 let via = new Via();
 let tree = new Tree();
 let ytree = new YTree();
+let node = new Node();
 
 primitive_map.set(port.mint.replace(/\s/g, ''), port);
 primitive_map.set(better_mixer.mint.replace(/\s/g, ''), better_mixer);
@@ -70,6 +73,7 @@ primitive_map.set(valve3D.mint.replace(/\s/g, ''), valve3D);
 primitive_map.set(via.mint.replace(/\s/g, ''), via);
 primitive_map.set(tree.mint.replace(/\s/g, ''), tree);
 primitive_map.set(ytree.mint.replace(/\s/g, ''), ytree);
+primitive_map.set(node.mint.replace(/\s/g, ''), node);
 
 // console.log(primitive_map.keys());
 

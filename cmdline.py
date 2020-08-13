@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from os import system
 from pyMINT.constraints.constraintlistener import ConstraintListener
 from pyMINT.mintErrorListener import MINTErrorListener
@@ -26,6 +28,8 @@ from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, ge
 
 
 def main():
+
+    parameters.PROGRAM_DIR = os.path.abspath(os.path.dirname(__file__))
 
     parser = argparse.ArgumentParser()
 

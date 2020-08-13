@@ -1,18 +1,16 @@
 from pyMINT.mintdevice import MINTDevice
 import subprocess
 import json
+import os
+import parameters
 
 def get_defaults(mint:str):
+    primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
 
     cmd = ['node', 'index.js' , mint,  'defaults']
     
-    # cmd = ['node', '--version']
-
-    output = subprocess.run(cmd, cwd="./primitives/dist/", stdout=subprocess.PIPE)
+    output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
     
-    # p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-    # output = p.stdout.read()
-    # print(output)
     try:
         python_object = json.loads(output.stdout.decode('utf-8'))
     except:
@@ -23,9 +21,12 @@ def get_defaults(mint:str):
     return python_object
 
 def get_dimensions(mint:str, params):
+    primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
+
     cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
-    # p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
-    output = subprocess.run(cmd, cwd="./primitives/dist/", stdout=subprocess.PIPE)
+
+    output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+
     try:
         python_object = json.loads(output.stdout.decode('utf-8'))
     except:
