@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 "antlr4-python3-runtime" = "*"
 networkx = "*"
 argparse = "*"
@@ -15,8 +12,7 @@ pydot = "*"
 matplotlib = "*"
 pygraphviz = "*"
 pyfiglet = "*"
-
+jpype1 = "*"
 
 [dev-packages]
-
 pylint = "*"

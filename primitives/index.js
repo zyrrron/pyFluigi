@@ -22,6 +22,7 @@ import Via from "./library/via";
 import Tree from "./library/tree";
 import YTree from "./library/ytree";
 import Node from "./library/node";
+import LogicArray from "./library/logicArray";
 
 import paper from "paper";
 

@@ -4,35 +4,74 @@ import json
 import os
 import parameters
 
+#All the imports for the java pipe
+import jpype
+import jpype.imports
+from jpype.types import *
+
+jpype.startJVM(classpath=['./pnr/fluigi-java/Fluigi-jar-with-dependencies.jar'])
+
+import java
+from org.cidarlab.fluigi.fluigi import *
+
+OLD_PRIMITIVES_CHECKLIST = [
+    "DROPLET GENERATOR FLOW FOCUS",
+    "DROPLET GENERATOR T",
+    "LOGIC ARRAY"
+    ]
+
+
 def get_defaults(mint:str):
-    primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
 
-    cmd = ['node', 'index.js' , mint,  'defaults']
-    
-    output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
-    
-    try:
-        python_object = json.loads(output.stdout.decode('utf-8'))
-    except:
-        print("Could not retrieve default parameters for {}".format(mint))
+    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
+        print("Warning this is one of the the old fluigi primitives, this means that the we dont pull defaults")
         return None
+    else:
+        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
 
-    
-    return python_object
+        cmd = ['node', 'index.js' , mint,  'defaults']
+        
+        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+        
+        try:
+            python_object = json.loads(output.stdout.decode('utf-8'))
+        except:
+            print("Could not retrieve default parameters for {}".format(mint))
+            return None
+
+        return python_object
 
 def get_dimensions(mint:str, params):
-    primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
 
-    cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
+    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
+        print("Warning this is one of the the old fluigi primitives, this means that the default values can be incorrect")
+        
+        map = dict()
+        for key in params.data.keys():
+            val = params.data[key]
+            try: 
+                map[key] = int(val)
 
-    output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+            except ValueError:
+                print("Found a non int param: {} - {}".format(key,val))
+        
+        python_object = dict(Fluigi.getDimensions(mint, java.util.HashMap(map)))
+        print('Data Retrieved by the java pipe: {}'.format(python_object))
+        return python_object
 
-    try:
-        python_object = json.loads(output.stdout.decode('utf-8'))
-    except:
-        print("Could not retrieve dimensions for {}".format(mint))
-        print(output.stdout)
-        return None
+    else:
+        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
+
+        cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
+
+        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+
+        try:
+            python_object = json.loads(output.stdout.decode('utf-8'))
+        except:
+            print("Could not retrieve dimensions for {}".format(mint))
+            print(output.stdout)
+            return None
 
     
     return python_object
