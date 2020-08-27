@@ -13,6 +13,8 @@ matplotlib = "*"
 pygraphviz = "*"
 pyfiglet = "*"
 jpype1 = "*"
+parchmint = {editable = true, path = "./../pyparchmint"}
+mint = {editable = true, path = "./../pymint"}
 
 [dev-packages]
 pylint = "*"

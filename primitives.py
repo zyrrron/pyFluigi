@@ -1,4 +1,4 @@
-from pyMINT.mintdevice import MINTDevice
+from mint.mintdevice import MINTDevice
 import subprocess
 import json
 import os

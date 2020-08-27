@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 from os import system
-from pyMINT.constraints.constraintlistener import ConstraintListener
-from pyMINT.mintErrorListener import MINTErrorListener
+from mint.constraints.constraintlistener import ConstraintListener
+from mint.mintErrorListener import MINTErrorListener
 from primitives import pull_defaults, pull_dimensions
 from pnr.layout import Layout
 import sys
@@ -20,9 +20,9 @@ import io
 import pyfiglet
 
 
-from pyMINT.antlr.mintLexer import mintLexer
-from pyMINT.antlr.mintParser import mintParser
-from pyMINT.mintcompiler import MINTCompiler
+from mint.antlr.mintLexer import mintLexer
+from mint.antlr.mintParser import mintParser
+from mint.mintcompiler import MINTCompiler
 
 from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout, generateHOLALayout
 
