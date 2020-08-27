@@ -16,9 +16,7 @@ import json
 import utils
 import networkx as nx
 import io
-# pip install pyfiglet
 import pyfiglet
-
 
 from mint.antlr.mintLexer import mintLexer
 from mint.antlr.mintParser import mintParser
@@ -91,20 +89,21 @@ def main():
 
     walker.walk(constraint_listener, tree)
 
+
+    current_device = listener.current_device
+    
     #Check if the device netlist is planar
-    graph = listener.current_device.G
+    graph = current_device.G
 
 
     if nx.algorithms.check_planarity(graph) == False:
         print('Error - Non-planar graph seen')
         sys.exit(0)
 
-    current_device = listener.current_device
-
 
     try:
-        pull_defaults(listener.current_device)
-        pull_dimensions(listener.current_device)
+        pull_defaults(current_device)
+        pull_dimensions(current_device)
     except Exception as e:
         print('Error getting Primitive data: {}'.format(e))
 
@@ -122,7 +121,7 @@ def main():
 
     tt = os.path.join(parameters.OUTPUT_DIR, '{}_no_par.json'.format(current_device.name))
     with open(tt, 'w') as f:
-        json.dump(current_device.toParchMintV1(), f)
+        json.dump(current_device.to_parchmint_v1(), f)
 
     
     print(listener.current_device.G.edges)
