@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 
 from os import system
-from mint.constraints.constraintlistener import ConstraintListener
-from mint.mintErrorListener import MINTErrorListener
+from mint.mintdevice import MINTDevice
 from primitives import pull_defaults, pull_dimensions
 from pnr.layout import Layout
 import sys
 import os
 from pathlib import Path
 import time
-from antlr4 import CommonTokenStream, ParseTreeWalker, FileStream
 import argparse
 import parameters
 import json
@@ -18,9 +16,6 @@ import networkx as nx
 import io
 import pyfiglet
 
-from mint.antlr.mintLexer import mintLexer
-from mint.antlr.mintParser import mintParser
-from mint.mintcompiler import MINTCompiler
 
 from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout, generateHOLALayout
 
@@ -58,41 +53,9 @@ def main():
         path = Path(parameters.OUTPUT_DIR)
         path.mkdir(parents=True)
 
-    finput = FileStream(args.input)
-
-    lexer = mintLexer(finput)
-
-    stream = CommonTokenStream(lexer)
-
-    parser = mintParser(stream)
-
-    #Connect the Error Listener
-    parse_output = io.StringIO()
-    parse_output.write("MINT SYNTAX ERRORS:\n")
-
-    error_listener = MINTErrorListener(parse_output)
-    parser.addErrorListener(error_listener)
-
-    tree = parser.netlist()
-
-    if error_listener.pass_through is False:
-        print('STOPPED: Syntax Error(s) Found')
-        sys.exit(0)
-    
-    walker = ParseTreeWalker()
-
-    listener = MINTCompiler()
-
-    walker.walk(listener, tree)
-
-    constraint_listener = ConstraintListener(listener.current_device)
-
-    walker.walk(constraint_listener, tree)
-
-
-    current_device = listener.current_device
     
     #Check if the device netlist is planar
+    current_device = MINTDevice.from_mint_file(args.input)
     graph = current_device.G
 
 
@@ -124,9 +87,9 @@ def main():
         json.dump(current_device.to_parchmint_v1(), f)
 
     
-    print(listener.current_device.G.edges)
+    print(current_device.G.edges)
     
-    utils.printgraph(listener.current_device.G, current_device.name+'.dot')
+    utils.printgraph(current_device.G, current_device.name+'.dot')
 
     # We exit the process if only convert is set to true
     if args.convert:

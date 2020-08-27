@@ -9,7 +9,7 @@ import jpype
 import jpype.imports
 from jpype.types import *
 
-jpype.startJVM(classpath=['./pnr/fluigi-java/Fluigi-jar-with-dependencies.jar'])
+jpype.startJVM(classpath=['/home/krishna/CIDAR/pyfluigi/pnr/fluigi-java/Fluigi-jar-with-dependencies.jar'])
 
 import java
 from org.cidarlab.fluigi.fluigi import *
