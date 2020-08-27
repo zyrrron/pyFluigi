@@ -20,7 +20,7 @@ class Layout:
         for ID in self.__direct_map:
             component = device.getComponent(ID)
             cell = self.cells[ID]
-            component.params.setParam("position", [cell.x, cell.y])
+            component.params.set_param("position", [cell.x, cell.y])
     
     def ensureLegalCoordinates(self):
         #Make sure all the cell coordinates are positive

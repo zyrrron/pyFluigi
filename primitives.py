@@ -123,7 +123,7 @@ def pull_defaults(device: MINTDevice):
         #Fills out all the missing params
         for key in defaults.keys():
             if not component.params.exists(key):
-                component.params.setParam(key, defaults[key])
+                component.params.set_param(key, defaults[key])
 
 
 def pull_dimensions(device:MINTDevice):
