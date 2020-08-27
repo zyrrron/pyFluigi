@@ -77,6 +77,42 @@ def get_dimensions(mint:str, params):
     return python_object
 
 
+def get_terminals(mint:str, params):
+
+    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
+        print("Warning this is one of the the old fluigi primitives, this means that the default values can be incorrect")
+        
+        map = dict()
+        for key in params.data.keys():
+            val = params.data[key]
+            try: 
+                map[key] = int(val)
+
+            except ValueError:
+                print("Found a non int param: {} - {}".format(key,val))
+        
+        python_object = dict(Fluigi.getTerminals(mint, java.util.HashMap(map)))
+        print('Data Retrieved by the java pipe: {}'.format(python_object))
+        return python_object
+
+    else:
+        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
+
+        cmd = ['node', 'index.js', mint, 'terminals', json.dumps(params.data)]
+
+        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+
+        try:
+            python_object = json.loads(output.stdout.decode('utf-8'))
+        except:
+            print("Could not retrieve dimensions for {}".format(mint))
+            print(output.stdout)
+            return None
+
+    
+    return python_object
+
+
 def pull_defaults(device: MINTDevice):
     for component in device.components:
         defaults = get_defaults(component.entity)
@@ -101,3 +137,10 @@ def pull_dimensions(device:MINTDevice):
         component.xspan = dims["x-span"]
         component.yspan = dims["y-span"]
         
+def pull_terminals(device: MINTDevice):
+    for component in device.components:
+        terminals = get_terminals(component.entity, component.params)
+        if terminals is None:
+            print("Warning: Could not pull terminal data for {} of type: {}".format(component.name, component.entity))
+
+        #Assign the terminals
