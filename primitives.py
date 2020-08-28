@@ -1,4 +1,5 @@
 from mint.mintdevice import MINTDevice
+from parchmint.port import Port
 import subprocess
 import json
 import os
@@ -105,26 +106,44 @@ def get_terminals(mint:str, params):
             except ValueError:
                 print("Found a non int param: {} - {}".format(key,val))
         
-        python_object = dict(Fluigi.getTerminals(mint, java.util.HashMap(map)))
-        print('Data Retrieved by the java pipe: {}'.format(python_object))
-        return python_object
+        java_object = dict(Fluigi.getTerminals(mint, java.util.HashMap(map)))
+        print('Data Retrieved by the java pipe: {}'.format(java_object))
+        
+        terminals =[]
+        for key in java_object.keys():
+            coords = java_object['0'].getPointCoords()
+            componentport = Port()
+            componentport.x = int(coords[0])
+            componentport.y = int(coords[1])
+            componentport.label = str(key)
+            
+            print(componentport)
+            terminals.append(componentport)
+        
+        return terminals
 
     else:
-        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
-
-        cmd = ['node', 'index.js', mint, 'terminals', json.dumps(params.data)]
-
-        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
-
         try:
-            python_object = json.loads(output.stdout.decode('utf-8'))
-        except:
-            print("Could not retrieve dimensions for {}".format(mint))
-            print(output.stdout)
-            return None
+            req_params = { 'mint': mint }
+            req_params['params'] = json.dumps(params.data)
+            r = requests.get('http://localhost:3000/terminals', params=req_params)
 
-    
-    return python_object
+            terminals = r.json()
+
+            python_object = []
+
+            for terminal in terminals:
+                componentport = Port(terminal)
+                python_object.append(componentport)
+                print(componentport)
+
+
+            return python_object
+
+        except Exception as e :
+            print("Could not retrieve dimensions for {}".format(mint))
+            print(e)
+            return None
 
 
 def pull_defaults(device: MINTDevice):
@@ -160,5 +179,7 @@ def pull_terminals(device: MINTDevice):
         terminals = get_terminals(component.entity, component.params)
         if terminals is None:
             print("Warning: Could not pull terminal data for {} of type: {}".format(component.name, component.entity))
-
-        #Assign the terminals
+        else:
+            #Assign the terminals
+            component.add_component_ports(terminals)
+            print("Updated the component terminals: {}", component)

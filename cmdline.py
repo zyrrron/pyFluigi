@@ -2,7 +2,7 @@
 
 from os import system
 from mint.mintdevice import MINTDevice
-from primitives import pull_defaults, pull_dimensions
+from primitives import pull_defaults, pull_dimensions, pull_terminals
 from pnr.layout import Layout
 import sys
 import os
@@ -77,7 +77,7 @@ def main():
 
     pull_defaults(current_device)
     pull_dimensions(current_device)
-
+    pull_terminals(current_device)
     generateSpringLayout(layout)
 
     layout.applyLayout()
@@ -105,7 +105,7 @@ def main():
 
     tt = os.path.join(parameters.OUTPUT_DIR, '{}_hola_par.json'.format(current_device.name))
     with open(tt, 'w') as f:
-        json.dump(current_device.toParchMintV1(), f)
+        json.dump(current_device.to_parchmint_v1(), f)
 
     utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
