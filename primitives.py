@@ -3,6 +3,7 @@ import subprocess
 import json
 import os
 import parameters
+import requests
 
 #All the imports for the java pipe
 import jpype
@@ -27,19 +28,22 @@ def get_defaults(mint:str):
         print("Warning this is one of the the old fluigi primitives, this means that the we dont pull defaults")
         return None
     else:
-        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
-
-        cmd = ['node', 'index.js' , mint,  'defaults']
-        
-        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+        # primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
+        # cmd = ['node', 'index.js' , mint,  'defaults']
+        # output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
         
         try:
-            python_object = json.loads(output.stdout.decode('utf-8'))
-        except:
+            # python_object = json.loads(output.stdout.decode('utf-8'))
+            params = { 'mint': mint }
+            r = requests.get('http://localhost:3000/defaults', params=params)
+            python_object = r.json()
+            return python_object
+        except Exception as e:
             print("Could not retrieve default parameters for {}".format(mint))
+            print(e)
             return None
 
-        return python_object
+        
 
 def get_dimensions(mint:str, params):
 
@@ -55,26 +59,36 @@ def get_dimensions(mint:str, params):
             except ValueError:
                 print("Found a non int param: {} - {}".format(key,val))
         
-        python_object = dict(Fluigi.getDimensions(mint, java.util.HashMap(map)))
-        print('Data Retrieved by the java pipe: {}'.format(python_object))
-        return python_object
+        try:
+            python_object = dict(Fluigi.getDimensions(mint, java.util.HashMap(map)))
+            print('Data Retrieved by the java pipe: {}'.format(python_object))
+            return python_object
+        except Exception as e :
+            print(e)
+            print('Error occured during the java dimension retrieval for: {}-{}'.format(mint , params))
 
     else:
-        primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
+        # primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
 
-        cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
+        # cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
 
-        output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
+        # output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
 
         try:
-            python_object = json.loads(output.stdout.decode('utf-8'))
-        except:
+            req_params = { 'mint': mint }
+            req_params['params'] = json.dumps(params.data)
+            r = requests.get('http://localhost:3000/dimensions', params=req_params)
+
+            python_object = r.json()
+            return python_object
+
+        except Exception as e :
             print("Could not retrieve dimensions for {}".format(mint))
-            print(output.stdout)
+            print(e)
             return None
 
     
-    return python_object
+    
 
 
 def get_terminals(mint:str, params):
@@ -115,6 +129,7 @@ def get_terminals(mint:str, params):
 
 def pull_defaults(device: MINTDevice):
     for component in device.components:
+        print("comonent name {}".format(component.name))
         defaults = get_defaults(component.entity)
         if defaults is None:
             print("Warning: Could not pull default values for {} of type :{}".format(component.name, component.entity))
@@ -128,7 +143,10 @@ def pull_defaults(device: MINTDevice):
 
 def pull_dimensions(device:MINTDevice):
     for component in device.components:
+        print("comonent name {}".format(component.name))
         dims = get_dimensions(component.entity, component.params)
+        print(dims)
+
         if dims is None:
             print("Warning: Could not pull default values for {} of type :{}".format(component.name, component.entity))
             continue
