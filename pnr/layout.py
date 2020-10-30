@@ -1,5 +1,5 @@
 import networkx as nx
-from typing import Optional
+from typing import Optional, List
 from .net import Net
 from .cell import Cell
 from mint.mintdevice import MINTDevice
@@ -61,3 +61,10 @@ class Layout:
     def importMINTwithConstraints(self, device: MINTDevice) -> None:
         #TODO: Process the constraints
         raise Exception('Not Implemented')
+
+
+    def get_cells(self) -> List[Cell]:
+        return [self.cells[id] for id in list(self.cells)]
+
+    def get_nets(self) -> List[Net]:
+        return [self.nets[id] for id in list(self.nets)]

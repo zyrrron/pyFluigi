@@ -139,7 +139,7 @@ Verilog2001.g4
 
 primitives/node_modules/*
 primitives/dist/*
-
+data/
 
 #Mac Crap
 .*

@@ -58,7 +58,7 @@ def generateSpringLayout(layout: Layout):
     positions = nx.spring_layout(layout.G)
     print(positions)
     nx.draw(layout.G, positions)
-    plt.show()
+    # plt.show()
     # plt.savefig('test.png')
 
     x_scale_factor = 0.7*parameters.DEVICE_X_DIM/2

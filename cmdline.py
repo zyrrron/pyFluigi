@@ -15,10 +15,10 @@ import utils
 import networkx as nx
 import io
 import pyfiglet
-
+from pnr.terminalassignment import assign_single_port_terminals
 
 from pnr.placement.graph import generatePlanarLayout, generateSpectralLayout, generateSpringLayout, generateHOLALayout
-
+from pnr.placement.simulatedannealing import generate_simulated_annealing_layout, generate_simulated_annealing_layout_v2
 
 def main():
 
@@ -98,6 +98,13 @@ def main():
     layout = Layout()
     layout.importMINTwithoutConstraints(current_device)
     
+    #Do Terminal Assignment
+    assign_single_port_terminals(current_device)
+
+    #Generate the Simulated Annealing Layout
+    generate_simulated_annealing_layout_v2(current_device)
+    generate_simulated_annealing_layout(layout)
+
     # generateSpectralLayout(layout)
     generateHOLALayout(layout)
     layout.applyLayout()
