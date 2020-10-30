@@ -1,4 +1,4 @@
-from mint.mintdevice import MINTDevice
+from pymint.mintdevice import MINTDevice
 
 def assign_single_port_terminals(device: MINTDevice):
     #Loop through each of the connections

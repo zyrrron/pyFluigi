@@ -1,5 +1,5 @@
 from pnr.layout import Layout
-from mint.mintdevice import MINTDevice
+from pymint.mintdevice import MINTDevice
 import jpype
 import jpype.imports
 from jpype.types import *

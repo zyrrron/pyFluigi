@@ -1,4 +1,4 @@
-from mint.mintdevice import MINTDevice
+from pymint.mintdevice import MINTDevice
 from parchmint.port import Port
 import subprocess
 import json

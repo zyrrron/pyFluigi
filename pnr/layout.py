@@ -2,7 +2,7 @@ import networkx as nx
 from typing import Optional, List
 from .net import Net
 from .cell import Cell
-from mint.mintdevice import MINTDevice
+from pymint.mintdevice import MINTDevice
 import sys
 
 

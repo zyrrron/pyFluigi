@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from os import system
-from mint.mintdevice import MINTDevice
+from pymint.mintdevice import MINTDevice
 from primitives import pull_defaults, pull_dimensions, pull_terminals
 from pnr.layout import Layout
 import sys
