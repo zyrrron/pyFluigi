@@ -101,14 +101,15 @@ def main():
     #Do Terminal Assignment
     assign_single_port_terminals(current_device)
 
-    #Generate the Simulated Annealing Layout
-    generate_simulated_annealing_layout_v2(current_device)
-    generate_simulated_annealing_layout(layout)
+    # #Generate the Simulated Annealing Layout
+    # generate_simulated_annealing_layout_v2(current_device)
+    # generate_simulated_annealing_layout(layout)
 
     # generateSpectralLayout(layout)
     generateHOLALayout(layout)
     layout.applyLayout()
     layout.ensureLegalCoordinates()
+    layout.print_layout()
 
     tt = os.path.join(parameters.OUTPUT_DIR, '{}_hola_par.json'.format(current_device.name))
     with open(tt, 'w') as f:

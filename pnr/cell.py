@@ -23,5 +23,8 @@ class Cell:
         else:
             return False
 
+    def __str__(self) -> str:
+        return "Cell - {} ({}, {}) xdim - {} ydim-{}".format(self.ID, self.x, self.y, self.xdim, self.ydim)
+
     def __hash__(self):
         return hash(self.ID)

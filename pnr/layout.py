@@ -1,3 +1,5 @@
+from pnr.svgdraw import SVGDraw
+from cairo import SVGSurface
 import networkx as nx
 from typing import Optional, List
 from .net import Net
@@ -68,3 +70,8 @@ class Layout:
 
     def get_nets(self) -> List[Net]:
         return [self.nets[id] for id in list(self.nets)]
+
+    def print_layout(self) -> None:
+        draw = SVGDraw()
+        for cell in self.cells.keys():
+            draw.draw_cell(self.cells[cell])
