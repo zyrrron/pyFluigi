@@ -1,8 +1,6 @@
-#!/usr/bin/env python3
-
 from os import system
 from pymint.mintdevice import MINTDevice
-import fluigi.utils
+import fluigi.utils as utils
 from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals
 from fluigi.pnr.layout import Layout
 import sys

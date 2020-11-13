@@ -12,7 +12,7 @@ import jpype.imports
 from jpype.types import *
 
 java_path = parameters.FLUIGI_JAVA_PNR_JAR_PATH.resolve()
-jpype.startJVM(classpath=['/home/krishna/CIDAR/pyfluigi/pnr/fluigi-java/Fluigi-jar-with-dependencies.jar'])
+jpype.startJVM(classpath=[str(java_path)])
 
 import java
 from org.cidarlab.fluigi.fluigi import *

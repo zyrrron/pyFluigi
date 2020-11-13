@@ -147,6 +147,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "jpype1"
+version = "1.1.2"
+description = "A Python to Java bridge."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "jpype1-py3"
 version = "0.5.5.4"
 description = "Python-Java bridge. Fork of the jPype project by Steve Menard (http://jpype.sourceforge.net/), with the modifications applied by Luis Nell (https://github.com/originell/jpype)"
@@ -483,7 +491,7 @@ socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0cb57dc57bfd90a2911bad0aa40bf124a064c96800ad193232f0f2f3e35943ff"
+content-hash = "c57636a2367287b89ab63fb7e4348b21e267d9ea182996a6191975747867be47"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -539,6 +547,30 @@ install = [
 joblib = [
     {file = "joblib-0.17.0-py3-none-any.whl", hash = "sha256:698c311779f347cf6b7e6b8a39bb682277b8ee4aba8cf9507bc0cf4cd4737b72"},
     {file = "joblib-0.17.0.tar.gz", hash = "sha256:9e284edd6be6b71883a63c9b7f124738a3c16195513ad940eae7e3438de885d5"},
+]
+jpype1 = [
+    {file = "JPype1-1.1.2-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:1543f00deb5fd36975c28a6735571c1ff11ea3550e79becc461e802b403100a1"},
+    {file = "JPype1-1.1.2-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:dcd93ffba37087f3966065e62bda9b646671545eecb96e8fbd770a56044a5f72"},
+    {file = "JPype1-1.1.2-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:4af10707e2fd1bc056c3f306369ddf1e235240ed8f534a3cb4e670f0a6bda46d"},
+    {file = "JPype1-1.1.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:cd054b775ac2e4aacd384689d64c80c8c4f3b1ef8bc570cb2aabe3bd47d4d3bb"},
+    {file = "JPype1-1.1.2-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:474a935e094c4b1ca781fe41f775fdd8ecb45d9270d03a73d0f7ff6dca750d8d"},
+    {file = "JPype1-1.1.2-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:224504ca098b5e7c9b4a4a94d36a1af066061aae7f371e5404193c818e9bc96d"},
+    {file = "JPype1-1.1.2-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:19e7bf084a6171a11b8cd73af7d54373ae92436dd3d793789919004ddee3e496"},
+    {file = "JPype1-1.1.2-cp36-cp36m-win_amd64.whl", hash = "sha256:75dc1cdfab5e0e2c135ad20e9282fccd059a265db0c19bcfbd3f0475b5e3706f"},
+    {file = "JPype1-1.1.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:19255b86e1a693afd968b01d555e17b4ba020fe779af5de6b3df34dd9f95ea34"},
+    {file = "JPype1-1.1.2-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:d39f83b9ebd1560176f3c77314d8d919b44ee188fc15723308d78079c9f6cf18"},
+    {file = "JPype1-1.1.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:35e5806f3d3212c4a7af30b945046568f976980674caca66551904120ab7365a"},
+    {file = "JPype1-1.1.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:599dc16f4d61178595499f5e7bd903cba29a910543fbe3873df9c520f5284860"},
+    {file = "JPype1-1.1.2-cp37-cp37m-win_amd64.whl", hash = "sha256:1f3fc398bac72f3c1c3e8a16342f5efc1a50e5fd5d3ea57e4568566457244d34"},
+    {file = "JPype1-1.1.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:23f7c09ae95341ea35aecec22793473071326885ab7df3a0802d3aaf43a12b0d"},
+    {file = "JPype1-1.1.2-cp38-cp38-manylinux1_i686.whl", hash = "sha256:b7474fc64fb6acff536b526c70d15737744df9107ae7ad4a417d50abbc181123"},
+    {file = "JPype1-1.1.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:eb33c1fe7e043dcf1217b337faf4126b3f364101d1a1570b09b7bcfc9d50d22d"},
+    {file = "JPype1-1.1.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:5e2011203c958b9fb3e10861cf8e60fe04e385faa58d624c27a0b5608ee78609"},
+    {file = "JPype1-1.1.2-cp38-cp38-win_amd64.whl", hash = "sha256:b52a4e0cdeb9e8d7276cc570d28f562b3982405d647cd52fff4002c543d75944"},
+    {file = "JPype1-1.1.2-cp39-cp39-manylinux1_i686.whl", hash = "sha256:f0e7f579072a4169b05dd8e2d55b5e0b262a4bd2fae80346ba0bc90924ea4e05"},
+    {file = "JPype1-1.1.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:3e62f5249f1cfbf72b6747e37a3ed4b1df4d33686e9ef89769654a21a8be2bd5"},
+    {file = "JPype1-1.1.2-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:99c5d32cfa69944799b53ce7f906d1724a09fe87e26325b56bd65f9b8cb12605"},
+    {file = "JPype1-1.1.2.tar.gz", hash = "sha256:c6e36de9f7ef826ff27f6d5260acc710ebc585a534c12cbac905db088ab1d992"},
 ]
 jpype1-py3 = [
     {file = "JPype1-py3-0.5.5.4.tar.gz", hash = "sha256:445ebb5e2911468b63e67e85def1279461cd8a9def9854e22226f341c6bcf8b0"},

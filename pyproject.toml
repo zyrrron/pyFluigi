@@ -19,6 +19,7 @@ JPype1-py3 = "^0.5.5"
 requests = "^2.24.0"
 pycairo = "^1.20.0"
 pymint = {path = "../pymint"}
+JPype1 = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"
