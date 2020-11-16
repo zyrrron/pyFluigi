@@ -1,8 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from pnr.layout import Layout
-from pnr.hola import adaptagrams as adg
-import parameters
+from fluigi.pnr.layout import Layout
+from fluigi.pnr.hola import adaptagrams as adg
+import fluigi.parameters
 
 
 def generatePlanarLayout(layout: Layout):

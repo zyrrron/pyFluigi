@@ -117,6 +117,5 @@ def main():
     utils.printgraph(layout.G, current_device.name+'.layout.dot')
 
 
-
 if __name__ == "__main__":
     main()

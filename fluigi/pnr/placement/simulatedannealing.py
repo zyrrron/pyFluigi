@@ -1,4 +1,4 @@
-from pnr.layout import Layout
+from fluigi.pnr.layout import Layout
 from pymint.mintdevice import MINTDevice
 import jpype
 import jpype.imports
