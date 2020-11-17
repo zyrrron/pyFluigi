@@ -1,27 +1,38 @@
 from fluigi.pnr.cell import Cell
 import cairo
+from fluigi.parameters import OUTPUT_DIR, DEVICE_X_DIM, DEVICE_Y_DIM
+from fluigi.pnr.layout import Layout
 
 
-PT_TO_MM = 2.83465
-PT_TO_UM = 0.00283465
-WIDTH, HEIGHT = 256, 256
+PT_TO_UM = 1/352.778
 
 
 class SVGDraw(object):
 
 
-    def __init__(self) -> None:
-        self._surface = cairo.SVGSurface ('test.svg', WIDTH * PT_TO_UM, HEIGHT * PT_TO_UM)
-        self._ctx = cairo.Context(self._surface)
-
-        self._ctx.scale(PT_TO_UM, PT_TO_UM)
-
-    def draw_cell(self, cell: Cell) -> None:
-        print("Cell - {}".format(cell))
-        self._ctx.move_to(cell.x * PT_TO_UM, cell.y * PT_TO_UM)
-        self._ctx.rectangle(0, 0, cell.xdim * PT_TO_UM, cell.ydim * PT_TO_UM)
-        self._ctx.fill()
+    def __init__(self, filename: str, layout: Layout) -> None:
+        self._file_path = OUTPUT_DIR.joinpath("{}.svg".format(filename))
+        self._layout = layout
 
     def generate_output(self) -> None:
-        self._surface.finish()
+        surface = cairo.SVGSurface(str(self._file_path), DEVICE_X_DIM * PT_TO_UM, DEVICE_Y_DIM * PT_TO_UM)
+        ctx = cairo.Context(surface)
+        ctx.scale(PT_TO_UM, PT_TO_UM)
+
+        for cell in self._layout.get_cells():
+            ctx.rectangle(cell.x, cell.y, cell.xdim, cell.ydim)
+            ctx.fill()
+        
+        for net in self._layout.get_nets():
+            waypoints = net.waypoints
+            channelwidth = 100
+            for i in range(len(waypoints)-1):
+                waypoint = waypoints[i]
+                next_waypoint = waypoints[i+1]
+                ctx.move_to(waypoint[0], waypoint[1])
+                ctx.line_to(next_waypoint[0], next_waypoint[1])
+                ctx.set_line_width(channelwidth/2)
+                ctx.stroke()
+    
+        surface.finish()
 

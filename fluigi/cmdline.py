@@ -20,8 +20,6 @@ from fluigi.pnr.placement.simulatedannealing import generate_simulated_annealing
 
 def main():
 
-    # parameters.PROGRAM_DIR = os.path.abspath(os.path.dirname(__file__))
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
