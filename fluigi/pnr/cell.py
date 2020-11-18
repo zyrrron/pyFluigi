@@ -1,3 +1,6 @@
+from fluigi.pnr.place_and_route import Terminal
+
+
 class Cell:
     def __init__(self, ID, x, y, xdim, ydim) -> None:
         self.ID = ID
@@ -8,7 +11,7 @@ class Cell:
 
         self.terminals = []
         self.topterminals = []
-        self.rightterminals =[]
+        self.rightterminals = []
         self.bottomterminals = []
         self.leftterminals = []
 
@@ -16,7 +19,6 @@ class Cell:
         for terminal in self.terminals:
             pass
 
-    
     def __eq__(self, o: object) -> bool:
         if isinstance(o, Cell) and o.ID == self.ID:
             return True
@@ -24,7 +26,15 @@ class Cell:
             return False
 
     def __str__(self) -> str:
-        return "Cell - {} ({}, {}) xdim - {} ydim-{}".format(self.ID, self.x, self.y, self.xdim, self.ydim)
+        return "Cell - {} ({}, {}) xdim - {} ydim-{}".format(
+            self.ID, self.x, self.y, self.xdim, self.ydim
+        )
 
     def __hash__(self):
         return hash(self.ID)
+
+    def get_terminal(self, label: str) -> Terminal:
+        for terminal in self.terminals:
+            if terminal.label == label:
+                return terminal
+        raise Exception("Could not find the terminal with the label: {}".format(label))

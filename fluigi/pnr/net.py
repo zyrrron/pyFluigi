@@ -1,11 +1,12 @@
+from fluigi.pnr.place_and_route import Terminal
 from typing import List
 
 
 class Net:
     def __init__(self, ID, source, sinks) -> None:
         self.ID = ID
-        self.source = source
-        self.sinks = sinks
+        self.source: Terminal = source
+        self.sinks: List[Terminal] = sinks
         self.waypoints: List[List[int]] = []
 
     def __hash__(self):
