@@ -15,13 +15,27 @@
             "name": "Debug - Customfile",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/cmdline.py",
+            "program": "${workspaceFolder}/fluigi/cmdline.py",
             "args": [
                 "--outpath",
                 "./out/",
                 "${file}"
             ],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug - Routing Customfile Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/fluigi/cmdline.py",
+            "args": [
+                "--outpath",
+                "./out/",
+                "${file}",
+                "--route"
+            ],
+            "console": "integratedTerminal"
         }
+
     ]
 }
