@@ -1,16 +1,19 @@
-from fluigi.pnr.terminal import Terminal
 from fluigi.pnr.svgdraw import SVGDraw
 from cairo import SVGSurface
 import networkx as nx
 from typing import Optional, List
-from fluigi.pnr.net import Net
-from fluigi.pnr.cell import Cell
 from pymint.mintdevice import MINTDevice
 import sys
 from enum import Enum
-from fluigi.pnr.aarf import Cell as Obstacle
-from fluigi.pnr.aarf import Router as AARFRouter
-from fluigi.pnr.aarf import Vertex, Route
+
+from fluigi.pnr.place_and_route import Terminal as CTerminal
+from fluigi.pnr.place_and_route import Net as CNet
+from fluigi.pnr.place_and_route import PlacementCell as CCell
+from fluigi.pnr.place_and_route import Placer as CPlacer
+
+# from fluigi.pnr.aarf import Cell as Obstacle
+# from fluigi.pnr.aarf import Router as AARFRouter
+# from fluigi.pnr.aarf import Vertex, Route
 
 
 class RouterAlgorithms(Enum):
@@ -43,56 +46,89 @@ class Layout:
         for cell in [self.cells[id] for id in list(self.cells)]:
             if cell.x < minx:
                 minx = cell.x
-            if cell.x + cell.xdim > maxx:
-                maxx = cell.x + cell.xdim
+            if cell.x + cell.x_span > maxx:
+                maxx = cell.x + cell.x_span
 
             if cell.y < miny:
                 miny = cell.y
-            if cell.y + cell.ydim > maxy:
-                maxy = cell.y + cell.ydim
+            if cell.y + cell.y_span > maxy:
+                maxy = cell.y + cell.y_span
 
-    def importMINTwithoutConstraints(self, device: Optional[MINTDevice]) -> None:
+    def importMINTwithoutConstraints(self, device: MINTDevice) -> None:
 
         self.__original_device = device
 
+        pcells = []
+
         for component in device.components:
-            cell = Cell(component.ID, 0, 0, 1000, 1000)
-            self.cells[cell.ID] = cell
-            self.G.add_node(cell.ID)
-            self.__direct_map.append(cell.ID)
+            terminals = []
+            for port in component.ports:
+                t = CTerminal(port.label, port.x, port.y)
+                terminals.append(t)
+
+            if component.params.exists("componentSpacing"):
+                component_spacing = component.params.get_param("componentSpacing")
+            else:
+                component_spacing = 1000  # Some random value
+            pcell = CCell(
+                component.ID,
+                component.xpos,
+                component.ypos,
+                component.xspan,
+                component.yspan,
+                component_spacing,
+                terminals,
+            )
+
+            pcells.append(pcell)
+            self.cells[pcell.id] = pcell
 
         for connection in device.connections:
-            source = Terminal()
-            source_component = device.get_component(connection.source.component)
-            coordinates = source_component.get_absolute_port_coordinates(
-                connection.source.port
-            )
-            source.label = connection.source.port
-            source.x = coordinates[0]
-            source.y = coordinates[1]
-            sinks = []
+            id = connection.ID
+            source = self.cells[connection.source.component]
+            source_terminal = None
+            if connection.source.port is not None:
+                # Get C Terminal for this
+                source_terminal = source.get_terminal(connection.source.port)
+
+            sink_cells = []
+            sink_terminals = []
             for sink in connection.sinks:
-                t = Terminal()
-                t.label = sink.port
-                sink_component = device.get_component(sink.component)
-                coordinates = sink_component.get_absolute_port_coordinates(t.label)
-                t.x = coordinates[0]
-                t.y = coordinates[1]
-                sinks.append(t)
-            net = Net(connection.ID, source, sinks)
-            self.nets[net.ID] = net
-            for sink in connection.sinks:
-                self.G.add_edge(connection.source.component, sink.component)
+                pcell = self.cells[sink.component]
+                sink_cells.append(pcell)
+                if sink.port is not None:
+                    t = pcell.get_terminal(sink.port)
+                    sink_terminals.append(t)
+                else:
+                    sink_terminals.append(None)
+
+            # cnet.sinks = sink_cells
+            # cnet.sink_terminals = sink_terminals
+
+            cnet = CNet()
+            cnet.id = id
+            cnet.source = source
+            cnet.source_terminal = source_terminal
+
+            # TODO - Figure out how to fix the interface later
+            for sink_cell in sink_cells:
+                cnet.sinks.append(sink_cell)
+
+            # TODO - Figure out how to fix the interface later
+            for sink_terminal in sink_terminals:
+                cnet.sink_terminals.append(sink_terminal)
+
+            self.nets[cnet.id] = cnet
 
     def importMINTwithConstraints(self, device: MINTDevice) -> None:
         # TODO: Process the constraints
         raise Exception("Not Implemented")
 
-    def get_cells(self) -> List[Cell]:
-        return [self.cells[id] for id in list(self.cells)]
+    # def get_cells(self) -> List[Cell]:
+    #     return [self.cells[id] for id in list(self.cells)]
 
-    def get_nets(self) -> List[Net]:
-        return [self.nets[id] for id in list(self.nets)]
+    # def get_nets(self) -> List[Net]:
+    #     return [self.nets[id] for id in list(self.nets)]
 
     def route_nets(self, router_type: RouterAlgorithms = RouterAlgorithms.AARF) -> None:
         obstacles = []
@@ -101,8 +137,8 @@ class Layout:
             obstacle = Obstacle()
             obstacle.x = cell.x
             obstacle.y = cell.y
-            obstacle.x_span = cell.xdim
-            obstacle.y_span = cell.ydim
+            obstacle.x_span = cell.x_span
+            obstacle.y_span = cell.y_span
             obstacles.append(obstacle)
 
         # Step 2 - generate the source and targets points for all the connections
@@ -113,14 +149,14 @@ class Layout:
             # Just get a single source and sink
             source_vertex = Vertex()
 
-            source_vertex.x = net.source.x
-            source_vertex.y = net.source.y
+            source_vertex.x = net.source_terminal.x
+            source_vertex.y = net.source_terminal.y
 
             sources.append(source_vertex)
 
             target_vertex = Vertex()
-            target_vertex.x = net.sinks[0].x
-            target_vertex.y = net.sinks[0].y
+            target_vertex.x = net.sink_terminals[0].x
+            target_vertex.y = net.sink_terminals[0].y
 
             targets.append(target_vertex)
             # r = Route(net.ID, source_vertex, target_vertex)
@@ -132,7 +168,7 @@ class Layout:
         # TODO - New API
         # router = AARFRouter(obstacles)
         # router.route(routes)
-        
+
         print(routes)
         print("Routed route:")
         for route in routes:
@@ -140,4 +176,9 @@ class Layout:
 
         pass
 
-    def place_and_route_design()
+    def place_and_route_design(self):
+        cells = list(self.cells.values())
+        nets = list(self.nets.values())
+        constraints = []
+        placer = CPlacer(cells, nets, constraints)
+        placer.place_and_route()

@@ -335,6 +335,218 @@ class PlacementCellVector(object):
 # Register PlacementCellVector in _place_and_route:
 _place_and_route.PlacementCellVector_swigregister(PlacementCellVector)
 
+class PortPointerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.PortPointerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.PortPointerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.PortPointerVector___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.PortPointerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.PortPointerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.PortPointerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.PortPointerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.PortPointerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.PortPointerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.PortPointerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.PortPointerVector_pop(self)
+
+    def append(self, x):
+        return _place_and_route.PortPointerVector_append(self, x)
+
+    def empty(self):
+        return _place_and_route.PortPointerVector_empty(self)
+
+    def size(self):
+        return _place_and_route.PortPointerVector_size(self)
+
+    def swap(self, v):
+        return _place_and_route.PortPointerVector_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.PortPointerVector_begin(self)
+
+    def end(self):
+        return _place_and_route.PortPointerVector_end(self)
+
+    def rbegin(self):
+        return _place_and_route.PortPointerVector_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.PortPointerVector_rend(self)
+
+    def clear(self):
+        return _place_and_route.PortPointerVector_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.PortPointerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.PortPointerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.PortPointerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.PortPointerVector_swiginit(self, _place_and_route.new_PortPointerVector(*args))
+
+    def push_back(self, x):
+        return _place_and_route.PortPointerVector_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.PortPointerVector_front(self)
+
+    def back(self):
+        return _place_and_route.PortPointerVector_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.PortPointerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.PortPointerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.PortPointerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.PortPointerVector_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.PortPointerVector_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_PortPointerVector
+
+# Register PortPointerVector in _place_and_route:
+_place_and_route.PortPointerVector_swigregister(PortPointerVector)
+
+class PlacementCellPointerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.PlacementCellPointerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.PlacementCellPointerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.PlacementCellPointerVector___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.PlacementCellPointerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.PlacementCellPointerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.PlacementCellPointerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.PlacementCellPointerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.PlacementCellPointerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.PlacementCellPointerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.PlacementCellPointerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.PlacementCellPointerVector_pop(self)
+
+    def append(self, x):
+        return _place_and_route.PlacementCellPointerVector_append(self, x)
+
+    def empty(self):
+        return _place_and_route.PlacementCellPointerVector_empty(self)
+
+    def size(self):
+        return _place_and_route.PlacementCellPointerVector_size(self)
+
+    def swap(self, v):
+        return _place_and_route.PlacementCellPointerVector_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.PlacementCellPointerVector_begin(self)
+
+    def end(self):
+        return _place_and_route.PlacementCellPointerVector_end(self)
+
+    def rbegin(self):
+        return _place_and_route.PlacementCellPointerVector_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.PlacementCellPointerVector_rend(self)
+
+    def clear(self):
+        return _place_and_route.PlacementCellPointerVector_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.PlacementCellPointerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.PlacementCellPointerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.PlacementCellPointerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.PlacementCellPointerVector_swiginit(self, _place_and_route.new_PlacementCellPointerVector(*args))
+
+    def push_back(self, x):
+        return _place_and_route.PlacementCellPointerVector_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.PlacementCellPointerVector_front(self)
+
+    def back(self):
+        return _place_and_route.PlacementCellPointerVector_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.PlacementCellPointerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.PlacementCellPointerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.PlacementCellPointerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.PlacementCellPointerVector_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.PlacementCellPointerVector_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_PlacementCellPointerVector
+
+# Register PlacementCellPointerVector in _place_and_route:
+_place_and_route.PlacementCellPointerVector_swigregister(PlacementCellPointerVector)
+
 class ConstraintVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -887,6 +1099,11 @@ class Terminal(object):
     label = property(_place_and_route.Terminal_label_get, _place_and_route.Terminal_label_set)
     x = property(_place_and_route.Terminal_x_get, _place_and_route.Terminal_x_set)
     y = property(_place_and_route.Terminal_y_get, _place_and_route.Terminal_y_set)
+    rel_x = property(_place_and_route.Terminal_rel_x_get, _place_and_route.Terminal_rel_x_set)
+    rel_y = property(_place_and_route.Terminal_rel_y_get, _place_and_route.Terminal_rel_y_set)
+
+    def compute_absolute_positions(self, ref_x, ref_y):
+        return _place_and_route.Terminal_compute_absolute_positions(self, ref_x, ref_y)
 
 # Register Terminal in _place_and_route:
 _place_and_route.Terminal_swigregister(Terminal)
@@ -905,6 +1122,14 @@ class PlacementCell(object):
     y_span = property(_place_and_route.PlacementCell_y_span_get, _place_and_route.PlacementCell_y_span_set)
     component_spacing = property(_place_and_route.PlacementCell_component_spacing_get, _place_and_route.PlacementCell_component_spacing_set)
     ports = property(_place_and_route.PlacementCell_ports_get, _place_and_route.PlacementCell_ports_set)
+    lock_x = property(_place_and_route.PlacementCell_lock_x_get, _place_and_route.PlacementCell_lock_x_set)
+    lock_y = property(_place_and_route.PlacementCell_lock_y_get, _place_and_route.PlacementCell_lock_y_set)
+
+    def __lt__(self, ob):
+        return _place_and_route.PlacementCell___lt__(self, ob)
+
+    def get_terminal(self, label):
+        return _place_and_route.PlacementCell_get_terminal(self, label)
 
 # Register PlacementCell in _place_and_route:
 _place_and_route.PlacementCell_swigregister(PlacementCell)
@@ -918,7 +1143,12 @@ class Net(object):
     __swig_destroy__ = _place_and_route.delete_Net
     id = property(_place_and_route.Net_id_get, _place_and_route.Net_id_set)
     source = property(_place_and_route.Net_source_get, _place_and_route.Net_source_set)
+    source_terminal = property(_place_and_route.Net_source_terminal_get, _place_and_route.Net_source_terminal_set)
+    channelSpacing = property(_place_and_route.Net_channelSpacing_get, _place_and_route.Net_channelSpacing_set)
+    channelWidth = property(_place_and_route.Net_channelWidth_get, _place_and_route.Net_channelWidth_set)
     sinks = property(_place_and_route.Net_sinks_get, _place_and_route.Net_sinks_set)
+    sink_terminals = property(_place_and_route.Net_sink_terminals_get, _place_and_route.Net_sink_terminals_set)
+    routes = property(_place_and_route.Net_routes_get, _place_and_route.Net_routes_set)
 
 # Register Net in _place_and_route:
 _place_and_route.Net_swigregister(Net)
@@ -1053,6 +1283,9 @@ class Placer(object):
 
     def place(self):
         return _place_and_route.Placer_place(self)
+
+    def place_and_route(self):
+        return _place_and_route.Placer_place_and_route(self)
 
 # Register Placer in _place_and_route:
 _place_and_route.Placer_swigregister(Placer)
@@ -1395,8 +1628,11 @@ class Route(object):
     def __init__(self, *args):
         _place_and_route.Route_swiginit(self, _place_and_route.new_Route(*args))
     __swig_destroy__ = _place_and_route.delete_Route
+    id = property(_place_and_route.Route_id_get, _place_and_route.Route_id_set)
     start = property(_place_and_route.Route_start_get, _place_and_route.Route_start_set)
     end = property(_place_and_route.Route_end_get, _place_and_route.Route_end_set)
+    channelWidth = property(_place_and_route.Route_channelWidth_get, _place_and_route.Route_channelWidth_set)
+    channelSpacing = property(_place_and_route.Route_channelSpacing_get, _place_and_route.Route_channelSpacing_set)
     waypoints = property(_place_and_route.Route_waypoints_get, _place_and_route.Route_waypoints_set)
 
 # Register Route in _place_and_route:
@@ -1421,15 +1657,13 @@ class Router(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, obstacles, channelWidth, channelSpacing):
-        _place_and_route.Router_swiginit(self, _place_and_route.new_Router(obstacles, channelWidth, channelSpacing))
+    def __init__(self, obstacles):
+        _place_and_route.Router_swiginit(self, _place_and_route.new_Router(obstacles))
     __swig_destroy__ = _place_and_route.delete_Router
     obstacles = property(_place_and_route.Router_obstacles_get, _place_and_route.Router_obstacles_set)
-    channelWidth = property(_place_and_route.Router_channelWidth_get, _place_and_route.Router_channelWidth_set)
-    channelSpacing = property(_place_and_route.Router_channelSpacing_get, _place_and_route.Router_channelSpacing_set)
 
-    def route(self, sources, targets):
-        return _place_and_route.Router_route(self, sources, targets)
+    def route(self, routes):
+        return _place_and_route.Router_route(self, routes)
 
 # Register Router in _place_and_route:
 _place_and_route.Router_swigregister(Router)

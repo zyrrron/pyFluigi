@@ -1,7 +1,7 @@
 from pymint import MINTDevice
 import fluigi.utils as utils
 from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals
-from fluigi.pnr.layout import Layout, RouterAlgorithms
+from fluigi.pnr.layout import Layout  # , RouterAlgorithms
 import sys
 import os
 from pathlib import Path
@@ -14,7 +14,7 @@ from parchmint import Device
 from fluigi.pnr.terminalassignment import assign_single_port_terminals
 
 
-os.environ["LD_LIBRARY_PATH"] = "/home/krishna/CIDAR/pyfluigi/bin"
+# os.environ["LD_LIBRARY_PATH"] = "/home/krishna/CIDAR/pyfluigi/bin"
 
 from fluigi.pnr.placement.graph import (
     generatePlanarLayout,
@@ -87,7 +87,7 @@ def main():
     current_device = None
 
     extension = Path(args.input).suffix
-    if extension == ".mint" and extension == ".uf":
+    if extension == ".mint" or extension == ".uf":
         current_device = generate_device_from_mint(args.input)
     elif extension == ".json":
         # Push it through the parchmint parser
@@ -148,11 +148,13 @@ def main():
 
     generateSpringLayout(layout)
 
+    layout.place_and_route_design()
+
     layout.applyLayout()
 
     # generateSpectralLayout(layout)
-    generateHOLALayout(layout)
-    layout.applyLayout()
+    # generateHOLALayout(layout)
+    # layout.applyLayout()
     layout.ensureLegalCoordinates()
     layout.print_layout()
 
