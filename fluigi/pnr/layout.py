@@ -31,10 +31,20 @@ class Layout:
 
     def applyLayout(self):
         device = self.__original_device
-        for ID in self.__direct_map:
+        for ID in self.cells.keys():
             component = device.get_component(ID)
             cell = self.cells[ID]
             component.params.set_param("position", [cell.x, cell.y])
+
+        for ID in self.nets.keys():
+            connection = device.get_connection(ID)
+            net = self.nets[ID]
+            for route in net.routes:
+                path = []
+                for vertex in route.waypoints:
+                    path.append((vertex.x, vertex.y))
+
+                connection.add_waypoints_path(path)
 
     def ensureLegalCoordinates(self):
         # Make sure all the cell coordinates are positive

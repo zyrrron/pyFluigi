@@ -28,7 +28,7 @@ OLD_PRIMITIVES_CHECKLIST = [
 
 def get_defaults(mint: str):
 
-    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
+    if mint in OLD_PRIMITIVES_CHECKLIST:
         print(
             "Warning this is one of the the old fluigi primitives, this means that the we dont pull defaults"
         )

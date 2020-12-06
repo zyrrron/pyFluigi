@@ -1,7 +1,7 @@
 from pymint import MINTDevice
 import fluigi.utils as utils
 from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals
-from fluigi.pnr.layout import Layout  # , RouterAlgorithms
+from fluigi.pnr.layout import Layout, RouterAlgorithms
 import sys
 import os
 from pathlib import Path
@@ -28,8 +28,10 @@ from fluigi.pnr.placement.simulatedannealing import (
 )
 
 
-def generate_device_from_mint(file_path: str) -> MINTDevice:
-    current_device = MINTDevice.from_mint_file(file_path)
+def generate_device_from_mint(
+    file_path: str, skip_constraints: bool = False
+) -> MINTDevice:
+    current_device = MINTDevice.from_mint_file(file_path, skip_constraints)
     try:
         pull_defaults(current_device)
         pull_dimensions(current_device)
@@ -67,6 +69,12 @@ def main():
         action="store_true",
         help="Sets the flag to only perform the routing",
     )
+    parser.add_argument(
+        "-u",
+        "--unconstrained",
+        action="store_true",
+        help="Sets the flag to skip constraint parsing",
+    )
 
     args = parser.parse_args()
 
@@ -75,6 +83,9 @@ def main():
 
     print("output dir:", args.outpath)
     print("Running File: " + args.input)
+    if Path(args.input).exists() is False:
+        print("Could not find the input file - {}".format(args.input))
+        return 0
 
     abspath = Path(args.outpath).resolve()
     parameters.OUTPUT_DIR = abspath
@@ -88,7 +99,7 @@ def main():
 
     extension = Path(args.input).suffix
     if extension == ".mint" or extension == ".uf":
-        current_device = generate_device_from_mint(args.input)
+        current_device = generate_device_from_mint(args.input, args.unconstrained)
     elif extension == ".json":
         # Push it through the parchmint parser
         file_path = str(Path(args.input).resolve())
