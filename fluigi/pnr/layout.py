@@ -15,10 +15,21 @@ from fluigi.pnr.place_and_route import Placer as CPlacer
 # from fluigi.pnr.aarf import Router as AARFRouter
 # from fluigi.pnr.aarf import Vertex, Route
 
+from fluigi.pnr.place_and_route import Cell as Obstacle
+from fluigi.pnr.place_and_route import Router as AARFRouter
+from fluigi.pnr.place_and_route import Vertex, Route
+
 
 class RouterAlgorithms(Enum):
     AARF = 0
     GRID = 1
+
+
+def get_terminal(cell, label) -> CTerminal:
+    for terminal in cell.ports:
+        if terminal.label == label:
+            return terminal
+    raise Exception("Could not find terminal in exception")
 
 
 class Layout:
@@ -90,6 +101,13 @@ class Layout:
                 terminals,
             )
 
+            for i in range(len(pcell.ports)):
+                port = pcell.ports[i]
+                print("Before Update: ({}, {})".format(port.x, port.y))
+                port.compute_absolute_positions(pcell.x, pcell.y)
+                print("After Update: ({}, {})".format(port.x, port.y))
+                pcell.ports[i] = port
+
             pcells.append(pcell)
             self.cells[pcell.id] = pcell
 
@@ -99,7 +117,14 @@ class Layout:
             source_terminal = None
             if connection.source.port is not None:
                 # Get C Terminal for this
-                source_terminal = source.get_terminal(connection.source.port)
+                try:
+                    source_terminal = get_terminal(source, connection.source.port)
+                except Exception:
+                    print(
+                        "Could not find Terminal for source port: {} {} for connection: {}".format(
+                            source.id, connection.source.port, id
+                        )
+                    )
 
             sink_cells = []
             sink_terminals = []
@@ -107,8 +132,16 @@ class Layout:
                 pcell = self.cells[sink.component]
                 sink_cells.append(pcell)
                 if sink.port is not None:
-                    t = pcell.get_terminal(sink.port)
-                    sink_terminals.append(t)
+                    try:
+                        t = get_terminal(pcell, sink.port)
+                        sink_terminals.append(t)
+                    except Exception:
+                        print(
+                            "Could not find Terminal for source port: {} for connection: {}".format(
+                                source.id, id
+                            )
+                        )
+
                 else:
                     sink_terminals.append(None)
 
@@ -134,16 +167,10 @@ class Layout:
         # TODO: Process the constraints
         raise Exception("Not Implemented")
 
-    # def get_cells(self) -> List[Cell]:
-    #     return [self.cells[id] for id in list(self.cells)]
-
-    # def get_nets(self) -> List[Net]:
-    #     return [self.nets[id] for id in list(self.nets)]
-
     def route_nets(self, router_type: RouterAlgorithms = RouterAlgorithms.AARF) -> None:
         obstacles = []
         # Step 1 - generate the obstacles from the components
-        for cell in self.get_cells():
+        for cell in list(self.cells.values()):
             obstacle = Obstacle()
             obstacle.x = cell.x
             obstacle.y = cell.y
@@ -152,28 +179,30 @@ class Layout:
             obstacles.append(obstacle)
 
         # Step 2 - generate the source and targets points for all the connections
-        sources = []
-        targets = []
         routes = []
-        for net in self.get_nets():
+        for net in list(self.nets.values()):
             # Just get a single source and sink
             source_vertex = Vertex()
 
             source_vertex.x = net.source_terminal.x
             source_vertex.y = net.source_terminal.y
 
-            sources.append(source_vertex)
-
             target_vertex = Vertex()
             target_vertex.x = net.sink_terminals[0].x
             target_vertex.y = net.sink_terminals[0].y
 
-            targets.append(target_vertex)
+            route = Route(
+                net.id,
+                source_vertex,
+                target_vertex,
+                800,  # net.channelWidth,
+                1600,  # net.channelSpacing,
+            )
             # r = Route(net.ID, source_vertex, target_vertex)
-            # routes.append(r)
+            routes.append(route)
         # Step 3 - Do the routing
-        router = AARFRouter(obstacles, 100, 200)
-        routes = router.route(sources, targets)
+        router = AARFRouter(obstacles)
+        router.route(routes)
 
         # TODO - New API
         # router = AARFRouter(obstacles)
@@ -182,7 +211,8 @@ class Layout:
         print(routes)
         print("Routed route:")
         for route in routes:
-            print(route)
+            for waypoint in route.waypoints:
+                print("({}, {})".format(waypoint.x, waypoint.y))
 
         pass
 
