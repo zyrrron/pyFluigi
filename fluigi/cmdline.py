@@ -1,6 +1,11 @@
 from pymint import MINTDevice
 import fluigi.utils as utils
-from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals
+from fluigi.primitives import (
+    pull_defaults,
+    pull_dimensions,
+    pull_terminals,
+    # stop_java_vm,
+)
 from fluigi.pnr.layout import Layout, RouterAlgorithms
 import sys
 import os
@@ -10,11 +15,8 @@ import fluigi.parameters as parameters
 import json
 import networkx as nx
 import pyfiglet
-from parchmint import Device
+from parchmint import Device, device
 from fluigi.pnr.terminalassignment import assign_single_port_terminals
-
-
-# os.environ["LD_LIBRARY_PATH"] = "/home/krishna/CIDAR/pyfluigi/bin"
 
 from fluigi.pnr.placement.graph import (
     generatePlanarLayout,
@@ -22,6 +24,7 @@ from fluigi.pnr.placement.graph import (
     generateSpringLayout,
     generateHOLALayout,
 )
+
 from fluigi.pnr.placement.simulatedannealing import (
     generate_simulated_annealing_layout,
     generate_simulated_annealing_layout_v2,
@@ -32,13 +35,21 @@ def generate_device_from_mint(
     file_path: str, skip_constraints: bool = False
 ) -> MINTDevice:
     current_device = MINTDevice.from_mint_file(file_path, skip_constraints)
+    if current_device is None:
+        raise Exception("Error generating device from the MINT file !")
     try:
+        # start_java_vm()
         pull_defaults(current_device)
         pull_dimensions(current_device)
         pull_terminals(current_device)
+        # stop_java_vm()
     except Exception as e:
         print("Error getting Primitive data: {}".format(e))
-
+    print(
+        "Setting Default MAX Dimensions to the device: ({}, {})".format(
+            parameters.DEVICE_X_DIM, parameters.DEVICE_Y_DIM
+        )
+    )
     return current_device
 
 
@@ -125,8 +136,8 @@ def main():
     layout = Layout()
     layout.importMINTwithoutConstraints(current_device)
 
-    # Do Terminal Assignment
-    assign_single_port_terminals(current_device)
+    # # Do Terminal Assignment
+    # assign_single_port_terminals(current_device)
 
     if args.route is True:
         # Do just the routing and end the process

@@ -8,10 +8,10 @@ import json
 # jpype.startJVM(classpath=['/home/krishna/CIDAR/pyfluigi/pnr/fluigi-java/Fluigi-jar-with-dependencies.jar'])
 
 
-import java
-from org.cidarlab.fluigi.fluigi import *
+# import java
+# from org.cidarlab.fluigi.fluigi import *
 
-from org.cidarlab.fluigi.netlist import Device, AbstractPrimitive
+# from org.cidarlab.fluigi.netlist import Device, AbstractPrimitive
 
 
 def generate_simulated_annealing_layout(layout: Layout):

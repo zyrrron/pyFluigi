@@ -13,11 +13,17 @@ import jpype
 import jpype.imports
 from jpype.types import *
 
-java_path = parameters.FLUIGI_JAVA_PNR_JAR_PATH.resolve()
-jpype.startJVM(classpath=[str(java_path)])
 
-import java
-from org.cidarlab.fluigi.fluigi import *
+# java_path = parameters.FLUIGI_JAVA_PNR_JAR_PATH.resolve()
+# jpype.startJVM(classpath=[str(java_path)])
+
+# import java
+# from org.cidarlab.fluigi.fluigi import *
+
+
+# def stop_java_vm():
+#     jpype.shutdownJVM()
+
 
 OLD_PRIMITIVES_CHECKLIST = [
     "DROPLET GENERATOR FLOW FOCUS",

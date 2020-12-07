@@ -85,6 +85,10 @@ class Layout:
             terminals = []
             for port in component.ports:
                 t = CTerminal(port.label, port.x, port.y)
+                print("Before Update: ({}, {})".format(t.x, t.y))
+                t.compute_absolute_positions(component.xpos, component.ypos)
+                print("After Update: ({}, {})".format(t.x, t.y))
+
                 terminals.append(t)
 
             if component.params.exists("componentSpacing"):
@@ -100,13 +104,6 @@ class Layout:
                 component_spacing,
                 terminals,
             )
-
-            for i in range(len(pcell.ports)):
-                port = pcell.ports[i]
-                print("Before Update: ({}, {})".format(port.x, port.y))
-                port.compute_absolute_positions(pcell.x, pcell.y)
-                print("After Update: ({}, {})".format(port.x, port.y))
-                pcell.ports[i] = port
 
             pcells.append(pcell)
             self.cells[pcell.id] = pcell
@@ -187,21 +184,24 @@ class Layout:
             source_vertex.x = net.source_terminal.x
             source_vertex.y = net.source_terminal.y
 
-            target_vertex = Vertex()
-            target_vertex.x = net.sink_terminals[0].x
-            target_vertex.y = net.sink_terminals[0].y
+            for sink_terminal in net.sink_terminals:
+                target_vertex = Vertex()
+                target_vertex.x = sink_terminal.x
+                target_vertex.y = sink_terminal.y
 
-            route = Route(
-                net.id,
-                source_vertex,
-                target_vertex,
-                800,  # net.channelWidth,
-                1600,  # net.channelSpacing,
-            )
-            # r = Route(net.ID, source_vertex, target_vertex)
-            routes.append(route)
+                route = Route(
+                    net.id,
+                    source_vertex,
+                    target_vertex,
+                    800,  # net.channelWidth,
+                    1600,  # net.channelSpacing,
+                )
+                # r = Route(net.ID, source_vertex, target_vertex)
+                routes.append(route)
+
+            net.routes = routes
         # Step 3 - Do the routing
-        router = AARFRouter(obstacles)
+        router = AARFRouter([])
         router.route(routes)
 
         # TODO - New API
@@ -211,10 +211,14 @@ class Layout:
         print(routes)
         print("Routed route:")
         for route in routes:
+            print(
+                "Route: Start - ({}, {}) End - ({}, {})".format(
+                    route.start.x, route.start.y, route.end.x, route.end.y
+                )
+            )
+            print("Waypoints:")
             for waypoint in route.waypoints:
                 print("({}, {})".format(waypoint.x, waypoint.y))
-
-        pass
 
     def place_and_route_design(self):
         cells = list(self.cells.values())
