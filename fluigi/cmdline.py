@@ -1,3 +1,5 @@
+from fluigi.pnr.sa.saplace import SAPlace
+from fluigi.pnr.sa.salayout import SALayout
 from pymint import MINTDevice
 import fluigi.utils as utils
 from fluigi.primitives import (
@@ -133,16 +135,18 @@ def main():
     if args.convert:
         sys.exit(0)
 
-    layout = Layout()
-    layout.importMINTwithoutConstraints(current_device)
-
     # # Do Terminal Assignment
     # assign_single_port_terminals(current_device)
 
     if args.route is True:
         # Do just the routing and end the process
+        layout = Layout()
+        if current_device is None:
+            raise Exception("Could not parse the device correctly")
+
+        layout.importMINTwithoutConstraints(current_device)
+
         layout.route_nets(RouterAlgorithms.AARF)
-        layout.print_layout()
 
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_no_par.json".format(current_device.name)
@@ -165,8 +169,18 @@ def main():
         print("Error - Current device wasn't parsed correctly")
         sys.exit(1)
 
-    layout = Layout()
+    # Running the SA version of the layout
+    layout = SALayout()
+    if current_device is None:
+        raise Exception("Could not parse the device correctly")
+
     layout.importMINTwithoutConstraints(current_device)
+
+    parameters.LAMBDA = 1
+
+    placer = SAPlace(layout)
+
+    placer.place()
 
     generateSpringLayout(layout)
 

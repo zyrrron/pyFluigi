@@ -1,3 +1,7 @@
+from fluigi.parameters import LAMBDA
+from fluigi.pnr.sa.utils import get_terminal
+from math import floor
+import random
 from fluigi.pnr.svgdraw import SVGDraw
 from cairo import SVGSurface
 import networkx as nx
@@ -23,13 +27,6 @@ from fluigi.pnr.place_and_route import Vertex, Route
 class RouterAlgorithms(Enum):
     AARF = 0
     GRID = 1
-
-
-def get_terminal(cell, label) -> CTerminal:
-    for terminal in cell.ports:
-        if terminal.label == label:
-            return terminal
-    raise Exception("Could not find terminal in exception")
 
 
 class Layout:
@@ -84,9 +81,13 @@ class Layout:
         for component in device.components:
             terminals = []
             for port in component.ports:
-                t = CTerminal(port.label, port.x, port.y)
+                t = CTerminal(
+                    port.label, floor(port.x / LAMBDA), floor(port.y / LAMBDA)
+                )
                 print("Before Update: ({}, {})".format(t.x, t.y))
-                t.compute_absolute_positions(component.xpos, component.ypos)
+                t.compute_absolute_positions(
+                    floor(component.xpos / LAMBDA), floor(component.ypos / LAMBDA)
+                )
                 print("After Update: ({}, {})".format(t.x, t.y))
 
                 terminals.append(t)
@@ -97,11 +98,11 @@ class Layout:
                 component_spacing = 1000  # Some random value
             pcell = CCell(
                 component.ID,
-                component.xpos,
-                component.ypos,
-                component.xspan,
-                component.yspan,
-                component_spacing,
+                round(component.xpos / LAMBDA),
+                round(component.ypos / LAMBDA),
+                round(component.xspan / LAMBDA),
+                round(component.yspan / LAMBDA),
+                round(component_spacing / LAMBDA),
                 terminals,
             )
 
@@ -116,6 +117,7 @@ class Layout:
                 # Get C Terminal for this
                 try:
                     source_terminal = get_terminal(source, connection.source.port)
+                    # source_terminal = source.get_terminal(connection.source.port)
                 except Exception:
                     print(
                         "Could not find Terminal for source port: {} {} for connection: {}".format(

@@ -1118,18 +1118,17 @@ class PlacementCell(object):
     id = property(_place_and_route.PlacementCell_id_get, _place_and_route.PlacementCell_id_set)
     x = property(_place_and_route.PlacementCell_x_get, _place_and_route.PlacementCell_x_set)
     y = property(_place_and_route.PlacementCell_y_get, _place_and_route.PlacementCell_y_set)
+    rotation = property(_place_and_route.PlacementCell_rotation_get, _place_and_route.PlacementCell_rotation_set)
     x_span = property(_place_and_route.PlacementCell_x_span_get, _place_and_route.PlacementCell_x_span_set)
     y_span = property(_place_and_route.PlacementCell_y_span_get, _place_and_route.PlacementCell_y_span_set)
     component_spacing = property(_place_and_route.PlacementCell_component_spacing_get, _place_and_route.PlacementCell_component_spacing_set)
     ports = property(_place_and_route.PlacementCell_ports_get, _place_and_route.PlacementCell_ports_set)
     lock_x = property(_place_and_route.PlacementCell_lock_x_get, _place_and_route.PlacementCell_lock_x_set)
     lock_y = property(_place_and_route.PlacementCell_lock_y_get, _place_and_route.PlacementCell_lock_y_set)
+    lock_rotation = property(_place_and_route.PlacementCell_lock_rotation_get, _place_and_route.PlacementCell_lock_rotation_set)
 
     def __lt__(self, ob):
         return _place_and_route.PlacementCell___lt__(self, ob)
-
-    def get_terminal(self, label):
-        return _place_and_route.PlacementCell_get_terminal(self, label)
 
 # Register PlacementCell in _place_and_route:
 _place_and_route.PlacementCell_swigregister(PlacementCell)

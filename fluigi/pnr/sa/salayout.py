@@ -1,3 +1,15 @@
+from __future__ import annotations
+
+from numpy.lib.utils import source
+from fluigi.pnr.sa.utils import (
+    bottom_edge,
+    calc_position,
+    left_edge,
+    manhattan_dist,
+    overlap_area,
+    right_edge,
+    top_edge,
+)
 from fluigi.pnr.sa.layoutgrid import LayoutGrid
 from fluigi.parameters import AREA_PENALTY, OVERLAP_PENALTY, WIRE_PENALTY
 from fluigi.pnr.place_and_route import PlacementCell as CCell, Terminal as CTerminal
@@ -6,153 +18,128 @@ from fluigi.pnr.layout import Layout
 import sys
 
 
-def left_edge(cell: CCell) -> int:
-    return cell.x - cell.component_spacing
-
-
-def right_edge(cell: CCell) -> int:
-    return cell.x + cell.x_span + cell.component_spacing
-
-
-def top_edge(cell: CCell) -> int:
-    return cell.y - cell.component_spacing
-
-
-def bottom_edge(cell: CCell) -> int:
-    return cell.y + cell.component_spacing
-
-
-def overlaps(c1: CCell, c2: CCell) -> bool:
-    if left_edge(c1) > right_edge(c2):
-        return False
-    elif right_edge(c1) < left_edge(c2):
-        return False
-    elif bottom_edge(c1) < top_edge(c2):
-        return False
-    elif top_edge(c1) > bottom_edge(c2):
-        return False
-    else:
-        return True
-
-
-def overlap_x(c1: CCell, c2: CCell) -> int:
-    left = max(left_edge(c1), left_edge(c2))
-    right = max(right_edge(c1), right_edge(c2))
-    return right - left
-
-
-def overlap_y(c1: CCell, c2: CCell) -> int:
-    top = max(top_edge(c1), top_edge(c2))
-    bottom = max(bottom_edge(c1), bottom_edge(c2))
-    return bottom - top
-
-
-def overlap_area(c1: CCell, c2: CCell) -> int:
-    left = max(left_edge(c1), left_edge(c2))
-    right = min(right_edge(c1), right_edge(c2))
-    top = max(top_edge(c1), top_edge(c2))
-    bottom = min(bottom_edge(c1), bottom_edge(c2))
-
-    return (bottom - top) * (right - left)
-
-
-def manhattan_dist(source: CTerminal, sink: CTerminal) -> int:
-    raise NotImplementedError()
-
-
-def calc_position(net: CNet) -> int:
-    raise NotImplementedError()
-
-
-cur_top_edge = 0
-cur_right_edge = 0
-cur_bottom_edge = 0
-cur_left_edge = 0
-
-old_cost = 0
-old_area = 0
-old_overlap = 0
-old_wirelength = 0
-
-cur_cost = 0
-cur_area = 0
-cur_overlap = 0
-cur_wirelength = 0
-
-pre_move_comp_overlap = 0
-pre_move_wirelength = 0
-
-
 class SALayout(Layout):
     def __init__(self) -> None:
         super().__init__()
         self.grid: LayoutGrid = LayoutGrid()
 
-    def calc_init_cost(self) -> int:
-        old_cost = cur_cost
-        old_overlap = cur_overlap
-        old_wirelength = cur_wirelength
-        cur_area = self.calculate_area()
+        self.cur_top_edge = 0
+        self.cur_right_edge = 0
+        self.cur_bottom_edge = 0
+        self.cur_left_edge = 0
 
-        cur_overlap = self.calculate_overlap()
-        cur_wirelength = self.calculate_wirelength()
-        cur_cost = (
-            cur_wirelength * WIRE_PENALTY
-            + cur_area * AREA_PENALTY
-            + cur_overlap * OVERLAP_PENALTY
-        )
+        self.old_cost = 0
+        self.old_area = 0
+        self.old_overlap = 0
+        self.old_wirelength = 0
 
-        return cur_cost
+        self.cur_cost = 0
+        self.cur_area = 0
+        self.cur_overlap = 0
+        self.cur_wirelength = 0
 
-    def calculate_cost(self, randc: CCell) -> int:
-        old_cost = cur_cost
-        old_overlap = cur_overlap
-        old_wirelength = cur_wirelength
-        cur_area = self.calculate_area()
+        self.pre_move_comp_overlap = 0
+        self.pre_move_wirelength = 0
 
-        self.cur_overlap = (
-            old_overlap - pre_move_comp_overlap + self.calculate_comp_overlap(randc)
-        )
+    def calc_init_cost(self) -> float:
+        self.old_cost = self.cur_cost
+        self.old_overlap = self.cur_overlap
+        self.old_wirelength = self.cur_wirelength
+        self.cur_area = self.calculate_area()
+
+        self.cur_overlap = self.calculate_overlap()
+        self.cur_wirelength = self.calculate_wirelength()
         self.cur_cost = (
-            cur_wirelength * WIRE_PENALTY
-            + cur_area * AREA_PENALTY
-            + cur_overlap * OVERLAP_PENALTY
+            self.cur_wirelength * WIRE_PENALTY
+            + self.cur_area * AREA_PENALTY
+            + self.cur_overlap * OVERLAP_PENALTY
         )
 
         return self.cur_cost
 
-    def get_delta_cost(self) -> int:
-        return cur_cost - old_cost
+    def calculate_cost(self, randc: CCell) -> float:
+        self.old_cost = self.cur_cost
+        self.old_overlap = self.cur_overlap
+        self.old_wirelength = self.cur_wirelength
+        self.cur_area = self.calculate_area()
+
+        self.cur_overlap = (
+            self.old_overlap
+            - self.pre_move_comp_overlap
+            + self.calculate_comp_overlap(randc)
+        )
+        self.cur_cost = (
+            self.cur_wirelength * WIRE_PENALTY
+            + self.cur_area * AREA_PENALTY
+            + self.cur_overlap * OVERLAP_PENALTY
+        )
+
+        return self.cur_cost
+
+    def get_delta_cost(self) -> float:
+        return self.cur_cost - self.old_cost
 
     def undo_update_cost(self) -> float:
-        cur_area = old_area
-        cur_overlap = old_overlap
-        cur_wirelength = old_wirelength
-        cur_cost = old_cost
-        return cur_cost
+        self.cur_area = self.old_area
+        self.cur_overlap = self.old_overlap
+        self.cur_wirelength = self.old_wirelength
+        self.cur_cost = self.old_cost
+        return self.cur_cost
 
-    def calculate_wirelength(self) -> int:
+    def calculate_wirelength(self) -> float:
         wire_sum = 0
+        print("Cell info")
+        for cell in list(self.cells.values()):
+            print("Cell ID: {}".format(cell.id))
+            for port in cell.ports:
+                print("Cell Terminal- {} ({}, {})".format(port.label, port.x, port.y))
+
         for net in list(self.nets.values()):
+            source_cell = net.source
+            # print("Source ID: {}".format(source_cell.id))
             source_terminal = net.source_terminal
-            for sink_terminal in net.sink_terminals:
+            # print(
+            #     "Source Terminal- {} ({}, {})".format(
+            #         source_terminal.label, source_terminal.x, source_terminal.y
+            #     )
+            # )
+            for i in range(len(net.sink_terminals)):
+                sink_cell = net.sinks[i]
+                # print("Sink ID: {}".format(sink_cell.id))
+                sink_terminal = net.sink_terminals[i]
                 m_dist = manhattan_dist(source_terminal, sink_terminal)
-                penalty = calc_position(net)
+                penalty = calc_position(
+                    source_cell, source_terminal, sink_cell, sink_terminal
+                )
                 wire_sum += m_dist + OVERLAP_PENALTY / 2 * penalty
         return wire_sum
 
     def calc_prev_comp_wirelength(self, c: CCell) -> None:
-        prev_move_wirelength = self.calc_comp_wirelength(c)
+        calc = self.calc_comp_wirelength(c)
+        print("Computed Comp Move Wire Length:", calc)
+        self.prev_move_wirelength = calc
 
-    def calc_comp_wirelength(self, c: CCell) -> None:
+    def calc_comp_wirelength(self, c: CCell) -> float:
         wire_sum = 0
         # TODO : include the graph into the data structure
-        raise NotImplementedError()
+        for net in list(self.nets.values()):
+            source_cell = net.source
+            source_terminal = net.source_terminal
+            for i in range(len(net.sink_terminals)):
+                sink_cell = net.sinks[i]
+                sink_terminal = net.sink_terminals[i]
+                dist = manhattan_dist(source_terminal, sink_terminal)
+                penalty = calc_position(
+                    source_cell, source_terminal, sink_cell, sink_terminal
+                )
+                wire_sum += dist + OVERLAP_PENALTY / 2 * penalty
+
+        return wire_sum
 
     def calc_prev_comp_overlap(self, randc: CCell) -> None:
-        pre_move_comp_overlap = self.calculate_comp_overlap(randc)
+        self.pre_move_comp_overlap = self.calculate_comp_overlap(randc)
 
-    def calculate_area(self) -> int:
+    def calculate_area(self) -> float:
         """[summary]
 
         Returns:
@@ -180,7 +167,7 @@ class SALayout(Layout):
         return (max_bottom - min_top) * (max_right - min_left)
 
     # TODO - RENAME THIS LATER ON
-    def calculate_overlap(self) -> int:
+    def calculate_overlap(self) -> float:
         overlap_sum = 0
         cells = list(self.cells.values())
         for i in range(len(cells)):
@@ -191,8 +178,36 @@ class SALayout(Layout):
 
         return overlap_sum
 
-    def calculate_comp_overlap(self, randC) -> int:
-        raise NotImplementedError()
+    def calculate_comp_overlap(self, randc) -> float:
+        return self.grid.calculate_component_overlap(randc)
 
-    def clear(self):
-        raise NotImplementedError()
+    def reset(self):
+        self.old_cost = 0
+        self.old_area = 0
+        self.old_overlap = 0
+        self.old_wirelength = 0
+
+        self.cur_cost = 0
+        self.cur_area = 0
+        self.cur_overlap = 0
+        self.cur_wirelength = 0
+
+        self.cur_right_edge = 0
+        self.cur_left_edge = 0
+        self.cur_bottom_edge = 0
+        self.cur_top_edge = 0
+
+    def calculate_init_cost(self):
+        self.old_cost = self.cur_cost
+        self.old_overlap = self.cur_overlap
+        self.old_wirelength = self.cur_wirelength
+        self.cur_area = self.calculate_area()
+        self.cur_overlap = self.calculate_overlap()
+        self.cur_overlap = self.calculate_wirelength()
+        self.cur_cost = (
+            self.cur_wirelength * WIRE_PENALTY
+            + self.cur_area * AREA_PENALTY
+            + self.cur_overlap * OVERLAP_PENALTY
+        )
+
+        return self.cur_cost

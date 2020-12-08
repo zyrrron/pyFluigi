@@ -1,8 +1,11 @@
+from __future__ import annotations
+from fluigi.pnr.layout import Layout
 from typing import Dict, List, Tuple
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA
-from fluigi.pnr.sa.salayout import (
+from fluigi.pnr.sa.utils import (
     left_edge,
+    move,
     overlap_area,
     right_edge,
     top_edge,
@@ -11,12 +14,6 @@ from fluigi.pnr.sa.salayout import (
 
 
 BLOCK_SIZE = 100
-
-
-# TODO - Move to C++ api candidate
-def move(c: CCell, delta_x: int, delta_y: int):
-    c.x += delta_x
-    c.y += delta_y
 
 
 class LayoutGrid:
@@ -95,11 +92,12 @@ class LayoutGrid:
         for i in range(minX, maxX):
             for j in range(minY, maxY):
                 key = (i, j)
-                if key in layout_grid.keys():
-                    cell_list = layout_grid[key]
-                    cell_list.append(c)
-                else:
+                # Initialize the array if key not present
+                if key not in layout_grid.keys():
                     layout_grid[key] = []
+
+                cell_list = layout_grid[key]
+                cell_list.append(c)
 
     def calcualte_overlap(self) -> int:
         overlap_sum = 0
@@ -127,3 +125,24 @@ class LayoutGrid:
                     if c.id != randc.id:
                         overlap_sum += overlap_area(randc, c)
         return overlap_sum
+
+    def overlaps(self, c1: CCell, c2: CCell) -> bool:
+        if left_edge(c1) > right_edge(c2):
+            return False
+        elif right_edge(c1) < left_edge(c2):
+            return False
+        elif bottom_edge(c1) < top_edge(c2):
+            return False
+        elif top_edge(c1) > bottom_edge(c2):
+            return False
+        else:
+            return True
+
+    def clear(self):
+        self.layout_grid.clear()
+
+    def cleanup(self):
+        self.c = None
+        self.clear()
+        for k in self.layout_grid.keys():
+            del self.layout_grid[k]
