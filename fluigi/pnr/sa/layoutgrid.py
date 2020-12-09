@@ -1,8 +1,9 @@
 from __future__ import annotations
+from math import ceil
 from fluigi.pnr.layout import Layout
 from typing import Dict, List, Tuple
 from fluigi.pnr.place_and_route import PlacementCell as CCell
-from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA
+from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA, SA_GRID_BLOCK_SIZE
 from fluigi.pnr.sa.utils import (
     left_edge,
     move,
@@ -13,14 +14,11 @@ from fluigi.pnr.sa.utils import (
 )
 
 
-BLOCK_SIZE = 100
-
-
 class LayoutGrid:
     def __init__(self) -> None:
         super().__init__()
-        self.x_offset = 0
-        self.y_offset = 0
+        self.x_offset_memory = 0
+        self.y_offset_memory = 0
         self.layout_grid: Dict[Tuple[int, int], List[CCell]] = dict()
         self.c = None
 
@@ -42,23 +40,28 @@ class LayoutGrid:
         elif cy + y_offset < 0:
             y_offset = 0
 
+        # print("Temporary Moving Cell by: ({}, {})".format(x_offset, y_offset))
         move(c, x_offset, y_offset)
-
+        # print("Temporary Moved Cell {} : ({}, {})".format(c.id, c.x, c.y))
         self.c = c
-        self.x_offset = x_offset
-        self.y_offset = y_offset
+        self.x_offset_memory = x_offset
+        self.y_offset_memory = y_offset
 
     def apply_move(self) -> None:
         if self.c is None:
             raise Exception(
                 "Could not apply move becuase current component is set to None"
             )
-        move(self.c, -self.x_offset, -self.y_offset)
+        move(self.c, -self.x_offset_memory, -self.y_offset_memory)
 
         self.remove_component(self.c)
 
-        move(self.c, self.x_offset, self.y_offset)
-
+        move(self.c, self.x_offset_memory, self.y_offset_memory)
+        # print(
+        #     "Saving Move, new location of cell {}: ({}, {})".format(
+        #         self.c.id, self.c.x, self.c.y
+        #     )
+        # )
         self.add_component(self.c)
 
     def undo_move(self) -> None:
@@ -67,14 +70,14 @@ class LayoutGrid:
                 "Could not apply move becuase current component is set to None"
             )
 
-        move(self.c, -self.x_offset, -self.y_offset)
+        move(self.c, -self.x_offset_memory, -self.y_offset_memory)
 
     def remove_component(self, c: CCell) -> None:
         layout_grid = self.layout_grid
-        minX = int(left_edge(c) / BLOCK_SIZE)
-        maxX = int(right_edge(c) / BLOCK_SIZE)
-        minY = int(top_edge(c) / BLOCK_SIZE)
-        maxY = int(bottom_edge(c) / BLOCK_SIZE)
+        minX = int(left_edge(c) / SA_GRID_BLOCK_SIZE)
+        maxX = int(right_edge(c) / SA_GRID_BLOCK_SIZE)
+        minY = int(top_edge(c) / SA_GRID_BLOCK_SIZE)
+        maxY = int(bottom_edge(c) / SA_GRID_BLOCK_SIZE)
         for i in range(minX, maxX):
             for j in range(minY, maxY):
                 key = (i, j)
@@ -85,10 +88,10 @@ class LayoutGrid:
 
     def add_component(self, c: CCell) -> None:
         layout_grid = self.layout_grid
-        minX = int(left_edge(c) / BLOCK_SIZE)
-        maxX = int(right_edge(c) / BLOCK_SIZE)
-        minY = int(top_edge(c) / BLOCK_SIZE)
-        maxY = int(bottom_edge(c) / BLOCK_SIZE)
+        minX = int(left_edge(c) / SA_GRID_BLOCK_SIZE)
+        maxX = int(right_edge(c) / SA_GRID_BLOCK_SIZE)
+        minY = int(top_edge(c) / SA_GRID_BLOCK_SIZE)
+        maxY = int(bottom_edge(c) / SA_GRID_BLOCK_SIZE)
         for i in range(minX, maxX):
             for j in range(minY, maxY):
                 key = (i, j)
@@ -111,10 +114,10 @@ class LayoutGrid:
 
     def calculate_component_overlap(self, randc) -> int:
         overlap_sum = 0
-        minX = int(left_edge(randc) / BLOCK_SIZE)
-        maxX = int(right_edge(randc) / BLOCK_SIZE)
-        minY = int(top_edge(randc) / BLOCK_SIZE)
-        maxY = int(bottom_edge(randc) / BLOCK_SIZE)
+        minX = int(left_edge(randc) / SA_GRID_BLOCK_SIZE)
+        maxX = int(right_edge(randc) / SA_GRID_BLOCK_SIZE)
+        minY = int(top_edge(randc) / SA_GRID_BLOCK_SIZE)
+        maxY = int(bottom_edge(randc) / SA_GRID_BLOCK_SIZE)
         for i in range(minX, maxX):
             for j in range(minY, maxY):
                 key = (i, j)

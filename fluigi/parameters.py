@@ -5,7 +5,7 @@ import fluigi
 
 DEVICE_X_DIM = 76200
 DEVICE_Y_DIM = 76200
-LAMBDA = 1
+LAMBDA = 10
 
 
 # SA Parameters
@@ -18,6 +18,9 @@ DEFAULT_MOVES_PER_TEMP_PER_MODULE = 100
 DEFAULT_COOL_RATE = 0.95
 
 SIGMA_MULTIPLIER = 20
+
+# SA GRID Parameters
+SA_GRID_BLOCK_SIZE = 100
 
 # Code Parameter
 

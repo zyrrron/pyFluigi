@@ -1,4 +1,5 @@
 from math import floor
+from typing import Dict, List, Optional
 from fluigi.pnr.place_and_route import (
     PlacementCell as CCell,
     Terminal as CTerminal,
@@ -149,7 +150,7 @@ def get_terminal_location(terminal: CTerminal, cell: CCell) -> TerminalLocation:
 
 
 def update_terminals(cell: CCell):
-    new_terminals = []
+    # new_terminals = []
     # print("Before Update", [(t.x, t.y) for t in cell.ports])
 
     for i in range(len(cell.ports)):
@@ -170,3 +171,55 @@ def move(c: CCell, delta_x: int, delta_y: int):
     c.x += delta_x
     c.y += delta_y
     update_terminals(c)
+
+
+class AlgDataStorage:
+    def __init__(self) -> None:
+        super().__init__()
+        self._data: Dict[str, List[Optional[float]]] = dict()
+        self._size = 0
+
+    def store_data(self, param, data):
+        if param in self._data.keys():
+            current_len = len(self._data[param])
+            for i in range(current_len, self._size - 1):
+                self._data[param].append(None)
+            self._data[param].append(data)
+        else:
+
+            self._data[param] = []
+            # fill None's as padding
+            for i in range(self._size - 1):
+                self._data[param].append(None)
+            self._data[param].append(data)
+
+        self._size = len(self._data[param])
+
+    def print_data(self):
+        self.pad_data()
+        print(",".join(self._data.keys()))
+        for i in range(self._size):
+            print(",".join([str(self._data[key][i]) for key in self._data.keys()]))
+
+    def save_data(self):
+        self.pad_data()
+        text = ",".join(self._data.keys()) + "\n"
+        for i in range(self._size):
+            text += (
+                ",".join([str(self._data[key][i]) for key in self._data.keys()])
+            ) + "\n"
+        f = open("SA-Data.csv", "w")
+        f.write(text)
+        f.close()
+
+    def new_stage(self):
+        self._size += 1
+        self.pad_data()
+
+    def pad_data(self):
+        for key in self._data.keys():
+            for i in range(len(self._data[key]), self._size):
+                self._data[key].append(None)
+
+
+storage = AlgDataStorage()
