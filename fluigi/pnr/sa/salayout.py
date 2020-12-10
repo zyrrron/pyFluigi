@@ -62,7 +62,11 @@ class SALayout(Layout):
 
     def calculate_cost(self, randc: CCell) -> float:
         self.old_wirelength = self.cur_wirelength
-        self.cur_wirelength = self.calc_comp_wirelength(randc)
+        self.cur_wirelength = (
+            self.old_wirelength
+            - self.pre_move_wirelength
+            + self.calc_comp_wirelength(randc)
+        )
 
         self.old_area = self.cur_area
         self.cur_area = self.calculate_area()
@@ -80,8 +84,6 @@ class SALayout(Layout):
             + self.cur_area * AREA_PENALTY
             + self.cur_overlap * OVERLAP_PENALTY
         )
-
-        storage.store_data("instance-cost-randc", self.cur_cost)
         return self.cur_cost
 
     def get_delta_cost(self) -> float:
@@ -123,10 +125,9 @@ class SALayout(Layout):
         return wire_sum
 
     def calc_prev_comp_wirelength(self, c: CCell) -> None:
-        storage.store_data(
-            "instance-premove-comp-wire-length-before-calc", self.pre_move_wirelength
-        )
-        self.prev_move_wirelength = self.calc_comp_wirelength(c)
+        # print("prev", self.pre_move_wirelength)
+        self.pre_move_wirelength = self.calc_comp_wirelength(c)
+        # print("after", self.pre_move_wirelength)
         storage.store_data(
             "instance-premove-comp-wire-length-after-calc", self.pre_move_wirelength
         )
@@ -146,6 +147,8 @@ class SALayout(Layout):
                 )
                 wire_sum += dist + OVERLAP_PENALTY / 2 * penalty
         storage.store_data("instance-comp-wirelenght-randc", wire_sum)
+
+        # print("ret wiresum ", wire_sum)
         return wire_sum
 
     def calc_prev_comp_overlap(self, randc: CCell) -> None:
