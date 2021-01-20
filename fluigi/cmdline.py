@@ -139,6 +139,7 @@ def main():
     # assign_single_port_terminals(current_device)
 
     if args.route is True:
+        parameters.LAMBDA = 1
         # Do just the routing and end the process
         layout = Layout()
         if current_device is None:
@@ -149,10 +150,13 @@ def main():
         layout.route_nets(RouterAlgorithms.AARF)
 
     tt = os.path.join(
-        parameters.OUTPUT_DIR, "{}_no_par.json".format(current_device.name)
+        parameters.OUTPUT_DIR, "{}_only_route.json".format(current_device.name)
     )
     with open(tt, "w") as f:
         json.dump(current_device.to_parchmint_v1(), f)
+
+    if args.route:
+        exit(0)
 
     # #Generate the Simulated Annealing Layout
     # generate_simulated_annealing_layout_v2(current_device)
@@ -176,7 +180,7 @@ def main():
 
     layout.importMINTwithoutConstraints(current_device)
 
-    parameters.LAMBDA = 1
+    parameters.LAMBDA = 100
 
     placer = SAPlace(layout)
 
@@ -192,7 +196,7 @@ def main():
     # generateHOLALayout(layout)
     # layout.applyLayout()
     layout.ensureLegalCoordinates()
-    layout.print_layout()
+    # layout.print_layout()
 
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_hola_par.json".format(current_device.name)

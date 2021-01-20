@@ -200,8 +200,11 @@ class Layout:
                 )
                 # r = Route(net.ID, source_vertex, target_vertex)
                 routes.append(route)
+                # net.routes.append(route)
 
-            net.routes = routes
+            for route in routes:
+                net.routes.append(route)
+
         # Step 3 - Do the routing
         router = AARFRouter([])
         router.route(routes)

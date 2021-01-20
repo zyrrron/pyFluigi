@@ -10,37 +10,37 @@ do
 done
 
 
-echo "Running Cassie's Base Benchmark Set"
+# echo "Running Cassie's Base Benchmark Set"
 
 
-for f in ../test/base/*.mint;
+# for f in ../test/base/*.mint;
 
-do 
-	echo "Running File $f";
-	python ../cmdline.py $f -c --outpath ../out
-done
-
-
-for f in ../test/constraints/*.mint;
-
-do 
-	echo "Running File $f";
-	python ../cmdline.py $f -c  --outpath ../out
-done
+# do 
+# 	echo "Running File $f";
+# 	python ../cmdline.py $f -c --outpath ../out
+# done
 
 
-for f in ../test/grid/*.mint;
+# for f in ../test/constraints/*.mint;
 
-do 
-	echo "Running File $f";
-	python ../cmdline.py $f -c --outpath ../out
-done
+# do 
+# 	echo "Running File $f";
+# 	python ../cmdline.py $f -c  --outpath ../out
+# done
 
 
-for f in ../test/lfr/*.mint;
+# for f in ../test/grid/*.mint;
 
-do 
-	echo "Running File $f";
-	python ../cmdline.py $f -c --outpath ../out
-done
+# do 
+# 	echo "Running File $f";
+# 	python ../cmdline.py $f -c --outpath ../out
+# done
+
+
+# for f in ../test/lfr/*.mint;
+
+# do 
+# 	echo "Running File $f";
+# 	python ../cmdline.py $f -c --outpath ../out
+# done
 
