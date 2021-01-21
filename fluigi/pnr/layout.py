@@ -167,18 +167,10 @@ class Layout:
         raise Exception("Not Implemented")
 
     def route_nets(self, router_type: RouterAlgorithms = RouterAlgorithms.AARF) -> None:
-        obstacles = []
-        # Step 1 - generate the obstacles from the components
-        for cell in list(self.cells.values()):
-            obstacle = Obstacle()
-            obstacle.x = cell.x
-            obstacle.y = cell.y
-            obstacle.x_span = cell.x_span
-            obstacle.y_span = cell.y_span
-            obstacles.append(obstacle)
 
-        # Step 2 - generate the source and targets points for all the connections
-        routes = []
+        # Step 1 - generate the source and targets points for all the connections
+        all_routes = []
+        obstacle_check_vertices = []
         for net in list(self.nets.values()):
             # Just get a single source and sink
             source_vertex = Vertex()
@@ -186,10 +178,14 @@ class Layout:
             source_vertex.x = net.source_terminal.x
             source_vertex.y = net.source_terminal.y
 
+            obstacle_check_vertices.append(source_vertex)
+
             for sink_terminal in net.sink_terminals:
                 target_vertex = Vertex()
                 target_vertex.x = sink_terminal.x
                 target_vertex.y = sink_terminal.y
+
+                obstacle_check_vertices.append(target_vertex)
 
                 route = Route(
                     net.id,
@@ -199,23 +195,40 @@ class Layout:
                     1600,  # net.channelSpacing,
                 )
                 # r = Route(net.ID, source_vertex, target_vertex)
-                routes.append(route)
-                # net.routes.append(route)
-
-            for route in routes:
+                all_routes.append(route)
                 net.routes.append(route)
 
+            for route in all_routes:
+                net.routes.append(route)
+
+        obstacles = []
+        # Step 2 - generate the obstacles from the components
+        for ID, cell in list(self.cells.items()):
+            obstacle = Obstacle()
+            obstacle.x = cell.x + 1
+            obstacle.y = cell.y + 1
+            obstacle.x_span = cell.x_span - 1
+            obstacle.y_span = cell.y_span - 1
+            # TODO - CHECK IF ANY OF THE ROUTES HAVE THESE AS THE INPUTS/OUTPUTS
+            overlaps_vertex = False
+            for vertex in obstacle_check_vertices:
+                overlaps_vertex = overlaps_vertex or inside_obstabcle(vertex, obstacle)
+                if overlaps_vertex:
+                    break
+            if overlaps_vertex is False:
+                obstacles.append(obstacle)
+
         # Step 3 - Do the routing
-        router = AARFRouter([])
-        router.route(routes, 0, 0, DEVICE_X_DIM, DEVICE_Y_DIM)
+        router = AARFRouter(obstacles)
+        router.route(all_routes, 0, 0, DEVICE_X_DIM, DEVICE_Y_DIM)
 
         # TODO - New API
         # router = AARFRouter(obstacles)
         # router.route(routes)
 
-        print(routes)
+        print(all_routes)
         print("Routed route:")
-        for route in routes:
+        for route in all_routes:
             print(
                 "Route: Start - ({}, {}) End - ({}, {})".format(
                     route.start.x, route.start.y, route.end.x, route.end.y
@@ -231,3 +244,15 @@ class Layout:
         constraints = []
         placer = CPlacer(cells, nets, constraints)
         placer.place_and_route()
+
+
+def inside_obstabcle(vertex: Vertex, obstacle: Obstacle) -> bool:
+    if (
+        vertex.x >= obstacle.x
+        and vertex.x <= obstacle.x + obstacle.x_span
+        and vertex.y >= obstacle.y
+        and vertex.y <= obstacle.y + obstacle.y_span
+    ):
+        return True
+    else:
+        return False
