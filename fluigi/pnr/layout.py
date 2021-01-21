@@ -1,4 +1,4 @@
-from fluigi.parameters import LAMBDA
+from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA
 from fluigi.pnr.sa.utils import get_terminal
 from math import floor
 import random
@@ -207,7 +207,7 @@ class Layout:
 
         # Step 3 - Do the routing
         router = AARFRouter([])
-        router.route(routes)
+        router.route(routes, 0, 0, DEVICE_X_DIM, DEVICE_Y_DIM)
 
         # TODO - New API
         # router = AARFRouter(obstacles)

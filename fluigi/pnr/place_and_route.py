@@ -1118,18 +1118,17 @@ class PlacementCell(object):
     id = property(_place_and_route.PlacementCell_id_get, _place_and_route.PlacementCell_id_set)
     x = property(_place_and_route.PlacementCell_x_get, _place_and_route.PlacementCell_x_set)
     y = property(_place_and_route.PlacementCell_y_get, _place_and_route.PlacementCell_y_set)
+    rotation = property(_place_and_route.PlacementCell_rotation_get, _place_and_route.PlacementCell_rotation_set)
     x_span = property(_place_and_route.PlacementCell_x_span_get, _place_and_route.PlacementCell_x_span_set)
     y_span = property(_place_and_route.PlacementCell_y_span_get, _place_and_route.PlacementCell_y_span_set)
     component_spacing = property(_place_and_route.PlacementCell_component_spacing_get, _place_and_route.PlacementCell_component_spacing_set)
     ports = property(_place_and_route.PlacementCell_ports_get, _place_and_route.PlacementCell_ports_set)
     lock_x = property(_place_and_route.PlacementCell_lock_x_get, _place_and_route.PlacementCell_lock_x_set)
     lock_y = property(_place_and_route.PlacementCell_lock_y_get, _place_and_route.PlacementCell_lock_y_set)
+    lock_rotation = property(_place_and_route.PlacementCell_lock_rotation_get, _place_and_route.PlacementCell_lock_rotation_set)
 
     def __lt__(self, ob):
         return _place_and_route.PlacementCell___lt__(self, ob)
-
-    def get_terminal(self, label):
-        return _place_and_route.PlacementCell_get_terminal(self, label)
 
 # Register PlacementCell in _place_and_route:
 _place_and_route.PlacementCell_swigregister(PlacementCell)
@@ -1281,8 +1280,8 @@ class Placer(object):
     nets = property(_place_and_route.Placer_nets_get, _place_and_route.Placer_nets_set)
     constraints = property(_place_and_route.Placer_constraints_get, _place_and_route.Placer_constraints_set)
 
-    def place(self):
-        return _place_and_route.Placer_place(self)
+    def place(self, max_x, max_y):
+        return _place_and_route.Placer_place(self, max_x, max_y)
 
     def place_and_route(self):
         return _place_and_route.Placer_place_and_route(self)
@@ -1502,6 +1501,112 @@ class RouteVector(object):
 # Register RouteVector in _place_and_route:
 _place_and_route.RouteVector_swigregister(RouteVector)
 
+class RoutePointerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.RoutePointerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.RoutePointerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.RoutePointerVector___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.RoutePointerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.RoutePointerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.RoutePointerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.RoutePointerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.RoutePointerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.RoutePointerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.RoutePointerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.RoutePointerVector_pop(self)
+
+    def append(self, x):
+        return _place_and_route.RoutePointerVector_append(self, x)
+
+    def empty(self):
+        return _place_and_route.RoutePointerVector_empty(self)
+
+    def size(self):
+        return _place_and_route.RoutePointerVector_size(self)
+
+    def swap(self, v):
+        return _place_and_route.RoutePointerVector_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.RoutePointerVector_begin(self)
+
+    def end(self):
+        return _place_and_route.RoutePointerVector_end(self)
+
+    def rbegin(self):
+        return _place_and_route.RoutePointerVector_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.RoutePointerVector_rend(self)
+
+    def clear(self):
+        return _place_and_route.RoutePointerVector_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.RoutePointerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.RoutePointerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.RoutePointerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.RoutePointerVector_swiginit(self, _place_and_route.new_RoutePointerVector(*args))
+
+    def push_back(self, x):
+        return _place_and_route.RoutePointerVector_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.RoutePointerVector_front(self)
+
+    def back(self):
+        return _place_and_route.RoutePointerVector_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.RoutePointerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.RoutePointerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.RoutePointerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.RoutePointerVector_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.RoutePointerVector_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_RoutePointerVector
+
+# Register RoutePointerVector in _place_and_route:
+_place_and_route.RoutePointerVector_swigregister(RoutePointerVector)
+
 class CellVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1635,6 +1740,9 @@ class Route(object):
     channelSpacing = property(_place_and_route.Route_channelSpacing_get, _place_and_route.Route_channelSpacing_set)
     waypoints = property(_place_and_route.Route_waypoints_get, _place_and_route.Route_waypoints_set)
 
+    def getWaypoints(self):
+        return _place_and_route.Route_getWaypoints(self)
+
 # Register Route in _place_and_route:
 _place_and_route.Route_swigregister(Route)
 
@@ -1662,8 +1770,8 @@ class Router(object):
     __swig_destroy__ = _place_and_route.delete_Router
     obstacles = property(_place_and_route.Router_obstacles_get, _place_and_route.Router_obstacles_set)
 
-    def route(self, routes):
-        return _place_and_route.Router_route(self, routes)
+    def route(self, routes, min_x, min_y, max_x, max_y):
+        return _place_and_route.Router_route(self, routes, min_x, min_y, max_x, max_y)
 
 # Register Router in _place_and_route:
 _place_and_route.Router_swigregister(Router)
