@@ -8,7 +8,7 @@ from fluigi.primitives import (
     pull_terminals,
     # stop_java_vm,
 )
-from fluigi.pnr.layout import Layout, RouterAlgorithms
+from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
 import sys
 import os
 from pathlib import Path
@@ -140,6 +140,11 @@ def main():
 
     if args.route is True:
         parameters.LAMBDA = 1
+
+        # Set the device dimensions from the device
+        parameters.DEVICE_X_DIM = current_device.params.get_param("xspan")
+        parameters.DEVICE_Y_DIM = current_device.params.get_param("yspan")
+
         # Do just the routing and end the process
         layout = Layout()
         if current_device is None:
@@ -149,14 +154,35 @@ def main():
 
         layout.route_nets(RouterAlgorithms.AARF)
 
+        layout.apply_layout()
+
+        tt = os.path.join(
+            parameters.OUTPUT_DIR, "{}_only_route.json".format(current_device.name)
+        )
+        with open(tt, "w") as f:
+            json.dump(current_device.to_parchmint_v1(), f)
+
+        print("Completed Routing Operation, exiting...")
+        exit(0)
+
+    # Planar Rotuer
+    parameters.LAMBDA = 1
+
+    layout = Layout()
+    if current_device is None:
+        raise Exception("Could not parse the device correctly")
+
+    layout.importMINTwithoutConstraints(current_device)
+
+    layout.place_and_route_design()
+
+    layout.apply_layout()
+
     tt = os.path.join(
-        parameters.OUTPUT_DIR, "{}_only_route.json".format(current_device.name)
+        parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name)
     )
     with open(tt, "w") as f:
         json.dump(current_device.to_parchmint_v1(), f)
-
-    if args.route:
-        exit(0)
 
     # #Generate the Simulated Annealing Layout
     # generate_simulated_annealing_layout_v2(current_device)
@@ -190,7 +216,7 @@ def main():
 
     layout.place_and_route_design()
 
-    layout.applyLayout()
+    layout.apply_layout()
 
     # generateSpectralLayout(layout)
     # generateHOLALayout(layout)

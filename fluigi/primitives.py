@@ -11,7 +11,8 @@ import requests
 # All the imports for the java pipe
 import jpype
 import jpype.imports
-from jpype.types import *
+
+# from jpype.types import *
 
 
 # java_path = parameters.FLUIGI_JAVA_PNR_JAR_PATH.resolve()

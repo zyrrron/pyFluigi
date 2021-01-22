@@ -1,4 +1,5 @@
-from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA
+from fluigi import parameters
+import fluigi.parameters
 from fluigi.pnr.sa.utils import get_terminal
 from math import floor
 import random
@@ -29,6 +30,11 @@ class RouterAlgorithms(Enum):
     GRID = 1
 
 
+class PlaceAndRouteAlgorithms(Enum):
+    PLANAR = 0
+    SIMULATED_ANNEALING = 1
+
+
 class Layout:
     def __init__(self) -> None:
         self.cells = dict()
@@ -37,7 +43,7 @@ class Layout:
         self.__original_device = None
         self.__direct_map = []
 
-    def applyLayout(self):
+    def apply_layout(self):
         device = self.__original_device
         for ID in self.cells.keys():
             component = device.get_component(ID)
@@ -52,7 +58,12 @@ class Layout:
                 for vertex in route.waypoints:
                     path.append((vertex.x, vertex.y))
 
-                connection.add_waypoints_path(path)
+                connection.add_waypoints_path(None, None, path)
+                print(
+                    "Updating connection: {} with path {}".format(
+                        connection.ID, str(path)
+                    )
+                )
 
     def ensureLegalCoordinates(self):
         # Make sure all the cell coordinates are positive
@@ -82,11 +93,14 @@ class Layout:
             terminals = []
             for port in component.ports:
                 t = CTerminal(
-                    port.label, floor(port.x / LAMBDA), floor(port.y / LAMBDA)
+                    port.label,
+                    floor(port.x / parameters.LAMBDA),
+                    floor(port.y / parameters.LAMBDA),
                 )
                 print("Before Update: ({}, {})".format(t.x, t.y))
                 t.compute_absolute_positions(
-                    floor(component.xpos / LAMBDA), floor(component.ypos / LAMBDA)
+                    floor(component.xpos / parameters.LAMBDA),
+                    floor(component.ypos / parameters.LAMBDA),
                 )
                 print("After Update: ({}, {})".format(t.x, t.y))
 
@@ -98,11 +112,11 @@ class Layout:
                 component_spacing = 1000  # Some random value
             pcell = CCell(
                 component.ID,
-                round(component.xpos / LAMBDA),
-                round(component.ypos / LAMBDA),
-                round(component.xspan / LAMBDA),
-                round(component.yspan / LAMBDA),
-                round(component_spacing / LAMBDA),
+                round(component.xpos / parameters.LAMBDA),
+                round(component.ypos / parameters.LAMBDA),
+                round(component.xspan / parameters.LAMBDA),
+                round(component.yspan / parameters.LAMBDA),
+                round(component_spacing / parameters.LAMBDA),
                 terminals,
             )
 
@@ -124,6 +138,15 @@ class Layout:
                             source.id, connection.source.port, id
                         )
                     )
+            else:
+                if len(source.ports) == 1:
+                    print('Assigning "1" as the default terminal for net')
+                    source_terminal = get_terminal(source, "1")
+                else:
+                    raise Exception(
+                        "No scheme for handling scenarios where no source port is defined and there's more than 1 port available"
+                    )
+                    source_terminal = None
 
             sink_cells = []
             sink_terminals = []
@@ -142,7 +165,15 @@ class Layout:
                         )
 
                 else:
-                    sink_terminals.append(None)
+                    if len(pcell.ports) == 1:
+                        print('Assigning "1" as the default terminal for net')
+                        t = get_terminal(pcell, "1")
+                        sink_terminals.append(t)
+                    else:
+                        raise Exception(
+                            "No scheme for handling scenarios where no source port is defined and there's more than 1 port available"
+                        )
+                        sink_terminals.append(None)
 
             # cnet.sinks = sink_cells
             # cnet.sink_terminals = sink_terminals
@@ -196,31 +227,30 @@ class Layout:
                 )
                 # r = Route(net.ID, source_vertex, target_vertex)
                 all_routes.append(route)
-                net.routes.append(route)
 
-            for route in all_routes:
+                # TODO - FIX THIS LATER
                 net.routes.append(route)
 
         obstacles = []
         # Step 2 - generate the obstacles from the components
         for ID, cell in list(self.cells.items()):
-            obstacle = Obstacle()
-            obstacle.x = cell.x + 1
-            obstacle.y = cell.y + 1
-            obstacle.x_span = cell.x_span - 1
-            obstacle.y_span = cell.y_span - 1
             # TODO - CHECK IF ANY OF THE ROUTES HAVE THESE AS THE INPUTS/OUTPUTS
             overlaps_vertex = False
             for vertex in obstacle_check_vertices:
-                overlaps_vertex = overlaps_vertex or inside_obstabcle(vertex, obstacle)
+                overlaps_vertex = overlaps_vertex or inside_obstabcle(vertex, cell)
                 if overlaps_vertex:
                     break
             if overlaps_vertex is False:
+                obstacle = Obstacle()
+                obstacle.x = cell.x + 1
+                obstacle.y = cell.y + 1
+                obstacle.x_span = cell.x_span - 1
+                obstacle.y_span = cell.y_span - 1
                 obstacles.append(obstacle)
 
         # Step 3 - Do the routing
         router = AARFRouter(obstacles)
-        router.route(all_routes, 0, 0, DEVICE_X_DIM, DEVICE_Y_DIM)
+        router.route(all_routes, 0, 0, parameters.DEVICE_X_DIM, parameters.DEVICE_Y_DIM)
 
         # TODO - New API
         # router = AARFRouter(obstacles)
@@ -243,10 +273,11 @@ class Layout:
         nets = list(self.nets.values())
         constraints = []
         placer = CPlacer(cells, nets, constraints)
+        placer.place(parameters.DEVICE_X_DIM, parameters.DEVICE_Y_DIM)
         placer.place_and_route()
 
 
-def inside_obstabcle(vertex: Vertex, obstacle: Obstacle) -> bool:
+def inside_obstabcle(vertex: Vertex, obstacle: CCell) -> bool:
     if (
         vertex.x >= obstacle.x
         and vertex.x <= obstacle.x + obstacle.x_span
