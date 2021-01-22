@@ -165,6 +165,13 @@ def main():
         print("Completed Routing Operation, exiting...")
         exit(0)
 
+    # Check if the device netlist is planar
+    graph = current_device.G
+
+    if nx.algorithms.check_planarity(graph) is False:
+        print("Error - Non-planar graph seen")
+        sys.exit(0)
+
     # Planar Rotuer
     parameters.LAMBDA = 1
 
@@ -187,13 +194,6 @@ def main():
     # #Generate the Simulated Annealing Layout
     # generate_simulated_annealing_layout_v2(current_device)
     # generate_simulated_annealing_layout(layout)
-
-    # Check if the device netlist is planar
-    graph = current_device.G
-
-    if nx.algorithms.check_planarity(graph) is False:
-        print("Error - Non-planar graph seen")
-        sys.exit(0)
 
     if current_device is None:
         print("Error - Current device wasn't parsed correctly")
