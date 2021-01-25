@@ -183,6 +183,12 @@ class Layout:
             cnet.source = source
             cnet.source_terminal = source_terminal
 
+            width = connection.params.get_param("channelWidth")
+            cnet.channelWidth = width
+
+            spacing = 2 * width
+            cnet.channelSpacing = spacing
+
             # TODO - Figure out how to fix the interface later
             for sink_cell in sink_cells:
                 cnet.sinks.append(sink_cell)
@@ -222,8 +228,8 @@ class Layout:
                     net.id,
                     source_vertex,
                     target_vertex,
-                    800,  # net.channelWidth,
-                    1600,  # net.channelSpacing,
+                    net.channelWidth,
+                    net.channelSpacing,
                 )
                 # r = Route(net.ID, source_vertex, target_vertex)
                 all_routes.append(route)
