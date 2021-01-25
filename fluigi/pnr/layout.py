@@ -1,15 +1,13 @@
+import cairo
 from fluigi import parameters
-import fluigi.parameters
 from fluigi.pnr.sa.utils import get_terminal
 from math import floor
-import random
-from fluigi.pnr.svgdraw import SVGDraw
-from cairo import SVGSurface
 import networkx as nx
 from typing import Optional, List
 from pymint.mintdevice import MINTDevice
 import sys
 from enum import Enum
+from fluigi.parameters import PT_TO_UM, PT_TO_MM
 
 from fluigi.pnr.place_and_route import Terminal as CTerminal
 from fluigi.pnr.place_and_route import Net as CNet
@@ -281,6 +279,37 @@ class Layout:
         placer = CPlacer(cells, nets, constraints)
         placer.place(parameters.DEVICE_X_DIM, parameters.DEVICE_Y_DIM)
         placer.place_and_route()
+
+    def print_layout(self, postfix: str = "") -> None:
+        xspan = parameters.DEVICE_X_DIM
+        yspan = parameters.DEVICE_Y_DIM
+
+        print("Generating the SVG preview")
+        surface = cairo.SVGSurface(
+            "{}_{}.svg".format(self.__original_device.name, postfix),
+            xspan * PT_TO_UM,
+            yspan * PT_TO_UM,
+        )
+
+        ctx = cairo.Context(surface)
+        ctx.scale(PT_TO_UM, PT_TO_UM)
+
+        for cell in self.cells.values():
+            ctx.rectangle(cell.x, cell.y, cell.x_span, cell.y_span)
+            ctx.fill()
+
+        for net in self.nets.values():
+            for route in net.routes:
+                waypoints = route.waypoints
+                for i in range(len(route.waypoints) - 1):
+                    waypoint = waypoints[i]
+                    next_waypoint = waypoints[i + 1]
+                    ctx.move_to(waypoint.x, waypoint.y)
+                    ctx.line_to(next_waypoint.x, next_waypoint.y)
+                    ctx.set_line_width(route.channelWidth / 2)
+                    ctx.stroke()
+
+        surface.finish()
 
 
 def inside_obstabcle(vertex: Vertex, obstacle: CCell) -> bool:

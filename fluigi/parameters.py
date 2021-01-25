@@ -1,6 +1,10 @@
 import pathlib
 import fluigi
 
+# Draw constants
+PT_TO_UM = 1 / 352.778
+PT_TO_MM = 2.83464388369
+
 # Global Variables
 
 DEVICE_X_DIM = 76200

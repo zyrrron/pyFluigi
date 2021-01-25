@@ -32,6 +32,10 @@ from fluigi.pnr.placement.simulatedannealing import (
     generate_simulated_annealing_layout_v2,
 )
 
+import faulthandler
+
+faulthandler.enable()
+
 
 def generate_device_from_mint(
     file_path: str, skip_constraints: bool = False
@@ -174,6 +178,8 @@ def main():
 
     # Planar Rotuer
     parameters.LAMBDA = 1
+    current_device.params.set_param("xspan", parameters.DEVICE_X_DIM)
+    current_device.params.set_param("yspan", parameters.DEVICE_Y_DIM)
 
     layout = Layout()
     if current_device is None:
@@ -183,6 +189,10 @@ def main():
 
     layout.place_and_route_design()
 
+    layout.print_layout()
+
+    # layout.route_nets(RouterAlgorithms.AARF)
+
     layout.apply_layout()
 
     tt = os.path.join(
@@ -190,6 +200,8 @@ def main():
     )
     with open(tt, "w") as f:
         json.dump(current_device.to_parchmint_v1(), f)
+
+    sys.exit(0)
 
     # #Generate the Simulated Annealing Layout
     # generate_simulated_annealing_layout_v2(current_device)
