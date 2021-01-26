@@ -284,9 +284,16 @@ class Layout:
         xspan = parameters.DEVICE_X_DIM
         yspan = parameters.DEVICE_Y_DIM
 
+        if postfix != "":
+            filename = "{}_{}.svg".format(self.__original_device.name, postfix)
+        else:
+            filename = "{}.svg".format(self.__original_device.name)
+
+        filepath = parameters.OUTPUT_DIR.joinpath(filename)
+
         print("Generating the SVG preview")
         surface = cairo.SVGSurface(
-            "{}_{}.svg".format(self.__original_device.name, postfix),
+            str(filepath),
             xspan * PT_TO_UM,
             yspan * PT_TO_UM,
         )

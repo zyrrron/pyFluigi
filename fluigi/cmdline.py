@@ -189,7 +189,7 @@ def main():
 
     layout.place_and_route_design()
 
-    layout.print_layout()
+    layout.print_layout("preview")
 
     # layout.route_nets(RouterAlgorithms.AARF)
 
