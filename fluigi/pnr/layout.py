@@ -107,7 +107,7 @@ class Layout:
             if component.params.exists("componentSpacing"):
                 component_spacing = component.params.get_param("componentSpacing")
             else:
-                component_spacing = 1000  # Some random value
+                component_spacing = 5000  # Some random value
             pcell = CCell(
                 component.ID,
                 round(component.xpos / parameters.LAMBDA),
@@ -139,7 +139,8 @@ class Layout:
             else:
                 if len(source.ports) == 1:
                     print('Assigning "1" as the default terminal for net')
-                    source_terminal = get_terminal(source, "1")
+                    # source_terminal = get_terminal(source, "1")
+                    source_terminal = source.ports[0]
                 else:
                     raise Exception(
                         "No scheme for handling scenarios where no source port is defined and there's more than 1 port available"
@@ -165,7 +166,8 @@ class Layout:
                 else:
                     if len(pcell.ports) == 1:
                         print('Assigning "1" as the default terminal for net')
-                        t = get_terminal(pcell, "1")
+                        # t = get_terminal(pcell, "1")
+                        t = pcell.ports[0]
                         sink_terminals.append(t)
                     else:
                         raise Exception(

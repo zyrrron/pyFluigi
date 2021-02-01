@@ -11,13 +11,14 @@ from fluigi.primitives import (
 from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
 import sys
 import os
+import subprocess
 from pathlib import Path
 import argparse
 import fluigi.parameters as parameters
+from parchmint import Device
 import json
 import networkx as nx
 import pyfiglet
-from parchmint import Device, device
 from fluigi.pnr.terminalassignment import assign_single_port_terminals
 
 from fluigi.pnr.placement.graph import (
@@ -35,6 +36,18 @@ from fluigi.pnr.placement.simulatedannealing import (
 import faulthandler
 
 faulthandler.enable()
+
+
+def add_spacing(current_device: MINTDevice) -> None:
+    for component in current_device.components:
+        if component.params.exists("componentSpacing") is False:
+            component.params.set_param("componentSpacing", parameters.COMPONENT_SPACING)
+
+    for connection in current_device.connections:
+        if connection.params.exists("connectionSpacing") is False:
+            connection.params.set_param(
+                "connectionSpacing", parameters.CONNECTION_SPACING
+            )
 
 
 def generate_device_from_mint(
@@ -117,13 +130,23 @@ def main():
     extension = Path(args.input).suffix
     if extension == ".mint" or extension == ".uf":
         current_device = generate_device_from_mint(args.input, args.unconstrained)
+        # Set the device dimensions
+        current_device.params.set_param("xspan", parameters.DEVICE_X_DIM)
+        current_device.params.set_param("yspan", parameters.DEVICE_Y_DIM)
+
     elif extension == ".json":
         # Push it through the parchmint parser
         file_path = str(Path(args.input).resolve())
         current_device = generate_device_from_parchmint(file_path)
+        # Set the device dimensions from the device
+        parameters.DEVICE_X_DIM = current_device.params.get_param("xspan")
+        parameters.DEVICE_Y_DIM = current_device.params.get_param("yspan")
+
     else:
         print("Unrecognized file Extension")
         exit(0)
+
+    add_spacing(current_device)
 
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_no_par.json".format(current_device.name)
@@ -144,10 +167,6 @@ def main():
 
     if args.route is True:
         parameters.LAMBDA = 1
-
-        # Set the device dimensions from the device
-        parameters.DEVICE_X_DIM = current_device.params.get_param("xspan")
-        parameters.DEVICE_Y_DIM = current_device.params.get_param("yspan")
 
         # Do just the routing and end the process
         layout = Layout()
@@ -178,12 +197,22 @@ def main():
 
     # Planar Rotuer
     parameters.LAMBDA = 1
-    current_device.params.set_param("xspan", parameters.DEVICE_X_DIM)
-    current_device.params.set_param("yspan", parameters.DEVICE_Y_DIM)
 
     layout = Layout()
     if current_device is None:
         raise Exception("Could not parse the device correctly")
+
+    tt = os.path.join(
+        parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name)
+    )
+    with open(tt, "w") as f:
+        json.dump(current_device.to_parchmint_v1(), f)
+
+    binary_path = parameters.FLUIGI_DIR.joinpath("bin/place_and_route")
+    proc = subprocess.Popen([binary_path, os.path.abspath(tt)])
+    proc.wait()
+
+    exit(0)
 
     layout.importMINTwithoutConstraints(current_device)
 

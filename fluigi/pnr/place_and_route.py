@@ -547,6 +547,324 @@ class PlacementCellPointerVector(object):
 # Register PlacementCellPointerVector in _place_and_route:
 _place_and_route.PlacementCellPointerVector_swigregister(PlacementCellPointerVector)
 
+class NetPointerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.NetPointerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.NetPointerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.NetPointerVector___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.NetPointerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.NetPointerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.NetPointerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.NetPointerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.NetPointerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.NetPointerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.NetPointerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.NetPointerVector_pop(self)
+
+    def append(self, x):
+        return _place_and_route.NetPointerVector_append(self, x)
+
+    def empty(self):
+        return _place_and_route.NetPointerVector_empty(self)
+
+    def size(self):
+        return _place_and_route.NetPointerVector_size(self)
+
+    def swap(self, v):
+        return _place_and_route.NetPointerVector_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.NetPointerVector_begin(self)
+
+    def end(self):
+        return _place_and_route.NetPointerVector_end(self)
+
+    def rbegin(self):
+        return _place_and_route.NetPointerVector_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.NetPointerVector_rend(self)
+
+    def clear(self):
+        return _place_and_route.NetPointerVector_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.NetPointerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.NetPointerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.NetPointerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.NetPointerVector_swiginit(self, _place_and_route.new_NetPointerVector(*args))
+
+    def push_back(self, x):
+        return _place_and_route.NetPointerVector_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.NetPointerVector_front(self)
+
+    def back(self):
+        return _place_and_route.NetPointerVector_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.NetPointerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.NetPointerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.NetPointerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.NetPointerVector_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.NetPointerVector_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_NetPointerVector
+
+# Register NetPointerVector in _place_and_route:
+_place_and_route.NetPointerVector_swigregister(NetPointerVector)
+
+class ConstraintPointerVector(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.ConstraintPointerVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.ConstraintPointerVector___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.ConstraintPointerVector___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.ConstraintPointerVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.ConstraintPointerVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.ConstraintPointerVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.ConstraintPointerVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.ConstraintPointerVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.ConstraintPointerVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.ConstraintPointerVector___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.ConstraintPointerVector_pop(self)
+
+    def append(self, x):
+        return _place_and_route.ConstraintPointerVector_append(self, x)
+
+    def empty(self):
+        return _place_and_route.ConstraintPointerVector_empty(self)
+
+    def size(self):
+        return _place_and_route.ConstraintPointerVector_size(self)
+
+    def swap(self, v):
+        return _place_and_route.ConstraintPointerVector_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.ConstraintPointerVector_begin(self)
+
+    def end(self):
+        return _place_and_route.ConstraintPointerVector_end(self)
+
+    def rbegin(self):
+        return _place_and_route.ConstraintPointerVector_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.ConstraintPointerVector_rend(self)
+
+    def clear(self):
+        return _place_and_route.ConstraintPointerVector_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.ConstraintPointerVector_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.ConstraintPointerVector_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.ConstraintPointerVector_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.ConstraintPointerVector_swiginit(self, _place_and_route.new_ConstraintPointerVector(*args))
+
+    def push_back(self, x):
+        return _place_and_route.ConstraintPointerVector_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.ConstraintPointerVector_front(self)
+
+    def back(self):
+        return _place_and_route.ConstraintPointerVector_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.ConstraintPointerVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.ConstraintPointerVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.ConstraintPointerVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.ConstraintPointerVector_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.ConstraintPointerVector_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_ConstraintPointerVector
+
+# Register ConstraintPointerVector in _place_and_route:
+_place_and_route.ConstraintPointerVector_swigregister(ConstraintPointerVector)
+
+class PlacementCellGroups(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _place_and_route.PlacementCellGroups_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _place_and_route.PlacementCellGroups___nonzero__(self)
+
+    def __bool__(self):
+        return _place_and_route.PlacementCellGroups___bool__(self)
+
+    def __len__(self):
+        return _place_and_route.PlacementCellGroups___len__(self)
+
+    def __getslice__(self, i, j):
+        return _place_and_route.PlacementCellGroups___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _place_and_route.PlacementCellGroups___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _place_and_route.PlacementCellGroups___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _place_and_route.PlacementCellGroups___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _place_and_route.PlacementCellGroups___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _place_and_route.PlacementCellGroups___setitem__(self, *args)
+
+    def pop(self):
+        return _place_and_route.PlacementCellGroups_pop(self)
+
+    def append(self, x):
+        return _place_and_route.PlacementCellGroups_append(self, x)
+
+    def empty(self):
+        return _place_and_route.PlacementCellGroups_empty(self)
+
+    def size(self):
+        return _place_and_route.PlacementCellGroups_size(self)
+
+    def swap(self, v):
+        return _place_and_route.PlacementCellGroups_swap(self, v)
+
+    def begin(self):
+        return _place_and_route.PlacementCellGroups_begin(self)
+
+    def end(self):
+        return _place_and_route.PlacementCellGroups_end(self)
+
+    def rbegin(self):
+        return _place_and_route.PlacementCellGroups_rbegin(self)
+
+    def rend(self):
+        return _place_and_route.PlacementCellGroups_rend(self)
+
+    def clear(self):
+        return _place_and_route.PlacementCellGroups_clear(self)
+
+    def get_allocator(self):
+        return _place_and_route.PlacementCellGroups_get_allocator(self)
+
+    def pop_back(self):
+        return _place_and_route.PlacementCellGroups_pop_back(self)
+
+    def erase(self, *args):
+        return _place_and_route.PlacementCellGroups_erase(self, *args)
+
+    def __init__(self, *args):
+        _place_and_route.PlacementCellGroups_swiginit(self, _place_and_route.new_PlacementCellGroups(*args))
+
+    def push_back(self, x):
+        return _place_and_route.PlacementCellGroups_push_back(self, x)
+
+    def front(self):
+        return _place_and_route.PlacementCellGroups_front(self)
+
+    def back(self):
+        return _place_and_route.PlacementCellGroups_back(self)
+
+    def assign(self, n, x):
+        return _place_and_route.PlacementCellGroups_assign(self, n, x)
+
+    def resize(self, *args):
+        return _place_and_route.PlacementCellGroups_resize(self, *args)
+
+    def insert(self, *args):
+        return _place_and_route.PlacementCellGroups_insert(self, *args)
+
+    def reserve(self, n):
+        return _place_and_route.PlacementCellGroups_reserve(self, n)
+
+    def capacity(self):
+        return _place_and_route.PlacementCellGroups_capacity(self)
+    __swig_destroy__ = _place_and_route.delete_PlacementCellGroups
+
+# Register PlacementCellGroups in _place_and_route:
+_place_and_route.PlacementCellGroups_swigregister(PlacementCellGroups)
+
 class ConstraintVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -1101,6 +1419,7 @@ class Terminal(object):
     y = property(_place_and_route.Terminal_y_get, _place_and_route.Terminal_y_set)
     rel_x = property(_place_and_route.Terminal_rel_x_get, _place_and_route.Terminal_rel_x_set)
     rel_y = property(_place_and_route.Terminal_rel_y_get, _place_and_route.Terminal_rel_y_set)
+    con_to_cer = property(_place_and_route.Terminal_con_to_cer_get, _place_and_route.Terminal_con_to_cer_set)
 
     def compute_absolute_positions(self, ref_x, ref_y):
         return _place_and_route.Terminal_compute_absolute_positions(self, ref_x, ref_y)
