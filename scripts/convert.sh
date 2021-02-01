@@ -2,7 +2,7 @@
 
 echo "Converting the MINT Files"
 
-for f in ~/CIDAR/pyfluigi/test/chthesis/*.mint;
+for f in ~/CIDAR/MINT-TestCases/chthesis/*.mint;
 
 do
     echo "Runnign File $f";
