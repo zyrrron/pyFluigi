@@ -26,11 +26,7 @@ import jpype.imports
 #     jpype.shutdownJVM()
 
 
-OLD_PRIMITIVES_CHECKLIST = [
-    "DROPLET GENERATOR FLOW FOCUS",
-    "DROPLET GENERATOR T",
-    "LOGIC ARRAY",
-]
+OLD_PRIMITIVES_CHECKLIST = []
 
 
 def get_defaults(mint: str):
@@ -162,8 +158,9 @@ def get_terminals(mint: str, params):
 
 
 def pull_defaults(device: Device):
+    print("Pulling Default Values of Components")
     for component in device.components:
-        print("comonent name {}".format(component.name))
+        # print("comonent name {}".format(component.name))
         defaults = get_defaults(component.entity)
         if defaults is None:
             print(
@@ -185,10 +182,11 @@ def pull_defaults(device: Device):
 
 
 def pull_dimensions(device: Device):
+    print("Pulling Dimensions of Components")
     for component in device.components:
-        print("comonent name {}".format(component.name))
+        # print("comonent name {}".format(component.name))
         dims = get_dimensions(component.entity, component.params)
-        print(dims)
+        # print(dims)
 
         if dims is None:
             print(
@@ -204,6 +202,7 @@ def pull_dimensions(device: Device):
 
 
 def pull_terminals(device: Device):
+    print("Pulling Terminals of Components")
     for component in device.components:
         terminals = get_terminals(component.entity, component.params)
         if terminals is None:
@@ -215,4 +214,4 @@ def pull_terminals(device: Device):
         else:
             # Assign the terminals
             component.add_component_ports(terminals)
-            print("Updated the component terminals: {}", component)
+            # print("Updated the component terminals: {}", component)

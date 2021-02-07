@@ -1,3 +1,4 @@
+from fluigi.pnr.utils import assign_component_ports, size_nodes
 from fluigi.pnr.sa.saplace import SAPlace
 from fluigi.pnr.sa.salayout import SALayout
 from pymint import MINTDevice
@@ -154,7 +155,7 @@ def main():
     with open(tt, "w") as f:
         json.dump(current_device.to_parchmint_v1(), f)
 
-    print(current_device.G.edges)
+    # print(current_device.G.edges)
 
     utils.printgraph(current_device.G, current_device.name + ".dot")
 
@@ -198,9 +199,11 @@ def main():
     # Planar Rotuer
     parameters.LAMBDA = 1
 
-    layout = Layout()
     if current_device is None:
         raise Exception("Could not parse the device correctly")
+
+    size_nodes(current_device)
+    assign_component_ports(current_device)
 
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name)
@@ -213,6 +216,8 @@ def main():
     proc.wait()
 
     exit(0)
+
+    layout = Layout()
 
     layout.importMINTwithoutConstraints(current_device)
 
