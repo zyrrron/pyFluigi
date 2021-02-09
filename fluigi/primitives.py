@@ -44,7 +44,7 @@ def get_defaults(mint: str):
         try:
             # python_object = json.loads(output.stdout.decode('utf-8'))
             params = {"mint": mint}
-            r = requests.get("http://localhost:3000/defaults", params=params)
+            r = requests.get("http://localhost:5555/defaults", params=params)
             python_object = r.json()
             return python_object
         except Exception as e:
@@ -91,7 +91,7 @@ def get_dimensions(mint: str, params):
         try:
             req_params = {"mint": mint}
             req_params["params"] = json.dumps(params.data)
-            r = requests.get("http://localhost:3000/dimensions", params=req_params)
+            r = requests.get("http://localhost:5555/dimensions", params=req_params)
 
             python_object = r.json()
             return python_object
@@ -129,7 +129,7 @@ def get_terminals(mint: str, params):
             componentport.y = int(coords[1])
             componentport.label = str(key)
 
-            print(componentport)
+            # print(componentport)
             terminals.append(componentport)
 
         return terminals
@@ -138,7 +138,7 @@ def get_terminals(mint: str, params):
         try:
             req_params = {"mint": mint}
             req_params["params"] = json.dumps(params.data)
-            r = requests.get("http://localhost:3000/terminals", params=req_params)
+            r = requests.get("http://localhost:5555/terminals", params=req_params)
 
             terminals = r.json()
 
@@ -147,7 +147,7 @@ def get_terminals(mint: str, params):
             for terminal in terminals:
                 componentport = Port(terminal)
                 python_object.append(componentport)
-                print(componentport)
+                # print(componentport)
 
             return python_object
 

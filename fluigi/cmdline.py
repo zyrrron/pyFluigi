@@ -149,6 +149,10 @@ def main():
 
     add_spacing(current_device)
 
+    # Decide if we want to delete this later on
+    size_nodes(current_device)
+    assign_component_ports(current_device)
+
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_no_par.json".format(current_device.name)
     )
@@ -201,9 +205,6 @@ def main():
 
     if current_device is None:
         raise Exception("Could not parse the device correctly")
-
-    size_nodes(current_device)
-    assign_component_ports(current_device)
 
     tt = os.path.join(
         parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name)
