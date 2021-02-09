@@ -1,17 +1,17 @@
 #!/bin/sh
 
-echo "Converting the MINT Files"
+echo "Place and route the MINT Files"
 
 for f in ~/CIDAR/MINT-TestCases/chthesis/*.mint;
 
 do
     echo "Runnign File $f";
-    fluigi --c $f --out ~/Desktop/MINT-to-json/chthesis
+    fluigi $f --out ~/Desktop/MINT-to-par/chthesis
 done
 
 for f in ~/CIDAR/MINT-TestCases/grid/*.mint;
 
 do
     echo "Runnign File $f";
-    fluigi --c $f --out ~/Desktop/MINT-to-json/grid
+    fluigi $f --out ~/Desktop/MINT-to-par/grid
 done
