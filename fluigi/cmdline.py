@@ -232,6 +232,8 @@ def main():
     if return_code == 0:
         par_device = generate_device_from_parchmint(str(tt))
         reduce_device_size(par_device, parameters.DEVICE_PADDING)
+        utils.render_svg(par_device, "_par")
+
         tnew = parameters.OUTPUT_DIR.joinpath(
             "{}_placed_and_routed.json".format(par_device.name)
         )
