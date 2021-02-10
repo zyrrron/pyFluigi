@@ -180,6 +180,19 @@ def pull_defaults(device: Device):
                 except ValueError:
                     component.params.set_param(key, val)
 
+        mark_for_delete = []
+        for param_key in component.params.data.keys():
+            if param_key not in defaults.keys():
+                print(
+                    'Deleted unsupported param "{}" from component {} : {}'.format(
+                        param_key, component.ID, component.entity
+                    )
+                )
+                mark_for_delete.append(param_key)
+
+        for param_key in mark_for_delete:
+            del component.params.data[param_key]
+
 
 def pull_dimensions(device: Device):
     print("Pulling Dimensions of Components")
