@@ -110,3 +110,5 @@ def reduce_device_size(device: Device, design_padding: int) -> None:
 
     device.params.set_param("xspan", xspan)
     device.params.set_param("yspan", yspan)
+
+    print("Updated the device dimensions: ({}, {}) microns".format(xspan, yspan))

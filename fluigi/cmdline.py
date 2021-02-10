@@ -1,4 +1,4 @@
-from fluigi.pnr.utils import assign_component_ports, size_nodes
+from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
 from fluigi.pnr.sa.saplace import SAPlace
 from fluigi.pnr.sa.salayout import SALayout
 from pymint import MINTDevice
@@ -219,7 +219,7 @@ def main():
         raise Exception("Could not parse the device correctly")
 
     tt = os.path.join(
-        parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name)
+        parameters.OUTPUT_DIR, "{}_temp_par.json".format(current_device.name)
     )
     with open(tt, "w") as f:
         json.dump(current_device.to_parchmint_v1(), f)
@@ -227,6 +227,21 @@ def main():
     binary_path = parameters.FLUIGI_DIR.joinpath("bin/place_and_route")
     proc = subprocess.Popen([binary_path, os.path.abspath(tt)])
     proc.wait()
+    return_code = proc.returncode
+    print("PAR Return code:" + str(return_code))
+    if return_code == 0:
+        par_device = generate_device_from_parchmint(str(tt))
+        reduce_device_size(par_device, parameters.DEVICE_PADDING)
+        tnew = parameters.OUTPUT_DIR.joinpath(
+            "{}_placed_and_routed.json".format(par_device.name)
+        )
+        with open(tnew, "w") as f:
+            json.dump(par_device.to_parchmint_v1(), f)
+    else:
+        print(
+            "Place and Route completed with errors, please check the terminal output for information"
+        )
+        exit(-1)
 
     exit(0)
 
