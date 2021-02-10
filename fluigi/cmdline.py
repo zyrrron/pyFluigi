@@ -106,6 +106,9 @@ def main():
         action="store_true",
         help="Sets the flag to skip constraint parsing",
     )
+    parser.add_argument(
+        "-s", "--render-svg", action="store_true", help="Render the svg"
+    )
 
     args = parser.parse_args()
 
@@ -145,6 +148,15 @@ def main():
 
     else:
         print("Unrecognized file Extension")
+        exit(0)
+
+    # If the render svg parameter flag is enabled, then just render the svg
+    file_path = Path(args.input)
+    if args.render_svg:
+        if file_path.suffix == ".json":
+            utils.render_svg(current_device, file_path.stem)
+        else:
+            print("File extension not supported")
         exit(0)
 
     add_spacing(current_device)
