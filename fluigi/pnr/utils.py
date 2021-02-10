@@ -1,4 +1,6 @@
+from parchmint.device import Device
 from pymint import MINTDevice
+import sys
 
 
 def size_nodes(device: MINTDevice) -> None:
@@ -59,3 +61,52 @@ def assign_component_ports(device: MINTDevice) -> None:
             check_ref_and_assign_port(
                 sink_ref, connection, device, global_port_assign_map
             )
+
+
+def reduce_device_size(device: Device, design_padding: int) -> None:
+
+    print(
+        "Reducing the Size of the device and adding device padding: {} um".format(
+            design_padding
+        )
+    )
+    # Step 1 - First find the min_x, min_y, max_x, max_y of the design
+    min_x = sys.maxsize
+    min_y = sys.maxsize
+    max_x = -sys.maxsize - 1
+    max_y = -sys.maxsize - 1
+    for component in device.components:
+        if component.xpos < min_x:
+            min_x = component.xpos
+        if component.ypos < min_y:
+            min_y = component.ypos
+        if component.xpos + component.xspan > max_x:
+            max_x = component.xpos + component.xspan
+        if component.ypos + component.ypos > max_y:
+            max_y = component.ypos + component.ypos
+
+    # Step 2 - Move all components and connections by design_padding - (minx, miny)
+    offset_x = design_padding - min_x
+    offset_y = design_padding - min_y
+
+    for component in device.components:
+        component.xpos += offset_x
+        component.ypos += offset_y
+
+    for connection in device.connections:
+        for path in connection.paths:
+            new_path = []
+            for waypoint in path.waypoints:
+                wp = (waypoint[0] + offset_x, waypoint[1] + offset_y)
+                new_path.append(wp)
+            path.waypoints = new_path
+
+    # Step 3 - Modify the overall device dimensions to max_x + design_padding, max_y + design_padding
+    xspan = device.params.get_param("xspan")
+    yspan = device.params.get_param("yspan")
+
+    xspan = max_x + 2 * design_padding
+    yspan = max_y + 2 * design_padding
+
+    device.params.set_param("xspan", xspan)
+    device.params.set_param("yspan", yspan)
