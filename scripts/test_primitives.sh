@@ -5,6 +5,7 @@ echo "Running PRIMITIVE TESTS"
 for f in ~/CIDAR/MINT-TestCases/primitive/*.mint;
 
 do
-    echo "Runnign File $f";
-    fluigi $f --out ~/Desktop/MINT/primitives
+    echo "Running File $f";
+    fluigi $f -c --out ~/Desktop/MINT-to-json/primitives
+    fluigi $f --out ~/Desktop/MINT-to-par/primitives
 done
