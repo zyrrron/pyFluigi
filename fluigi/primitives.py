@@ -44,7 +44,9 @@ def get_defaults(mint: str):
         try:
             # python_object = json.loads(output.stdout.decode('utf-8'))
             params = {"mint": mint}
-            r = requests.get("http://localhost:5555/defaults", params=params)
+            r = requests.get(
+                "{}/defaults".format(parameters.PRIMITIVE_SERVER_URI), params=params
+            )
             python_object = r.json()
             return python_object
         except Exception as e:
@@ -91,7 +93,10 @@ def get_dimensions(mint: str, params):
         try:
             req_params = {"mint": mint}
             req_params["params"] = json.dumps(params.data)
-            r = requests.get("http://localhost:5555/dimensions", params=req_params)
+            r = requests.get(
+                "{}/dimensions".format(parameters.PRIMITIVE_SERVER_URI),
+                params=req_params,
+            )
 
             python_object = r.json()
             return python_object
@@ -138,7 +143,10 @@ def get_terminals(mint: str, params):
         try:
             req_params = {"mint": mint}
             req_params["params"] = json.dumps(params.data)
-            r = requests.get("http://localhost:5555/terminals", params=req_params)
+            r = requests.get(
+                "{}/terminals".format(parameters.PRIMITIVE_SERVER_URI),
+                params=req_params,
+            )
 
             terminals = r.json()
 
