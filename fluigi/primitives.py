@@ -1,5 +1,5 @@
 from typing import Optional
-from parchmint.device import Device
+from parchmint.device import Device, ValveType
 from pymint.mintdevice import MINTDevice
 from parchmint.port import Port
 import subprocess
@@ -165,6 +165,21 @@ def get_terminals(mint: str, params):
             return None
 
 
+def get_valve_type(mint: str) -> Optional[str]:
+    try:
+        # python_object = json.loads(output.stdout.decode('utf-8'))
+        params = {"mint": mint}
+        r = requests.get(
+            "{}/valve_type".format(parameters.PRIMITIVE_SERVER_URI), params=params
+        )
+        python_object = r.json()
+        return python_object
+    except Exception as e:
+        print("Could not retrieve default parameters for {}".format(mint))
+        print(e)
+        return None
+
+
 def pull_defaults(device: Device):
     print("Pulling Default Values of Components")
     for component in device.components:
@@ -236,3 +251,26 @@ def pull_terminals(device: Device):
             # Assign the terminals
             component.add_component_ports(terminals)
             # print("Updated the component terminals: {}", component)
+
+
+def pull_valve_types(device: Device):
+    print("Pulling Valve Type Information")
+    for component in device.get_valves():
+        type_info = get_valve_type(component.entity)
+        if type_info is None:
+            print(
+                "Warning: Could not pull valve type data for {} of type: {}".format(
+                    component.name, component.entity
+                )
+            )
+        else:
+            if type_info == "NORMALLY_OPEN":
+                device.update_valve_type(component, ValveType.NORMALLY_OPEN)
+            elif type_info == "NORMALLY_CLOSED":
+                device.update_valve_type(component, ValveType.NORMALLY_CLOSED)
+            else:
+                print(
+                    "Warning: Found unknown valve type data for {} of type: {} - {}".format(
+                        component.name, component.entity, type_info
+                    )
+                )
