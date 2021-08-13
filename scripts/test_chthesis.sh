@@ -2,6 +2,10 @@
 
 echo "Running PRIMITIVE TESTS"
 
+date
+
+echo "-----------------------"
+
 for f in ~/CIDAR/MINT-TestCases/chthesis/*.mint;
 
 do

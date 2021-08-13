@@ -1,4 +1,4 @@
-# pyLFR
+# Fluigi
 
 ## Dependencies
 
@@ -10,5 +10,17 @@
 
 ```
 cd scripts
-./test-script.sh > test-script-log.log 2>&1
+./convert.sh > covert-log_"`date +"%d-%m-%Y-%T"`".log 2>&1
 ```
+
+```
+cd scripts
+./par.sh > par-log_"`date +"%d-%m-%Y-%T"`".log 2>&1
+```
+
+
+## License
+
+BSD-3-Clause
+
+Copyright (c) 2021, CIDAR LAB All rights reserved.
