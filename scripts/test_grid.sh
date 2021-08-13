@@ -2,6 +2,10 @@
 
 echo "Running grid TESTS"
 
+date
+
+echo "-----------------------"
+
 for f in ~/CIDAR/MINT-TestCases/grid/*.mint;
 
 do

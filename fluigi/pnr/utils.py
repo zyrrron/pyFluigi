@@ -8,7 +8,12 @@ def size_nodes(device: MINTDevice) -> None:
         if component.entity == "NODE":
             # Look at the connections
             nbers = device.G.edges(component.ID)
-            gedge = list(nbers)[0]
+            gedges = list(nbers)
+            if len(gedges) > 0:
+                gedge = gedges[0]
+            else:
+                print("No edges connected to NODE {0}".format(component.ID))
+                continue
             # Get channelWidth from there and update the node
             # connection_ref = device.G[gedge[0]][gedge[1]]
             connection = device.G.get_edge_data(gedge[0], gedge[1])[0]["connection_ref"]

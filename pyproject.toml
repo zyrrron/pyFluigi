@@ -5,6 +5,10 @@ description = "Place and route engine"
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
 license = "BSD-Clause-3"
 
+include = [
+    "bin/*"
+]
+
 [tool.poetry.dependencies]
 python = "^3.8"
 antlr4-python3-runtime = "^4.8"
@@ -20,6 +24,7 @@ requests = "^2.24.0"
 pycairo = "^1.20.0"
 JPype1 = "^1.2.0"
 numpy = "^1.19.4"
+tabulate = "^0.8.9"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"
