@@ -40,3 +40,5 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 fluigi = "fluigi.cmdline:main"
+test = 'scripts:test'
+benchmark = 'scripts:benchmark'

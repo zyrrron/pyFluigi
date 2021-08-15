@@ -80,13 +80,27 @@ def render_svg(d: Device, suffix) -> None:
 
             # Printing
             ctx.rectangle(xpos, ypos, component.xspan, component.yspan)
-            ctx.set_source_rgb(1, 1, 1)
-            ctx.set_line_width(100)
-            ctx.stroke_preserve()
             # Set the color to black
             ctx.set_source_rgb(0, 0, 0)
             ctx.fill()
 
+        else:
+            print(
+                "Could not render component:{} since no position information was found".format(
+                    component.ID
+                )
+            )
+
+    for component in d.components:
+        if component.params.exists("position"):
+            xpos = component.xpos
+            ypos = component.ypos
+
+            # Printing
+            ctx.rectangle(xpos, ypos, component.xspan, component.yspan)
+            ctx.set_source_rgb(1, 1, 1)
+            ctx.set_line_width(100)
+            ctx.stroke()
         else:
             print(
                 "Could not render component:{} since no position information was found".format(
@@ -108,7 +122,7 @@ def render_svg(d: Device, suffix) -> None:
                 ctx.move_to(waypoint[0], waypoint[1])
                 ctx.line_to(next_waypoint[0], next_waypoint[1])
                 ctx.set_line_width(channelwidth / 2)
-
+                ctx.stroke()
             else:
                 if path.source.component is None or path.source.port is None:
                     print(
