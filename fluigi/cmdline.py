@@ -135,16 +135,16 @@ def main():
     if extension == ".mint" or extension == ".uf":
         current_device = generate_device_from_mint(args.input, args.unconstrained)
         # Set the device dimensions
-        current_device.params.set_param("xspan", parameters.DEVICE_X_DIM)
-        current_device.params.set_param("yspan", parameters.DEVICE_Y_DIM)
+        current_device.params.set_param("x-span", parameters.DEVICE_X_DIM)
+        current_device.params.set_param("y-span", parameters.DEVICE_Y_DIM)
 
     elif extension == ".json":
         # Push it through the parchmint parser
         file_path = str(Path(args.input).resolve())
         current_device = generate_device_from_parchmint(file_path)
         # Set the device dimensions from the device
-        parameters.DEVICE_X_DIM = current_device.params.get_param("xspan")
-        parameters.DEVICE_Y_DIM = current_device.params.get_param("yspan")
+        parameters.DEVICE_X_DIM = current_device.params.get_param("x-span")
+        parameters.DEVICE_Y_DIM = current_device.params.get_param("y-span")
 
     else:
         print("Unrecognized file Extension")

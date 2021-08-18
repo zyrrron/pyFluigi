@@ -49,13 +49,13 @@ def calcuate_waypoint(device: Device, target: Target) -> Tuple[int, int]:
 def render_svg(d: Device, suffix) -> None:
 
     suffix = suffix.replace(d.name, "")
-    if d.params.exists("xspan"):
-        xspan = d.params.get_param("xspan")
+    if d.params.exists("x-span"):
+        xspan = d.params.get_param("x-span")
     else:
         xspan = DEVICE_X_DIM
 
-    if d.params.exists("yspan"):
-        yspan = d.params.get_param("yspan")
+    if d.params.exists("y-span"):
+        yspan = d.params.get_param("y-span")
     else:
         yspan = DEVICE_Y_DIM
 

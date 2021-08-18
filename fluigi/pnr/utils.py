@@ -107,13 +107,13 @@ def reduce_device_size(device: Device, design_padding: int) -> None:
             path.waypoints = new_path
 
     # Step 3 - Modify the overall device dimensions to max_x + design_padding, max_y + design_padding
-    xspan = device.params.get_param("xspan")
-    yspan = device.params.get_param("yspan")
+    xspan = device.xspan
+    yspan = device.yspan
 
     xspan = max_x + 2 * design_padding
     yspan = max_y + 2 * design_padding
 
-    device.params.set_param("xspan", xspan)
-    device.params.set_param("yspan", yspan)
+    device.xspan = xspan
+    device.yspan = yspan
 
     print("Updated the device dimensions: ({}, {}) microns".format(xspan, yspan))
