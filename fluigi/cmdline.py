@@ -18,7 +18,7 @@ def print_version(ctx, param, value):
 @click.option(
     "--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True
 )
-def default_cli():
+def default_cli(input_files: List[str]):
     ascii_banner = pyfiglet.figlet_format("Fluigi")
     print(ascii_banner)
 
