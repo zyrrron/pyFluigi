@@ -18,12 +18,44 @@ def print_version(ctx, param, value):
 @click.option(
     "--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True
 )
-def default_cli(input_files: List[str]):
+def default_cli():
     ascii_banner = pyfiglet.figlet_format("Fluigi")
     print(ascii_banner)
 
 
-@default_cli.command(name="lfr")
+@default_cli.command(name="synthesize")
+@click.argument("input_files", nargs=-1, required=True, type=click.Path(exists=True))
+@click.option(
+    "--outpath", "-o", default=".", help="Output path", type=click.Path(exists=True)
+)
+@click.option(
+    "--technology",
+    default="dropx",
+    help="Technology Platform for LFR to compile the design into",
+)
+@click.option(
+    "--library-path", default="", help="Library to use", type=click.Path(exists=True)
+)
+@click.option(
+    "--pre-load",
+    multiple=True,
+    type=click.Path(exists=True),
+    help=(
+        "This lets the preprocessor look for the different design libraries that"
+        " need to be added to the memory (avoid using this outside bulk testing)"
+    ),
+)
+def synthesize(
+    input_files: List[str],
+    outpath: str,
+    technology: str,
+    library_path: str,
+    pre_load: List[str],
+):
+    synthesize(input_files, outpath, technology, library_path, pre_load)
+
+
+@default_cli.command(name="lfr-compile")
 @click.argument(
     "input_files",
     nargs=-1,
@@ -105,7 +137,7 @@ def lfr_compile(
     )
 
 
-@default_cli.command(name="mint")
+@default_cli.command(name="mint-compile")
 @click.argument(
     "input_files",
     nargs=-1,
