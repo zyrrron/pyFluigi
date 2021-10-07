@@ -1,5 +1,5 @@
 from typing import Tuple
-from networkx import nx
+import networkx as nx
 import fluigi.parameters as parameters
 import os
 import cairo
