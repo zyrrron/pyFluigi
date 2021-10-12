@@ -27,8 +27,8 @@ numpy = "^1.19.4"
 tabulate = "^0.8.9"
 pyeda = "^0.28.0"
 dafd = "^0.1.1"
+parchmint = {git = "https://github.com/CIDARLAB/pyparchmint.git", branch = "master"}
 pymint = {git = "https://github.com/CIDARLAB/pyMINT.git", branch = "master"}
-parchmint = {path = "https://github.com/CIDARLAB/pyparchmint.git", branch = "master"}
 lfr = {git = "https://github.com/CIDARLAB/pyLFR.git", branch = "constructionv2"}
 
 
