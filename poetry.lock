@@ -37,7 +37,7 @@ python-versions = "*"
 name = "art"
 version = "5.3"
 description = "ASCII Art Library For Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7"
 
@@ -59,7 +59,7 @@ six = ">=1.6.1,<2.0"
 name = "attrs"
 version = "21.2.0"
 description = "Classes Without Boilerplate"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -128,9 +128,9 @@ python-versions = "*"
 
 [[package]]
 name = "click"
-version = "8.0.1"
+version = "8.0.3"
 description = "Composable command line interface toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -308,7 +308,7 @@ python-versions = ">=3.5"
 name = "install"
 version = "1.3.4"
 description = "Install packages from within code"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, >=3.5"
 
@@ -321,30 +321,10 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
-name = "jpype1"
-version = "1.3.0"
-description = "A Python to Java bridge."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.extras]
-docs = ["readthedocs-sphinx-ext", "sphinx", "sphinx-rtd-theme"]
-tests = ["pytest"]
-
-[[package]]
-name = "jpype1-py3"
-version = "0.5.5.4"
-description = "Python-Java bridge. Fork of the jPype project by Steve Menard (http://jpype.sourceforge.net/), with the modifications applied by Luis Nell (https://github.com/originell/jpype)"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "jsonschema"
 version = "3.2.0"
 description = "An implementation of JSON Schema validation for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -394,10 +374,9 @@ python-versions = ">=3.7"
 name = "lfr"
 version = "0.1.4"
 description = ""
-category = "dev"
+category = "main"
 optional = false
 python-versions = "^3.8"
-develop = true
 
 [package.dependencies]
 antlr4-python3-runtime = ">=4.8,<5.0"
@@ -408,13 +387,16 @@ jsonschema = ">=3.2.0,<4.0.0"
 networkx = ">=2.5,<3.0"
 numpy = ">=1.19.4,<2.0.0"
 parchmint = "*"
+pyeda = ">=0.28.0,<0.29.0"
 pygraphviz = ">=1.6,<2.0"
 pymint = ">=0.2.11,<0.3.0"
 tabulate = ">=0.8.7,<0.9.0"
 
 [package.source]
-type = "directory"
-url = "../pylfr"
+type = "git"
+url = "git://github.com/CIDARLAB/pyLFR.git"
+reference = "constructionv2"
+resolved_reference = "992dcf86b14c2e6bb558067b003927157d11333f"
 
 [[package]]
 name = "markdown"
@@ -546,10 +528,9 @@ test = ["hypothesis (>=3.58)", "pytest (>=6.0)", "pytest-xdist"]
 name = "parchmint"
 version = "0.2.11"
 description = "Parchmint is data interchange standard for representing microfluidic designs. Check out https://parchmint.org for more information."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "^3.8"
-develop = true
 
 [package.dependencies]
 argparse = ">=1.4.0,<2.0.0"
@@ -557,8 +538,10 @@ jsonschema = ">=3.2.0,<4.0.0"
 networkx = ">=2.5,<3.0"
 
 [package.source]
-type = "directory"
-url = "../pyparchmint"
+type = "git"
+url = "git://github.com/CIDARLAB/pyparchmint.git"
+reference = "master"
+resolved_reference = "825b13408b5c88ef512743b72a60bb3cb51beb39"
 
 [[package]]
 name = "pathspec"
@@ -664,21 +647,22 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pymint"
-version = "0.2.12"
+version = "0.2.13"
 description = "MINT is a human readable language to describe Microfluidic Hardware Netlists. MINT is the name of the Microfluidic Netlist language used to describe microfluidic devices for Fluigi to place and route. Mint is a flavor of (MHDL) Microfluidic Hardware Description Language that can be used to represent Microfluidic Circuits."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "^3.8"
-develop = true
 
 [package.dependencies]
 antlr4-python3-runtime = ">=4.8,<5.0"
 install = ">=1.3.3,<2.0.0"
-parchmint = ">=0.2.6,<0.3.0"
+parchmint = ">=0.2.11,<0.3.0"
 
 [package.source]
-type = "directory"
-url = "../pymint"
+type = "git"
+url = "git://github.com/CIDARLAB/pyMINT.git"
+reference = "master"
+resolved_reference = "121c84630c2d4c22e771df96c749221fa1c1e8c6"
 
 [[package]]
 name = "pyparsing"
@@ -692,7 +676,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 name = "pyrsistent"
 version = "0.18.0"
 description = "Persistent/Functional/Immutable data structures"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -990,7 +974,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "253aad083309b79460b28a5df6dc6c4a78ed2f190af4d69984798ae6bf26b422"
+content-hash = "faad4451bc7853284db0ccd5b1fac981a4980fd81bd53c528c7e6c7bd4173d24"
 
 [metadata.files]
 absl-py = [
@@ -1040,8 +1024,8 @@ clang = [
     {file = "clang-5.0.tar.gz", hash = "sha256:ceccae97eda0225a5b44d42ffd61102e248325c2865ca53e4407746464a5333a"},
 ]
 click = [
-    {file = "click-8.0.1-py3-none-any.whl", hash = "sha256:fba402a4a47334742d782209a7c79bc448911afe1149d07bdabdf480b3e2f4b6"},
-    {file = "click-8.0.1.tar.gz", hash = "sha256:8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"},
+    {file = "click-8.0.3-py3-none-any.whl", hash = "sha256:353f466495adaeb40b6b5f592f9f91cb22372351c84caeb068132442a4518ef3"},
+    {file = "click-8.0.3.tar.gz", hash = "sha256:410e932b050f5eed773c4cda94de75971c89cdb3155a72a0831139a79e5ecb5b"},
 ]
 colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
@@ -1156,31 +1140,6 @@ install = [
 joblib = [
     {file = "joblib-1.0.1-py3-none-any.whl", hash = "sha256:feeb1ec69c4d45129954f1b7034954241eedfd6ba39b5e9e4b6883be3332d5e5"},
     {file = "joblib-1.0.1.tar.gz", hash = "sha256:9c17567692206d2f3fb9ecf5e991084254fe631665c450b443761c4186a613f7"},
-]
-jpype1 = [
-    {file = "JPype1-1.3.0-cp35-cp35m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:1eb690b3757d8ff3f853941c73b6f9caa2b3f7851ec9a105e0388558bf726690"},
-    {file = "JPype1-1.3.0-cp35-cp35m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:7bb61de43e4b7f83a9a0d84e553939912c758430d13d0667befa9a5c935e955e"},
-    {file = "JPype1-1.3.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:7b674d1888a3433a22ef0c8c67e8bb137252de7c358db2cc85af3565de3af595"},
-    {file = "JPype1-1.3.0-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:f4d65ac9c13d785da3555fbc0f710ea62c716036c265a3cc8f8d8d36b9aaa1c7"},
-    {file = "JPype1-1.3.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:d89ef97478da724728fc946e12256f5a62c5cb0d7107aa30256ffb4413754eea"},
-    {file = "JPype1-1.3.0-cp36-cp36m-win_amd64.whl", hash = "sha256:f356f10e9f77a77466557076555eacde342b558905143c6e49c84e8e72712d2c"},
-    {file = "JPype1-1.3.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:82d83b0e7baadbd876f498c5ba2356f0a87c0372e88e89bbb3c3c09044e80921"},
-    {file = "JPype1-1.3.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:487843f84dbb3df59d63bb95583320edcf33cc112856c3d28c95c907c7535075"},
-    {file = "JPype1-1.3.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:e1f54084018deeab84aea349963335b2883a7ac91173fe681ba63d3ff09eb68c"},
-    {file = "JPype1-1.3.0-cp37-cp37m-win_amd64.whl", hash = "sha256:6b74385f38968dfbe01a0548c6066bb3072e5a2f2b082a1beeca0935abb789ba"},
-    {file = "JPype1-1.3.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:b6171cabc41cda585f80ad84c6173cb1ad874c83e6810b100668bc867fa13046"},
-    {file = "JPype1-1.3.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:fa1cf484a1e8c86839791f8667dfae8be3f7510c3fa3de6674608f29b4629554"},
-    {file = "JPype1-1.3.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:5c39c3efce8cc18147f8269ae5cd7ed4a073f5ef00e78dbf17305fd6330c50e3"},
-    {file = "JPype1-1.3.0-cp38-cp38-win_amd64.whl", hash = "sha256:a10f52623b377894dda664228baa0a64c7d4948973b91229238c9a5fbf560139"},
-    {file = "JPype1-1.3.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6d328e3ec0c626dd4272d4c6dbfaa0b66293c72dd1786adfb51bec33ee2f3fd3"},
-    {file = "JPype1-1.3.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:953fdb406999d68bee8f48f809a3906df9509dca055183b7af0bed62515db29a"},
-    {file = "JPype1-1.3.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:43583158b5c0c606b87b32ae3175d3d7f24eadefd6d29837f76f295d656a9eac"},
-    {file = "JPype1-1.3.0-cp39-cp39-win_amd64.whl", hash = "sha256:748bee8759e4a1261284e4f48eab475abe66a2eb4c3f7f3967c71276efe6abe5"},
-    {file = "JPype1-1.3.0.tar.gz", hash = "sha256:4fc27dba89750cb0c9d692466341ce60c0fe86a16051091cb5347a37cf884151"},
-]
-jpype1-py3 = [
-    {file = "JPype1-py3-0.5.5.4.tar.gz", hash = "sha256:445ebb5e2911468b63e67e85def1279461cd8a9def9854e22226f341c6bcf8b0"},
-    {file = "JPype1_py3-0.5.5.4-cp37-cp37m-win_amd64.whl", hash = "sha256:41054a5b95cb80f2f0e1b7d2a23e1296aa47e3aaa8c228197b2fa1623e555865"},
 ]
 jsonschema = [
     {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},

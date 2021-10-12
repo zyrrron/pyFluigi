@@ -19,18 +19,16 @@ pydot = "^1.4.1"
 matplotlib = "^3.3.2"
 pyfiglet = "^0.8.post1"
 pygraphviz = "^1.6"
-JPype1-py3 = "^0.5.5"
 requests = "^2.24.0"
 pycairo = "^1.20.0"
-JPype1 = "^1.2.0"
 numpy = "^1.19.4"
 tabulate = "^0.8.9"
 pyeda = "^0.28.0"
 dafd = "^0.1.1"
-parchmint = {git = "https://github.com/CIDARLAB/pyparchmint.git", branch = "master"}
-pymint = {git = "https://github.com/CIDARLAB/pyMINT.git", branch = "master"}
-lfr = {git = "https://github.com/CIDARLAB/pyLFR.git", branch = "constructionv2"}
-
+parchmint = {git = "git://github.com/CIDARLAB/pyparchmint.git", branch = "master"}
+pymint = {git = "git://github.com/CIDARLAB/pyMINT.git", branch = "master"}
+lfr = {git = "git://github.com/CIDARLAB/pyLFR.git", branch = "constructionv2"}
+click = "^8.0.3"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"
