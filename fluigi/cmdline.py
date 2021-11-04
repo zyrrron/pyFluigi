@@ -1,7 +1,13 @@
+import json
+from pathlib import Path
 from typing import List
 import click
 from lfr.parameters import LIB_DIR as LFR_LIB_DIR
+from parchmint.device import Device
 import pyfiglet
+from fluigi import parameters
+
+from fluigi.utils import render_svg
 
 
 def print_version(ctx, param, value):
@@ -193,6 +199,33 @@ def mint_compile(
         render_flag=render_svg,
         ignore_layout_constraints=ignore_layout_constraints,
     )
+
+
+@default_cli.command(name="utils-render-svg")
+@click.argument(
+    "input_files",
+    nargs=-1,
+    required=True,
+    type=click.Path(exists=True),
+)
+@click.option(
+    "--outpath",
+    "-o",
+    default=".",
+    help="This is the output directory",
+    type=click.Path(exists=True),
+)
+def utils_render_svg(
+    input_files: List[str],
+    outpath: str,
+):
+
+    parameters.OUTPUT_DIR = Path(outpath)
+
+    for input_file in input_files:
+        devicejson = json.load(open(input_file))
+        device = Device(devicejson)
+        render_svg(device, "")
 
 
 if __name__ == "__main__":

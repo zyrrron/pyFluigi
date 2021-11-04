@@ -46,7 +46,7 @@ def calcuate_waypoint(device: Device, target: Target) -> Tuple[int, int]:
         )
 
 
-def render_svg(d: Device, suffix) -> None:
+def render_svg(d: Device, suffix: str) -> None:
 
     suffix = suffix.replace(d.name, "")
     if d.params.exists("x-span"):
