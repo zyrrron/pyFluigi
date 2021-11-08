@@ -39,4 +39,5 @@ SA_GRID_BLOCK_SIZE = 100
 FLUIGI_DIR = pathlib.Path(fluigi.__file__).parent.parent.absolute()
 FLUIGI_JAVA_PNR_JAR_PATH = FLUIGI_DIR.joinpath("bin/Fluigi-jar-with-dependencies.jar")
 OUTPUT_DIR = FLUIGI_DIR.joinpath("out")
-PRIMITIVE_SERVER_URI = "http://neptune.fluigicad.org:5555"
+# PRIMITIVE_SERVER_URI = "http://neptune.fluigicad.org:5555"
+PRIMITIVE_SERVER_URI = "https://primitives-server.herokuapp.com"

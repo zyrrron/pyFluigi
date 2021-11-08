@@ -59,11 +59,8 @@ def render_svg(d: Device, suffix: str) -> None:
     else:
         yspan = DEVICE_Y_DIM
 
-    print(
-        "Rendering {} components and {} connections".format(
-            len(d.components), len(d.connections)
-        )
-    )
+    rats_nest_count = 0
+    print("Rendering device {}".format(d.name))
 
     surface = cairo.SVGSurface(
         str(parameters.OUTPUT_DIR.joinpath("{}.svg".format(d.name + suffix))),
@@ -109,40 +106,50 @@ def render_svg(d: Device, suffix: str) -> None:
             )
 
     ctx.set_source_rgb(0, 0, 1)
-    for connection in d.connections:
 
-        for path in connection.paths:
-            channelwidth = connection.params.get_param("channelWidth")
-            waypoints = path.waypoints
-            for i in range(len(waypoints) - 1):
-                # Set the color to blue
-                ctx.set_source_rgb(0, 0, 1)
-                waypoint = waypoints[i]
-                next_waypoint = waypoints[i + 1]
-                ctx.move_to(waypoint[0], waypoint[1])
-                ctx.line_to(next_waypoint[0], next_waypoint[1])
-                ctx.set_line_width(channelwidth / 2)
-                ctx.stroke()
-            else:
-                if path.source.component is None or path.source.port is None:
+    # Go through each of the connections
+    for connection in d.connections:
+        # For every source, sink pair check if a path exists with the same source sink pair and if so draw a line using the waypoints else draw a line between the source and sink components
+        channelwidth = connection.params.get_param("channelWidth")
+        source = connection.source
+        if source is None:
+            print("No source for connection:", connection.ID)
+            continue
+        for sink in connection.sinks:
+            # First ensure that the ports are set for the source and sink or else you'll need to render rats nests at the
+            # centers
+            found_flag = False
+            if source.port is not None and sink.port is not None:
+                for path in connection.paths:
+                    if source == path.source and sink == path.sink:
+                        found_flag = True
+                        waypoints = path.waypoints
+                        if len(waypoints) > 0:
+                            for i in range(len(waypoints) - 1):
+                                # Set the color to blue
+                                ctx.set_source_rgb(0, 0, 1)
+                                waypoint = waypoints[i]
+                                next_waypoint = waypoints[i + 1]
+                                ctx.move_to(waypoint[0], waypoint[1])
+                                ctx.line_to(next_waypoint[0], next_waypoint[1])
+                                ctx.set_line_width(channelwidth / 2)
+                                ctx.stroke()
+                        else:
+                            print(
+                                "No waypoints found in \n connection:{} Source:{}  Sink:{} ".format(
+                                    connection.ID, str(source), str(sink)
+                                )
+                            )
+                            render_rats_nest(d, ctx, channelwidth, source, sink)
+
+                if found_flag is False:
+                    rats_nest_count += 1
                     print(
-                        "Could not render connection {} path [{}] becasue of missing information (Component- {}, Port - {})".format(
-                            connection.ID,
-                            connection.paths.index(path),
-                            path.source.component,
-                            path.source.port,
+                        "No paths found in \n connection:{} Source:{}  Sink:{} ".format(
+                            connection.ID, str(source), str(sink)
                         )
                     )
-                    continue
-                # Set the color to grey
-                ctx.set_source_rgb(0.5, 0.5, 0.5)
-                # Get the source and target locations from the corresponding components
-                source_waypoint = calcuate_waypoint(d, path.source)
-                target_waypoint = calcuate_waypoint(d, path.sink)
-                ctx.move_to(source_waypoint[0], source_waypoint[1])
-                ctx.line_to(target_waypoint[0], target_waypoint[1])
-                ctx.set_line_width(channelwidth / 2)
-                ctx.stroke()
+                    render_rats_nest(d, ctx, channelwidth, source, sink)
 
     # Draw ports at the end so that all the port connections are visible thoroughly
     for component in d.components:
@@ -165,3 +172,21 @@ def render_svg(d: Device, suffix: str) -> None:
             )
 
     surface.finish()
+
+    print(
+        "Rendered {} components , {} connections and {} rats nests".format(
+            len(d.components), len(d.connections), rats_nest_count
+        )
+    )
+
+
+def render_rats_nest(d, ctx, channelwidth, source, sink):
+    # Set the color to grey
+    ctx.set_source_rgb(0.5, 0.5, 0.5)
+    source_waypoint = calcuate_waypoint(d, source)
+    target_waypoint = calcuate_waypoint(d, sink)
+
+    ctx.move_to(source_waypoint[0], source_waypoint[1])
+    ctx.line_to(target_waypoint[0], target_waypoint[1])
+    ctx.set_line_width(channelwidth / 2)
+    ctx.stroke()

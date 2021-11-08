@@ -10,6 +10,12 @@ from fluigi import parameters
 from fluigi.utils import render_svg
 
 
+def create_default_output_dir(output_dir: Path) -> Path:
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True)
+    return output_dir
+
+
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
@@ -32,7 +38,11 @@ def default_cli():
 @default_cli.command(name="synthesize")
 @click.argument("input_files", nargs=-1, required=True, type=click.Path(exists=True))
 @click.option(
-    "--outpath", "-o", default=".", help="Output path", type=click.Path(exists=True)
+    "--outpath",
+    "-o",
+    default=".",
+    help="Output path",
+    type=click.Path(exists=False, path_type=Path),
 )
 @click.option(
     "--technology",
@@ -53,11 +63,12 @@ def default_cli():
 )
 def synthesize(
     input_files: List[str],
-    outpath: str,
+    outpath: Path,
     technology: str,
     library_path: str,
     pre_load: List[str],
 ):
+    outpath = create_default_output_dir(outpath)
     synthesize(input_files, outpath, technology, library_path, pre_load)
 
 
@@ -69,7 +80,11 @@ def synthesize(
     type=click.Path(exists=True),
 )
 @click.option(
-    "--outpath", "-o", default=".", help="Output path", type=click.Path(exists=True)
+    "--outpath",
+    "-o",
+    default=".",
+    help="Output path",
+    type=click.Path(exists=False, path_type=Path),
 )
 @click.option(
     "--technology",
@@ -104,7 +119,7 @@ def synthesize(
 )
 def lfr_compile(
     input_files: List[str],
-    outpath: str,
+    outpath: Path,
     technology: str,
     library_path: str,
     no_gen: bool,
@@ -124,6 +139,7 @@ def lfr_compile(
     """
     from lfr.api import compile_lfr
 
+    outpath = create_default_output_dir(outpath)
     # Check if library path is "" and set it to the default library path in lfr package
     if library_path == "":
         library_path = str(LFR_LIB_DIR)
@@ -155,7 +171,7 @@ def lfr_compile(
     "-o",
     default=".",
     help="This is the output directory",
-    type=click.Path(exists=True),
+    type=click.Path(exists=False, path_type=Path),
 )
 @click.option(
     "--route",
@@ -177,7 +193,7 @@ def lfr_compile(
 )
 def mint_compile(
     input_files: List[str],
-    outpath: str,
+    outpath: Path,
     route: bool,
     render_svg: bool,
     ignore_layout_constraints: bool,
@@ -192,13 +208,56 @@ def mint_compile(
     """
     from fluigi.place_and_route import place_and_route_mint
 
-    place_and_route_mint(
-        input_files=input_files,
-        outpath=outpath,
-        route_only_flag=route,
-        render_flag=render_svg,
-        ignore_layout_constraints=ignore_layout_constraints,
-    )
+    outpath = create_default_output_dir(outpath)
+
+    for input_file in input_files:
+        place_and_route_mint(
+            input_file=input_file,
+            outpath=str(outpath),
+            route_only_flag=route,
+            render_flag=render_svg,
+            ignore_layout_constraints=ignore_layout_constraints,
+        )
+
+
+@default_cli.command(name="convert-to-parchmint")
+@click.argument(
+    "input_files",
+    nargs=-1,
+    required=True,
+    type=click.Path(exists=True, path_type=Path),
+)
+@click.option(
+    "--outpath",
+    "-o",
+    default=".",
+    help="This is the output directory",
+    type=click.Path(exists=False, path_type=Path),
+)
+@click.option(
+    "--assign-terminals",
+    type=click.BOOL,
+    default=False,
+    is_flag=True,
+    help="Sets the flag to assign terminals to the pins in default cases",
+)
+def convert_to_parchmint(
+    input_files: List[Path], outpath: Path, assign_terminals: bool
+):
+    """
+    Convert a list of input files into a single output file.
+    :param input_files: list of input files
+    :param output_path: output file path
+    :return:
+    """
+    from fluigi.conversions import convert_to_parchmint
+
+    outpath = create_default_output_dir(outpath)
+
+    for input_file in input_files:
+        convert_to_parchmint(
+            input_file=input_file, outpath=outpath, assign_terminals=assign_terminals
+        )
 
 
 @default_cli.command(name="utils-render-svg")
@@ -213,14 +272,16 @@ def mint_compile(
     "-o",
     default=".",
     help="This is the output directory",
-    type=click.Path(exists=True),
+    type=click.Path(exists=False, path_type=Path),
 )
 def utils_render_svg(
     input_files: List[str],
-    outpath: str,
+    outpath: Path,
 ):
 
-    parameters.OUTPUT_DIR = Path(outpath)
+    outpath = create_default_output_dir(outpath)
+
+    parameters.OUTPUT_DIR = outpath
 
     for input_file in input_files:
         devicejson = json.load(open(input_file))

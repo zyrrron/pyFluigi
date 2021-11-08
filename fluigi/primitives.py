@@ -9,8 +9,8 @@ import fluigi.parameters as parameters
 import requests
 
 # All the imports for the java pipe
-import jpype
-import jpype.imports
+# import jpype
+# import jpype.imports
 
 # from jpype.types import *
 
@@ -31,138 +31,64 @@ OLD_PRIMITIVES_CHECKLIST = []
 
 def get_defaults(mint: str):
 
-    if mint in OLD_PRIMITIVES_CHECKLIST:
-        print(
-            "Warning this is one of the the old fluigi primitives, this means that the we dont pull defaults"
+    try:
+        # python_object = json.loads(output.stdout.decode('utf-8'))
+        params = {"mint": mint}
+        r = requests.get(
+            "{}/defaults".format(parameters.PRIMITIVE_SERVER_URI), params=params
         )
+        python_object = r.json()
+        return python_object
+    except Exception as e:
+        print("Could not retrieve default parameters for {}".format(mint))
+        print(e)
         return None
-    else:
-        # primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
-        # cmd = ['node', 'index.js' , mint,  'defaults']
-        # output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
-
-        try:
-            # python_object = json.loads(output.stdout.decode('utf-8'))
-            params = {"mint": mint}
-            r = requests.get(
-                "{}/defaults".format(parameters.PRIMITIVE_SERVER_URI), params=params
-            )
-            python_object = r.json()
-            return python_object
-        except Exception as e:
-            print("Could not retrieve default parameters for {}".format(mint))
-            print(e)
-            return None
 
 
 def get_dimensions(mint: str, params):
 
-    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
-        print(
-            "Warning this is one of the the old fluigi primitives, this means that the default values can be incorrect"
+    try:
+        req_params = {"mint": mint}
+        req_params["params"] = json.dumps(params.data)
+        r = requests.get(
+            "{}/dimensions".format(parameters.PRIMITIVE_SERVER_URI),
+            params=req_params,
         )
 
-        map = dict()
-        for key in params.data.keys():
-            val = params.data[key]
-            try:
-                map[key] = int(val)
+        python_object = r.json()
+        return python_object
 
-            except ValueError:
-                print("Found a non int param: {} - {}".format(key, val))
-
-        try:
-            python_object = dict(Fluigi.getDimensions(mint, java.util.HashMap(map)))
-            print("Data Retrieved by the java pipe: {}".format(python_object))
-            return python_object
-        except Exception as e:
-            print(e)
-            print(
-                "Error occured during the java dimension retrieval for: {}-{}".format(
-                    mint, params
-                )
-            )
-
-    else:
-        # primitives_dir = os.path.join(parameters.PROGRAM_DIR, "primitives","dist")
-
-        # cmd = ['node', 'index.js', mint, 'dimension', json.dumps(params.data)]
-
-        # output = subprocess.run(cmd, cwd=primitives_dir, stdout=subprocess.PIPE)
-
-        try:
-            req_params = {"mint": mint}
-            req_params["params"] = json.dumps(params.data)
-            r = requests.get(
-                "{}/dimensions".format(parameters.PRIMITIVE_SERVER_URI),
-                params=req_params,
-            )
-
-            python_object = r.json()
-            return python_object
-
-        except Exception as e:
-            print("Could not retrieve dimensions for {}".format(mint))
-            print(e)
-            return None
+    except Exception as e:
+        print("Could not retrieve dimensions for {}".format(mint))
+        print(e)
+        return None
 
 
 def get_terminals(mint: str, params):
 
-    if mint in [s.replace(" ", "") for s in OLD_PRIMITIVES_CHECKLIST]:
-        print(
-            "Warning this is one of the the old fluigi primitives, this means that the default values can be incorrect"
+    try:
+        req_params = {"mint": mint}
+        req_params["params"] = json.dumps(params.data)
+        r = requests.get(
+            "{}/terminals".format(parameters.PRIMITIVE_SERVER_URI),
+            params=req_params,
         )
 
-        map = dict()
-        for key in params.data.keys():
-            val = params.data[key]
-            try:
-                map[key] = int(val)
+        terminals = r.json()
 
-            except ValueError:
-                print("Found a non int param: {} - {}".format(key, val))
+        python_object = []
 
-        java_object = dict(Fluigi.getTerminals(mint, java.util.HashMap(map)))
-        print("Data Retrieved by the java pipe: {}".format(java_object))
-
-        terminals = []
-        for key in java_object.keys():
-            coords = java_object["0"].getPointCoords()
-            componentport = Port()
-            componentport.x = int(coords[0])
-            componentport.y = int(coords[1])
-            componentport.label = str(key)
-
+        for terminal in terminals:
+            componentport = Port(terminal)
+            python_object.append(componentport)
             # print(componentport)
-            terminals.append(componentport)
 
-        return terminals
+        return python_object
 
-    else:
-        try:
-            req_params = {"mint": mint}
-            req_params["params"] = json.dumps(params.data)
-            r = requests.get(
-                "{}/terminals".format(parameters.PRIMITIVE_SERVER_URI),
-                params=req_params,
-            )
-
-            terminals = r.json()
-
-            python_object = []
-
-            for terminal in terminals:
-                componentport = Port(terminal)
-                python_object.append(componentport)
-                # print(componentport)
-
-            return python_object
-
-        except Exception as e:
-            print("Could not retrieve dimensions for {}".format(mint))
-            print(e)
-            return None
+    except Exception as e:
+        print("Could not retrieve dimensions for {}".format(mint))
+        print(e)
+        return None
 
 
 def get_valve_type(mint: str) -> Optional[str]:

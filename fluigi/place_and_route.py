@@ -1,3 +1,4 @@
+from fluigi.conversions import add_spacing
 from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
 from fluigi.pnr.sa.saplace import SAPlace
 from fluigi.pnr.sa.salayout import SALayout
@@ -14,12 +15,10 @@ import sys
 import os
 import subprocess
 from pathlib import Path
-import argparse
 import fluigi.parameters as parameters
 from parchmint import Device
 import json
 import networkx as nx
-import pyfiglet
 from fluigi.pnr.terminalassignment import assign_single_port_terminals
 
 from fluigi.pnr.placement.graph import (
@@ -37,18 +36,6 @@ from fluigi.pnr.placement.simulatedannealing import (
 import faulthandler
 
 faulthandler.enable()
-
-
-def add_spacing(current_device: MINTDevice) -> None:
-    for component in current_device.components:
-        if component.params.exists("componentSpacing") is False:
-            component.params.set_param("componentSpacing", parameters.COMPONENT_SPACING)
-
-    for connection in current_device.connections:
-        if connection.params.exists("connectionSpacing") is False:
-            connection.params.set_param(
-                "connectionSpacing", parameters.CONNECTION_SPACING
-            )
 
 
 def generate_device_from_mint(
@@ -81,13 +68,17 @@ def generate_device_from_parchmint(file_path: str) -> Device:
 
 
 def place_and_route_mint(
-    input_files, outpath, route_only_flag, render_flag, ignore_layout_constraints
+    input_file: str,
+    outpath: str,
+    route_only_flag: bool,
+    render_flag: bool,
+    ignore_layout_constraints: bool,
 ):
 
     print("output dir:", outpath)
-    print("Running File: " + input_files)
-    if Path(input_files).exists() is False:
-        print("Could not find the input file - {}".format(input_files))
+    print("Running File: " + str(input_file))
+    if Path(input_file).exists() is False:
+        print("Could not find the input file - {}".format(input_file))
         return 0
 
     abspath = Path(outpath).resolve()
@@ -100,10 +91,10 @@ def place_and_route_mint(
 
     current_device = None
 
-    extension = Path(input_files).suffix
+    extension = Path(input_file).suffix
     if extension == ".mint" or extension == ".uf":
         current_device = generate_device_from_mint(
-            input_files, ignore_layout_constraints
+            input_file, ignore_layout_constraints
         )
         # Set the device dimensions
         current_device.params.set_param("x-span", parameters.DEVICE_X_DIM)
@@ -111,7 +102,7 @@ def place_and_route_mint(
 
     elif extension == ".json":
         # Push it through the parchmint parser
-        file_path = str(Path(input_files).resolve())
+        file_path = str(Path(input_file).resolve())
         current_device = generate_device_from_parchmint(file_path)
         # Set the device dimensions from the device
         parameters.DEVICE_X_DIM = current_device.params.get_param("x-span")
@@ -122,7 +113,7 @@ def place_and_route_mint(
         exit(0)
 
     # If the render svg parameter flag is enabled, then just render the svg
-    file_path = Path(input_files)
+    file_path = Path(input_file)
     if render_flag:
         if file_path.suffix == ".json":
             utils.render_svg(current_device, file_path.stem)
@@ -147,9 +138,6 @@ def place_and_route_mint(
     utils.printgraph(current_device.G, current_device.name + ".dot")
 
     # We exit the process if only convert is set to true
-    if args.convert:
-        sys.exit(0)
-
     # # Do Terminal Assignment
     # assign_single_port_terminals(current_device)
 
