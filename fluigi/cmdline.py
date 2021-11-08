@@ -241,8 +241,18 @@ def mint_compile(
     is_flag=True,
     help="Sets the flag to assign terminals to the pins in default cases",
 )
+@click.option(
+    "--skip-layout-constraints",
+    type=click.BOOL,
+    default=False,
+    is_flag=True,
+    help="Sets the flag to skip layout constraints",
+)
 def convert_to_parchmint(
-    input_files: List[Path], outpath: Path, assign_terminals: bool
+    input_files: List[Path],
+    outpath: Path,
+    assign_terminals: bool,
+    skip_layout_constraints: bool,
 ):
     """
     Convert a list of input files into a single output file.
@@ -254,9 +264,13 @@ def convert_to_parchmint(
 
     outpath = create_default_output_dir(outpath)
 
+    # TODO - Need to pipe in the right commandline options for constraints
     for input_file in input_files:
         convert_to_parchmint(
-            input_file=input_file, outpath=outpath, assign_terminals=assign_terminals
+            input_file=input_file,
+            outpath=outpath,
+            assign_terminals=assign_terminals,
+            skip_constraints=True,
         )
 
 

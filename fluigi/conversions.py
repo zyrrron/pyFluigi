@@ -49,14 +49,14 @@ def convert_to_parchmint(
     input_file: Path,
     outpath: Path,
     assign_terminals: bool = False,
-    skip_constriants: bool = True,
+    skip_constraints: bool = True,
 ):
     """
     Convert a .mint file to a .parchmint.json file
     """
     extension = input_file.suffix
     if extension == ".mint" or extension == ".uf":
-        current_device = generate_device_from_mint(str(input_file), skip_constriants)
+        current_device = generate_device_from_mint(str(input_file), skip_constraints)
         # Set the device dimensions
         current_device.params.set_param("x-span", parameters.DEVICE_X_DIM)
         current_device.params.set_param("y-span", parameters.DEVICE_Y_DIM)
