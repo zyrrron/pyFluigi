@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from fluigi import utils
 import fluigi.parameters as parameters
 from pymint.mintdevice import MINTDevice
 from fluigi.pnr.utils import assign_component_ports
@@ -50,6 +51,7 @@ def convert_to_parchmint(
     outpath: Path,
     assign_terminals: bool = False,
     skip_constraints: bool = True,
+    generate_graph_view: bool = False,
 ):
     """
     Convert a .mint file to a .parchmint.json file
@@ -75,5 +77,6 @@ def convert_to_parchmint(
 
             json.dump(parchmint_text, f, indent=4)
 
+        utils.printgraph(current_device.G, current_device.name)
     else:
         raise Exception("Unsupported file extension: {}".format(extension))

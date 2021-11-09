@@ -13,6 +13,7 @@ from fluigi.utils import render_svg
 def create_default_output_dir(output_dir: Path) -> Path:
     if not output_dir.exists():
         output_dir.mkdir(parents=True)
+    parameters.OUTPUT_DIR = output_dir
     return output_dir
 
 
@@ -248,11 +249,19 @@ def mint_compile(
     is_flag=True,
     help="Sets the flag to skip layout constraints",
 )
+@click.option(
+    "--generate-graph-view",
+    type=click.BOOL,
+    default=False,
+    is_flag=True,
+    help="Sets the flag to generate the graph",
+)
 def convert_to_parchmint(
     input_files: List[Path],
     outpath: Path,
     assign_terminals: bool,
     skip_layout_constraints: bool,
+    generate_graph_view: bool,
 ):
     """
     Convert a list of input files into a single output file.
@@ -271,6 +280,7 @@ def convert_to_parchmint(
             outpath=outpath,
             assign_terminals=assign_terminals,
             skip_constraints=True,
+            generate_graph_view=generate_graph_view,
         )
 
 

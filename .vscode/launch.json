@@ -35,6 +35,32 @@
                 "--route"
             ],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Render - Customfile",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/fluigi/cmdline.py",
+            "args": [
+                "utils-render-svg",
+                "--outpath",
+                "./out/renders",
+                "${file}"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug Conversion - Customfile",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/fluigi/cmdline.py",
+            "args": [
+                "convert-to-parchmint",
+                "--outpath",
+                "./out/conversions/",
+                "${file}"
+            ],
+            "console": "integratedTerminal"
         }
 
     ]
