@@ -9,12 +9,15 @@ from parchmint import Device, Target
 
 
 def printgraph(G, filename: str) -> None:
-    # tt = os.path.join(parameters.OUTPUT_DIR, filename + ".dot")
     tt = pathlib.Path(parameters.OUTPUT_DIR).joinpath(filename + ".dot")
     print("output:", str(tt.absolute()))
     nx.nx_agraph.to_agraph(G).write(str(tt.absolute()))
 
-    os.system("dot -Tpdf {} -o {}.pdf".format(str(tt.absolute()), tt.stem))
+    os.system(
+        "dot -Tpdf {} -o {}.pdf".format(
+            str(tt.absolute()), pathlib.Path(parameters.OUTPUT_DIR).joinpath(tt.stem)
+        )
+    )
 
 
 def get_ouput_path(filename: str) -> str:
