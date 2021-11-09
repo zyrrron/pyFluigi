@@ -146,9 +146,7 @@ def pull_defaults(device: Device):
 def pull_dimensions(device: Device):
     print("Pulling Dimensions of Components")
     for component in device.components:
-        # print("comonent name {}".format(component.name))
         dims = get_dimensions(component.entity, component.params)
-        # print(dims)
 
         if dims is None:
             print(
@@ -161,6 +159,7 @@ def pull_dimensions(device: Device):
         # Assign the xspan and yspan
         component.xspan = dims["x-span"]
         component.yspan = dims["y-span"]
+        # print("comonent name: {}, Dims: ({}, {}) ".format(component.name, component.xspan, component.yspan))
 
 
 def pull_terminals(device: Device):
@@ -174,6 +173,24 @@ def pull_terminals(device: Device):
                 )
             )
         else:
+            # Print warning if the terminal is outside of the x and y span of the component
+            for terminal in terminals:
+                if (
+                    terminal.x < 0
+                    or terminal.x > component.xspan
+                    or terminal.y < 0
+                    or terminal.y > component.yspan
+                ):
+                    print(
+                        "Warning: Terminal {} ({}, {}) of component {} is outside of the span of the component ({}, {})".format(
+                            terminal.label,
+                            terminal.x,
+                            terminal.y,
+                            component.ID,
+                            component.xspan,
+                            component.yspan,
+                        )
+                    )
             # Assign the terminals
             component.add_component_ports(terminals)
             # print("Updated the component terminals: {}", component)
