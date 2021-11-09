@@ -1,3 +1,4 @@
+import pathlib
 from typing import Tuple
 import networkx as nx
 import fluigi.parameters as parameters
@@ -8,11 +9,12 @@ from parchmint import Device, Target
 
 
 def printgraph(G, filename: str) -> None:
-    tt = os.path.join(parameters.OUTPUT_DIR, filename)
-    print("output:", tt)
-    nx.nx_agraph.to_agraph(G).write(tt)
+    # tt = os.path.join(parameters.OUTPUT_DIR, filename + ".dot")
+    tt = pathlib.Path(parameters.OUTPUT_DIR).joinpath(filename + ".dot")
+    print("output:", str(tt.absolute()))
+    nx.nx_agraph.to_agraph(G).write(str(tt.absolute()))
 
-    os.system("dot -Tpdf {} -o {}.pdf".format(tt, tt))
+    os.system("dot -Tpdf {} -o {}.pdf".format(str(tt.absolute()), tt.stem))
 
 
 def get_ouput_path(filename: str) -> str:
