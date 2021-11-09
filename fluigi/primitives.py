@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from parchmint.device import Device, ValveType
 from pymint.mintdevice import MINTDevice
 from parchmint.port import Port
@@ -217,3 +217,18 @@ def pull_valve_types(device: Device):
                         component.name, component.entity, type_info
                     )
                 )
+
+
+def size_nodes(device: Union[Device, MINTDevice]) -> None:
+    for component in device.components:
+        if component.entity == "NODE":
+            # Find the connections to the nodes
+            connections = device.get_connections_for_component(component)
+            # Find the connection with the largest connectionWidth param
+            max_width = 0
+            for connection in connections:
+                if connection.params.get_param("connectionWidth") > max_width:
+                    max_width = connection.params.get_param("connectionWidth")
+            # Set the node size to the max connection width
+            component.xspan = max_width
+            component.yspan = max_width
