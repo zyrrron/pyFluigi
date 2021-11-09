@@ -2,9 +2,7 @@ from typing import Optional, Union
 from parchmint.device import Device, ValveType
 from pymint.mintdevice import MINTDevice
 from parchmint.port import Port
-import subprocess
 import json
-import os
 import fluigi.parameters as parameters
 import requests
 
@@ -227,8 +225,8 @@ def size_nodes(device: Union[Device, MINTDevice]) -> None:
             # Find the connection with the largest connectionWidth param
             max_width = 0
             for connection in connections:
-                if connection.params.get_param("connectionWidth") > max_width:
-                    max_width = connection.params.get_param("connectionWidth")
+                if connection.params.get_param("channelWidth") > max_width:
+                    max_width = connection.params.get_param("channelWidth")
             # Set the node size to the max connection width
             component.xspan = max_width
             component.yspan = max_width

@@ -7,6 +7,7 @@ from fluigi.primitives import (
     pull_defaults,
     pull_dimensions,
     pull_terminals,
+    size_nodes,
 )
 
 
@@ -29,12 +30,11 @@ def generate_device_from_mint(
     if current_device is None:
         raise Exception("Error generating device from the MINT file !")
     try:
-        # start_java_vm()
         pull_defaults(current_device)
         pull_dimensions(current_device)
         pull_terminals(current_device)
         add_spacing(current_device)
-        # stop_java_vm()
+        size_nodes(current_device)
     except Exception as e:
         print("Error getting Primitive data: {}".format(e))
     print(

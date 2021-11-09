@@ -150,7 +150,7 @@ def lfr_compile(
 
     compile_lfr(
         input_files=input_files,
-        outpath=outpath,
+        outpath=str(outpath),
         technology=technology,
         library_path=library_path,
         no_gen_flag=no_gen,
