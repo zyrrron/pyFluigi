@@ -1,7 +1,8 @@
 from fluigi.pnr.layout import Layout
 from pymint.mintdevice import MINTDevice
-import jpype
-import jpype.imports
+
+# import jpype
+# import jpype.imports
 
 # from jpype.types import *
 import json

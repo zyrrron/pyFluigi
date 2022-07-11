@@ -17,9 +17,10 @@
             "request": "launch",
             "program": "${workspaceFolder}/fluigi/cmdline.py",
             "args": [
+                "mint-compile",
                 "--outpath",
                 "./out/",
-                "${file}"
+                "${file}",
             ],
             "console": "integratedTerminal"
         },

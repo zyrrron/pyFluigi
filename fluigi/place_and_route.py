@@ -33,6 +33,8 @@ from fluigi.pnr.placement.simulatedannealing import (
     generate_simulated_annealing_layout_v2,
 )
 
+from fluigi.pnr.dropx import place_and_route_dropx
+
 import faulthandler
 
 faulthandler.enable()
@@ -137,6 +139,10 @@ def place_and_route_mint(
 
     utils.printgraph(current_device.G, current_device.name + ".dot")
 
+    # TODO - Delete this later
+    place_and_route_dropx(current_device)
+
+    exit(0)
     # We exit the process if only convert is set to true
     # # Do Terminal Assignment
     # assign_single_port_terminals(current_device)

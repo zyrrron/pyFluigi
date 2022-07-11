@@ -24,7 +24,7 @@ def get_ouput_path(filename: str) -> str:
     return os.path.join(parameters.OUTPUT_DIR, filename)
 
 
-def calcuate_waypoint(device: Device, target: Target) -> Tuple[int, int]:
+def calcuate_waypoint(device: Device, target: Target) -> Tuple[float, float]:
     """Calculates the coordinates of the Target
 
     [extended_summary]
@@ -76,6 +76,13 @@ def render_svg(d: Device, suffix: str) -> None:
     ctx.scale(PT_TO_UM, PT_TO_UM)
 
     for component in d.components:
+        print(
+            "Old position {} ({}):{}, {}".format(
+                component.ID, component.entity, component.xpos, component.ypos
+            )
+        )
+        component.rotate_component()
+        print("new position:{}, {}".format(component.xpos, component.ypos))
         if component.params.exists("position"):
             xpos = component.xpos
             ypos = component.ypos

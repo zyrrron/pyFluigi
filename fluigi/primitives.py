@@ -1,6 +1,5 @@
-from typing import Optional, Union
+from typing import Optional
 from parchmint.device import Device, ValveType
-from pymint.mintdevice import MINTDevice
 from parchmint.port import Port
 import json
 import fluigi.parameters as parameters
@@ -217,7 +216,7 @@ def pull_valve_types(device: Device):
                 )
 
 
-def size_nodes(device: Union[Device, MINTDevice]) -> None:
+def size_nodes(device: Device) -> None:
     for component in device.components:
         if component.entity == "NODE":
             # Find the connections to the nodes

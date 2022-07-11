@@ -10,9 +10,8 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.11"
 antlr4-python3-runtime = "^4.8"
-networkx = "^2.5"
 argparse = "^1.4.0"
 hypernetx = "^0.3.7"
 pydot = "^1.4.1"
@@ -25,16 +24,16 @@ numpy = "^1.19.4"
 tabulate = "^0.8.9"
 pyeda = "^0.28.0"
 dafd = "^0.1.1"
-parchmint = {git = "git://github.com/CIDARLAB/pyparchmint.git", branch = "master"}
-pymint = {git = "git://github.com/CIDARLAB/pyMINT.git", branch = "master"}
-lfr = {git = "git://github.com/CIDARLAB/pyLFR.git", branch = "constructionv2"}
 click = "^8.0.3"
+networkx = "^2.6.3"
+art = "^5.6"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.790"
 black = "^20.8b1"
 flake8 = "^3.8.4"
 rope = "^0.18.0"
+lfr = {path = "./pylfr", develop = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -3,11 +3,13 @@ from pymint import MINTDevice
 import sys
 
 
-def size_nodes(device: MINTDevice) -> None:
-    for component in device.components:
+def size_nodes(mint_device: MINTDevice) -> None:
+    if mint_device.device.graph is None:
+        raise ValueError("MINT Device is None")
+    for component in mint_device.device.components:
         if component.entity == "NODE":
             # Look at the connections
-            nbers = device.G.edges(component.ID)
+            nbers = mint_device.device.graph.edges(component.ID)
             gedges = list(nbers)
             if len(gedges) > 0:
                 gedge = gedges[0]
@@ -16,7 +18,7 @@ def size_nodes(device: MINTDevice) -> None:
                 continue
             # Get channelWidth from there and update the node
             # connection_ref = device.G[gedge[0]][gedge[1]]
-            connection = device.G.get_edge_data(gedge[0], gedge[1])[0]["connection_ref"]
+            connection = mint_device.device.graph.get_edge_data(gedge[0], gedge[1])[0]["connection_ref"]
             channel_width = connection.params.get_param("channelWidth")
             component.xspan = channel_width
             component.yspan = channel_width
@@ -54,17 +56,17 @@ def check_ref_and_assign_port(source_ref, connection, device, global_port_assign
         print("Assigned port - {}".format(source_ref.port))
 
 
-def assign_component_ports(device: MINTDevice) -> None:
+def assign_component_ports(mint_device: MINTDevice) -> None:
     print("Starting terminal/port assignment ...")
     global_port_assign_map = dict()
-    for connection in device.connections:
+    for connection in mint_device.device.connections:
         source_ref = connection.source
         check_ref_and_assign_port(
-            source_ref, connection, device, global_port_assign_map
+            source_ref, connection, mint_device, global_port_assign_map
         )
         for sink_ref in connection.sinks:
             check_ref_and_assign_port(
-                sink_ref, connection, device, global_port_assign_map
+                sink_ref, connection, mint_device, global_port_assign_map
             )
 
 

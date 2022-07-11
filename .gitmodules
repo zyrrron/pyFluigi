@@ -7,3 +7,6 @@
 [submodule "MINT-TestCases"]
 	path = test
 	url = https://github.com/CIDARLAB/MINT-TestCases.git
+[submodule "pylfr"]
+	path = pylfr
+	url = https://github.com/CIDARLAB/pyLFR.git
