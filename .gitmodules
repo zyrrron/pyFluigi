@@ -1,12 +1,12 @@
 [submodule "pyMINT"]
 	path = pyMINT
 	url = https://github.com/CIDARLAB/pyMINT.git
+	branch = master
 [submodule "pyparchmint"]
 	path = pyparchmint
 	url = https://github.com/CIDARLAB/pyparchmint.git
-[submodule "MINT-TestCases"]
-	path = test
-	url = https://github.com/CIDARLAB/MINT-TestCases.git
+	branch = master
 [submodule "pylfr"]
 	path = pylfr
 	url = https://github.com/CIDARLAB/pyLFR.git
+	branch = constructionv2
