@@ -1,6 +1,7 @@
-import pathlib
-import fluigi
 import os
+import pathlib
+
+import fluigi
 
 # Draw constants
 PT_TO_UM = 1 / 352.778
