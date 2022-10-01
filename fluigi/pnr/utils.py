@@ -24,7 +24,7 @@ def size_nodes(mint_device: MINTDevice) -> None:
             component.yspan = channel_width
 
 
-def check_ref_and_assign_port(source_ref, connection, device, global_port_assign_map):
+def check_ref_and_assign_port(source_ref, connection, device: Device, global_port_assign_map):
     source_name = source_ref.component
     source = device.get_component(source_name)
     if source_ref.port is None:
@@ -62,11 +62,11 @@ def assign_component_ports(mint_device: MINTDevice) -> None:
     for connection in mint_device.device.connections:
         source_ref = connection.source
         check_ref_and_assign_port(
-            source_ref, connection, mint_device, global_port_assign_map
+            source_ref, connection, mint_device.device, global_port_assign_map
         )
         for sink_ref in connection.sinks:
             check_ref_and_assign_port(
-                sink_ref, connection, mint_device, global_port_assign_map
+                sink_ref, connection, mint_device.device, global_port_assign_map
             )
 
 

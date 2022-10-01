@@ -42,4 +42,4 @@ FLUIGI_JAVA_PNR_JAR_PATH = FLUIGI_DIR.joinpath("bin/Fluigi-jar-with-dependencies
 OUTPUT_DIR = FLUIGI_DIR.joinpath("out")
 # PRIMITIVE_SERVER_URI = "http://neptune.fluigicad.org:5555"
 # PRIMITIVE_SERVER_URI = "https://primitives-server.herokuapp.com"
-PRIMITIVE_SERVER_URI = os.getenv("PRIMITIVE_SERVER_URI", "https://primitives-server.herokuapp.com")
+PRIMITIVE_SERVER_URI = os.getenv("PRIMITIVE_SERVER_URI", "http://localhost:6060")

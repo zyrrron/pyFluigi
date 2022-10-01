@@ -6,6 +6,10 @@
 - Cairo
 - GraphViz
 
+```bash
+sudo apt-get install libbz2-dev libcairo2-dev pkg-config python3-dev libffi-dev graphviz
+```
+
 ## Running Benchmark Test Scripts
 
 ```
