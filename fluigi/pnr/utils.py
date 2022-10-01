@@ -1,6 +1,7 @@
+import sys
+
 from parchmint.device import Device
 from pymint import MINTDevice
-import sys
 
 
 def size_nodes(mint_device: MINTDevice) -> None:
@@ -18,13 +19,17 @@ def size_nodes(mint_device: MINTDevice) -> None:
                 continue
             # Get channelWidth from there and update the node
             # connection_ref = device.G[gedge[0]][gedge[1]]
-            connection = mint_device.device.graph.get_edge_data(gedge[0], gedge[1])[0]["connection_ref"]
+            connection = mint_device.device.graph.get_edge_data(gedge[0], gedge[1])[0][
+                "connection_ref"
+            ]
             channel_width = connection.params.get_param("channelWidth")
             component.xspan = channel_width
             component.yspan = channel_width
 
 
-def check_ref_and_assign_port(source_ref, connection, device: Device, global_port_assign_map):
+def check_ref_and_assign_port(
+    source_ref, connection, device: Device, global_port_assign_map
+):
     source_name = source_ref.component
     source = device.get_component(source_name)
     if source_ref.port is None:
