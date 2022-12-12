@@ -14,6 +14,13 @@ git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gi
 ```
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
 
+On starting the dev container, install the dependencies using `pip` (due to active errors in `poetry`, the wheel installation for `dafd` is failing). Because the poetry lock file is present, it should install all dependencies from there. Please use `poetry` for adding new dependencies.
+
+```
+pip install .
+```
+
+
 ## Dependencies
 
 - Python 3.8+
