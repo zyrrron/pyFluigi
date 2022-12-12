@@ -7,7 +7,7 @@
 First, run the following commands for recursively cloning all the required dependencies for the project and set up the sub repo branch tracking for development:
 
 ```
-git clone --recurse-submodules -j8 https://github.com/cidarlab/Neptune
+git clone --recurse-submodules -j8 https://github.com/cidarlab/pyfluigi
 cd Neptune
 git submodule update --init --recursive
 git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
