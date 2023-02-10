@@ -1,23 +1,23 @@
-import cairo
-from fluigi import parameters
-from fluigi.pnr.sa.utils import get_terminal
-from math import floor
-import networkx as nx
-from typing import Optional, List
-from pymint.mintdevice import MINTDevice
 import sys
 from enum import Enum
-from fluigi.parameters import PT_TO_UM, PT_TO_MM
+from math import floor
+from typing import List, Optional
 
-from fluigi.pnr.place_and_route import Terminal as CTerminal
+import cairo
+import networkx as nx
+from pymint.mintdevice import MINTDevice
+
+from fluigi import parameters
+from fluigi.parameters import PT_TO_MM, PT_TO_UM
+from fluigi.pnr.place_and_route import Cell as Obstacle
 from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.place_and_route import Placer as CPlacer
-
-
-from fluigi.pnr.place_and_route import Cell as Obstacle
+from fluigi.pnr.place_and_route import Route
 from fluigi.pnr.place_and_route import Router as AARFRouter
-from fluigi.pnr.place_and_route import Vertex, Route
+from fluigi.pnr.place_and_route import Terminal as CTerminal
+from fluigi.pnr.place_and_route import Vertex
+from fluigi.pnr.sa.utils import get_terminal
 
 
 class RouterAlgorithms(Enum):
@@ -168,7 +168,6 @@ class Layout:
                             "No scheme for handling scenarios where no source port is defined and there's more than 1 port available"
                         )
                         sink_terminals.append(None)
-
 
             cnet = CNet()
             cnet.id = id

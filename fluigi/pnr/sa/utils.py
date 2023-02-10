@@ -1,12 +1,11 @@
-from math import floor
-from typing import Dict, List, Optional
-from fluigi.pnr.place_and_route import (
-    PlacementCell as CCell,
-    Terminal as CTerminal,
-    Net as CNet,
-)
 import random
 from enum import Enum
+from math import floor
+from typing import Dict, List, Optional
+
+from fluigi.pnr.place_and_route import Net as CNet
+from fluigi.pnr.place_and_route import PlacementCell as CCell
+from fluigi.pnr.place_and_route import Terminal as CTerminal
 
 
 class TerminalLocation(Enum):
@@ -153,7 +152,6 @@ def update_terminals(cell: CCell):
 
     for i in range(len(cell.ports)):
         cell.ports[i].compute_absolute_positions(cell.x, cell.y)
-
 
 
 def select_random_component(list_components):

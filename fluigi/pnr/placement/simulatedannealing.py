@@ -1,12 +1,8 @@
-from fluigi.pnr.layout import Layout
-from pymint.mintdevice import MINTDevice
-
-
 import json
 
+from pymint.mintdevice import MINTDevice
 
-
-
+from fluigi.pnr.layout import Layout
 
 
 def generate_simulated_annealing_layout(layout: Layout):
