@@ -14,9 +14,6 @@ from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.place_and_route import Placer as CPlacer
 
-# from fluigi.pnr.aarf import Cell as Obstacle
-# from fluigi.pnr.aarf import Router as AARFRouter
-# from fluigi.pnr.aarf import Vertex, Route
 
 from fluigi.pnr.place_and_route import Cell as Obstacle
 from fluigi.pnr.place_and_route import Router as AARFRouter
@@ -129,7 +126,6 @@ class Layout:
                 # Get C Terminal for this
                 try:
                     source_terminal = get_terminal(source, connection.source.port)
-                    # source_terminal = source.get_terminal(connection.source.port)
                 except Exception:
                     print(
                         "Could not find Terminal for source port: {} {} for connection: {}".format(
@@ -139,7 +135,6 @@ class Layout:
             else:
                 if len(source.ports) == 1:
                     print('Assigning "1" as the default terminal for net')
-                    # source_terminal = get_terminal(source, "1")
                     source_terminal = source.ports[0]
                 else:
                     raise Exception(
@@ -166,7 +161,6 @@ class Layout:
                 else:
                     if len(pcell.ports) == 1:
                         print('Assigning "1" as the default terminal for net')
-                        # t = get_terminal(pcell, "1")
                         t = pcell.ports[0]
                         sink_terminals.append(t)
                     else:
@@ -175,8 +169,6 @@ class Layout:
                         )
                         sink_terminals.append(None)
 
-            # cnet.sinks = sink_cells
-            # cnet.sink_terminals = sink_terminals
 
             cnet = CNet()
             cnet.id = id
@@ -231,7 +223,6 @@ class Layout:
                     net.channelWidth,
                     net.channelSpacing,
                 )
-                # r = Route(net.ID, source_vertex, target_vertex)
                 all_routes.append(route)
 
                 # TODO - FIX THIS LATER

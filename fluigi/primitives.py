@@ -9,18 +9,11 @@ import requests
 # import jpype
 # import jpype.imports
 
-# from jpype.types import *
 
 
-# java_path = parameters.FLUIGI_JAVA_PNR_JAR_PATH.resolve()
-# jpype.startJVM(classpath=[str(java_path)])
-
-# import java
-# from org.cidarlab.fluigi.fluigi import *
 
 
-# def stop_java_vm():
-#     jpype.shutdownJVM()
+
 
 
 OLD_PRIMITIVES_CHECKLIST = []
@@ -29,7 +22,6 @@ OLD_PRIMITIVES_CHECKLIST = []
 def get_defaults(mint: str):
 
     try:
-        # python_object = json.loads(output.stdout.decode('utf-8'))
         params = {"mint": mint}
         r = requests.get(
             "{}/defaults".format(parameters.PRIMITIVE_SERVER_URI), params=params
@@ -90,7 +82,6 @@ def get_terminals(mint: str, params):
 
 def get_valve_type(mint: str) -> Optional[str]:
     try:
-        # python_object = json.loads(output.stdout.decode('utf-8'))
         params = {"mint": mint}
         r = requests.get(
             "{}/valve_type".format(parameters.PRIMITIVE_SERVER_URI), params=params
@@ -106,7 +97,6 @@ def get_valve_type(mint: str) -> Optional[str]:
 def pull_defaults(device: Device):
     print("Pulling Default Values of Components")
     for component in device.components:
-        # print("comonent name {}".format(component.name))
         defaults = get_defaults(component.entity)
         if defaults is None:
             print(
@@ -156,7 +146,6 @@ def pull_dimensions(device: Device):
         # Assign the xspan and yspan
         component.xspan = dims["x-span"]
         component.yspan = dims["y-span"]
-        # print("comonent name: {}, Dims: ({}, {}) ".format(component.name, component.xspan, component.yspan))
 
 
 def pull_terminals(device: Device):
@@ -190,7 +179,6 @@ def pull_terminals(device: Device):
                     )
             # Assign the terminals
             component.add_component_ports(terminals)
-            # print("Updated the component terminals: {}", component)
 
 
 def pull_valve_types(device: Device):

@@ -150,16 +150,10 @@ def get_terminal_location(terminal: CTerminal, cell: CCell) -> TerminalLocation:
 
 
 def update_terminals(cell: CCell):
-    # new_terminals = []
-    # print("Before Update", [(t.x, t.y) for t in cell.ports])
 
     for i in range(len(cell.ports)):
-        # terminal = cell.ports[i]
-        # terminal.compute_absolute_positions(cell.x, cell.y)
-        # new_terminals.append(terminal)
         cell.ports[i].compute_absolute_positions(cell.x, cell.y)
 
-    # print("After Update", [(t.x, t.y) for t in cell.ports])
 
 
 def select_random_component(list_components):

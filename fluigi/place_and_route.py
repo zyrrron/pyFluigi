@@ -47,11 +47,9 @@ def generate_device_from_mint(
     if current_device is None:
         raise Exception("Error generating device from the MINT file !")
     try:
-        # start_java_vm()
         pull_defaults(current_device)
         pull_dimensions(current_device)
         pull_terminals(current_device)
-        # stop_java_vm()
     except Exception as e:
         print("Error getting Primitive data: {}".format(e))
     print(
@@ -135,7 +133,6 @@ def place_and_route_mint(
     with open(temp_parchmint_file, "w") as f:
         json.dump(current_device.to_parchmint_v1_x(), f)
 
-    # print(current_device.G.edges)
 
     utils.printgraph(current_device.G, current_device.name + ".dot")
 
@@ -206,7 +203,6 @@ def place_and_route_mint(
             json.dump(par_device.to_parchmint_v1_x(), f)
     else:
         par_device = generate_device_from_parchmint(str(temp_parchmint_file))
-        # reduce_device_size(par_device, parameters.DEVICE_PADDING)
         utils.render_svg(par_device, "_par_failed")
 
         tnew = parameters.OUTPUT_DIR.joinpath(
@@ -230,7 +226,6 @@ def place_and_route_mint(
 
     layout.print_layout("preview")
 
-    # layout.route_nets(RouterAlgorithms.AARF)
 
     layout.apply_layout()
 
@@ -243,8 +238,6 @@ def place_and_route_mint(
     sys.exit(0)
 
     # #Generate the Simulated Annealing Layout
-    # generate_simulated_annealing_layout_v2(current_device)
-    # generate_simulated_annealing_layout(layout)
 
     if current_device is None:
         print("Error - Current device wasn't parsed correctly")
@@ -269,11 +262,7 @@ def place_and_route_mint(
 
     layout.apply_layout()
 
-    # generateSpectralLayout(layout)
-    # generateHOLALayout(layout)
-    # layout.applyLayout()
     layout.ensureLegalCoordinates()
-    # layout.print_layout()
 
     temp_parchmint_file = os.path.join(
         parameters.OUTPUT_DIR, "{}_hola_par.json".format(current_device.name)

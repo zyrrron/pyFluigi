@@ -40,9 +40,7 @@ class LayoutGrid:
         elif cy + y_offset < 0:
             y_offset = 0
 
-        # print("Temporary Moving Cell by: ({}, {})".format(x_offset, y_offset))
         move(c, x_offset, y_offset)
-        # print("Temporary Moved Cell {} : ({}, {})".format(c.id, c.x, c.y))
         self.c = c
         self.x_offset_memory = x_offset
         self.y_offset_memory = y_offset
@@ -57,11 +55,6 @@ class LayoutGrid:
         self.remove_component(self.c)
 
         move(self.c, self.x_offset_memory, self.y_offset_memory)
-        # print(
-        #     "Saving Move, new location of cell {}: ({}, {})".format(
-        #         self.c.id, self.c.x, self.c.y
-        #     )
-        # )
         self.add_component(self.c)
 
     def undo_move(self) -> None:

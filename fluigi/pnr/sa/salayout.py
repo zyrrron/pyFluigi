@@ -98,24 +98,12 @@ class SALayout(Layout):
 
     def calculate_wirelength(self) -> float:
         wire_sum = 0
-        # print("Cell info")
-        # for cell in list(self.cells.values()):
-        #     print("Cell ID: {}".format(cell.id))
-        #     for port in cell.ports:
-        #         print("Cell Terminal- {} ({}, {})".format(port.label, port.x, port.y))
 
         for net in list(self.nets.values()):
             source_cell = net.source
-            # print("Source ID: {}".format(source_cell.id))
             source_terminal = net.source_terminal
-            # print(
-            #     "Source Terminal- {} ({}, {})".format(
-            #         source_terminal.label, source_terminal.x, source_terminal.y
-            #     )
-            # )
             for i in range(len(net.sink_terminals)):
                 sink_cell = net.sinks[i]
-                # print("Sink ID: {}".format(sink_cell.id))
                 sink_terminal = net.sink_terminals[i]
                 m_dist = manhattan_dist(source_terminal, sink_terminal)
                 penalty = calc_position(
@@ -125,9 +113,7 @@ class SALayout(Layout):
         return wire_sum
 
     def calc_prev_comp_wirelength(self, c: CCell) -> None:
-        # print("prev", self.pre_move_wirelength)
         self.pre_move_wirelength = self.calc_comp_wirelength(c)
-        # print("after", self.pre_move_wirelength)
         storage.store_data(
             "instance-premove-comp-wire-length-after-calc", self.pre_move_wirelength
         )
@@ -148,7 +134,6 @@ class SALayout(Layout):
                 wire_sum += dist + OVERLAP_PENALTY / 2 * penalty
         storage.store_data("instance-comp-wirelenght-randc", wire_sum)
 
-        # print("ret wiresum ", wire_sum)
         return wire_sum
 
     def calc_prev_comp_overlap(self, randc: CCell) -> None:

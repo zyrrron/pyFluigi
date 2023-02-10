@@ -27,7 +27,6 @@ class SAPlace:
         self.layout = salayout
         self.list_components = list(salayout.cells.values())
         self.seed = 0
-        # list_components = []
         self.rate_accept = 0.0
         self.temp = 0
         self.range_x = DEVICE_X_DIM / LAMBDA
@@ -126,27 +125,9 @@ class SAPlace:
 
     def init_temp(self):
         print("Initializing Temperature...")
-        # storage.store_data("Current Top Edge", self.layout.cur_top_edge)
-        # storage.store_data("Current Right Edge", self.layout.cur_right_edge)
-        # storage.store_data("Current Bottom Edge", self.layout.cur_bottom_edge)
-        # storage.store_data("Current Left Edge", self.layout.cur_left_edge)
 
-        # storage.store_data("Old Cost", self.layout.old_cost)
-        # storage.store_data("Old Area", self.layout.old_area)
-        # storage.store_data("Old Overlap", self.layout.old_overlap)
-        # storage.store_data("Old wirelength", self.layout.old_wirelength)
 
-        # storage.store_data("Current Cost", self.layout.cur_cost)
-        # storage.store_data("Current Area", self.layout.cur_area)
-        # storage.store_data("Current Overlap", self.layout.cur_overlap)
-        # storage.store_data("Current Wirelength", self.layout.cur_wirelength)
 
-        # storage.store_data(
-        #     "Previous move comp overlap", self.layout.pre_move_comp_overlap
-        # )
-        # storage.store_data("Previous move wirelength", self.layout.pre_move_wirelength)
-        # storage.store_data("Final cost", self.layout.cur_cost)
-        # storage.new_stage()
         cost_history = []
         for i in range(len(self.list_components)):
             if random.random() > 0.5:
@@ -166,30 +147,10 @@ class SAPlace:
             self.layout.grid.apply_move()
             self.layout.calculate_cost(rand_c)
             cost_history.append(self.layout.cur_cost)
-            # storage.store_data("Current Top Edge", self.layout.cur_top_edge)
-            # storage.store_data("Current Right Edge", self.layout.cur_right_edge)
-            # storage.store_data("Current Bottom Edge", self.layout.cur_bottom_edge)
-            # storage.store_data("Current Left Edge", self.layout.cur_left_edge)
 
-            # storage.store_data("Old Cost", self.layout.old_cost)
-            # storage.store_data("Old Area", self.layout.old_area)
-            # storage.store_data("Old Overlap", self.layout.old_overlap)
-            # storage.store_data("Old wirelength", self.layout.old_wirelength)
 
-            # storage.store_data("Current Cost", self.layout.cur_cost)
-            # storage.store_data("Current Area", self.layout.cur_area)
-            # storage.store_data("Current Overlap", self.layout.cur_overlap)
-            # storage.store_data("Current Wirelength", self.layout.cur_wirelength)
 
-            # storage.store_data(
-            #     "Previous move comp overlap", self.layout.pre_move_comp_overlap
-            # )
-            # storage.store_data(
-            #     "Previous move wirelength", self.layout.pre_move_wirelength
-            # )
-            # storage.store_data("Final cost", self.layout.cur_cost)
 
         self.initial_temp = SIGMA_MULTIPLIER * numpy.std(cost_history)
         print("Initial Temperature: {}".format(self.initial_temp))
-        # storage.print_data()
         storage.save_data()
