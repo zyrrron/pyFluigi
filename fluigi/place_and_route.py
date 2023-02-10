@@ -1,32 +1,28 @@
-from fluigi.conversions import add_spacing
-from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
-from fluigi.pnr.sa.saplace import SAPlace
-from fluigi.pnr.sa.salayout import SALayout
+import faulthandler
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+import networkx as nx
+from parchmint import Device
 from pymint import MINTDevice
+
+import fluigi.parameters as parameters
 import fluigi.utils as utils
-from fluigi.primitives import (
+from fluigi.conversions import add_spacing
+from fluigi.pnr.dropx import place_and_route_dropx
+from fluigi.pnr.layout import Layout, RouterAlgorithms
+from fluigi.pnr.placement.graph import generateSpringLayout
+from fluigi.pnr.sa.salayout import SALayout
+from fluigi.pnr.sa.saplace import SAPlace
+from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
+from fluigi.primitives import (  # stop_java_vm,
     pull_defaults,
     pull_dimensions,
     pull_terminals,
-    # stop_java_vm,
 )
-from fluigi.pnr.layout import Layout, RouterAlgorithms
-import sys
-import os
-import subprocess
-from pathlib import Path
-import fluigi.parameters as parameters
-from parchmint import Device
-import json
-import networkx as nx
-
-from fluigi.pnr.placement.graph import (
-    generateSpringLayout,
-    )
-
-from fluigi.pnr.dropx import place_and_route_dropx
-
-import faulthandler
 
 faulthandler.enable()
 
