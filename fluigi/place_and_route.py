@@ -10,7 +10,7 @@ from fluigi.primitives import (
     pull_terminals,
     # stop_java_vm,
 )
-from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
+from fluigi.pnr.layout import Layout, RouterAlgorithms
 import sys
 import os
 import subprocess
@@ -19,19 +19,10 @@ import fluigi.parameters as parameters
 from parchmint import Device
 import json
 import networkx as nx
-from fluigi.pnr.terminalassignment import assign_single_port_terminals
 
 from fluigi.pnr.placement.graph import (
-    generatePlanarLayout,
-    generateSpectralLayout,
     generateSpringLayout,
-    generateHOLALayout,
-)
-
-from fluigi.pnr.placement.simulatedannealing import (
-    generate_simulated_annealing_layout,
-    generate_simulated_annealing_layout_v2,
-)
+    )
 
 from fluigi.pnr.dropx import place_and_route_dropx
 

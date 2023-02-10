@@ -7,7 +7,7 @@ from typing import Optional, List
 from pymint.mintdevice import MINTDevice
 import sys
 from enum import Enum
-from fluigi.parameters import PT_TO_UM, PT_TO_MM
+from fluigi.parameters import PT_TO_UM
 
 from fluigi.pnr.place_and_route import Terminal as CTerminal
 from fluigi.pnr.place_and_route import Net as CNet

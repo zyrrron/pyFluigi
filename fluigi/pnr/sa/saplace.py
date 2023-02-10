@@ -2,7 +2,6 @@ from __future__ import annotations
 from fluigi.pnr.sa.utils import (
     select_random_component,
     update_terminals,
-    AlgDataStorage,
     storage,
 )
 from fluigi.parameters import (
