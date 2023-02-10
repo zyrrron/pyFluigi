@@ -1,41 +1,38 @@
-from fluigi.conversions import add_spacing
-from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
-from fluigi.pnr.sa.saplace import SAPlace
-from fluigi.pnr.sa.salayout import SALayout
-from pymint import MINTDevice
-import fluigi.utils as utils
-from fluigi.primitives import (
-    pull_defaults,
-    pull_dimensions,
-    pull_terminals,
-    # stop_java_vm,
-)
-from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
-import sys
+import faulthandler
+import json
 import os
 import subprocess
+import sys
 from pathlib import Path
-import fluigi.parameters as parameters
-from parchmint import Device
-import json
-import networkx as nx
-from fluigi.pnr.terminalassignment import assign_single_port_terminals
 
+import networkx as nx
+from parchmint import Device
+from pymint import MINTDevice
+
+import fluigi.parameters as parameters
+import fluigi.utils as utils
+from fluigi.conversions import add_spacing
+from fluigi.pnr.dropx import place_and_route_dropx
+from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
 from fluigi.pnr.placement.graph import (
+    generateHOLALayout,
     generatePlanarLayout,
     generateSpectralLayout,
     generateSpringLayout,
-    generateHOLALayout,
 )
-
 from fluigi.pnr.placement.simulatedannealing import (
     generate_simulated_annealing_layout,
     generate_simulated_annealing_layout_v2,
 )
-
-from fluigi.pnr.dropx import place_and_route_dropx
-
-import faulthandler
+from fluigi.pnr.sa.salayout import SALayout
+from fluigi.pnr.sa.saplace import SAPlace
+from fluigi.pnr.terminalassignment import assign_single_port_terminals
+from fluigi.pnr.utils import assign_component_ports, reduce_device_size, size_nodes
+from fluigi.primitives import (  # stop_java_vm,
+    pull_defaults,
+    pull_dimensions,
+    pull_terminals,
+)
 
 faulthandler.enable()
 
@@ -112,7 +109,7 @@ def place_and_route_mint(
 
     else:
         print("Unrecognized file Extension")
-        exit(0)
+        sys.exit(0)
 
     # If the render svg parameter flag is enabled, then just render the svg
     file_path = Path(input_file)
@@ -121,7 +118,7 @@ def place_and_route_mint(
             utils.render_svg(current_device, file_path.stem)
         else:
             print("File extension not supported")
-        exit(0)
+        sys.exit(0)
 
     add_spacing(current_device)
 
@@ -142,7 +139,7 @@ def place_and_route_mint(
     # TODO - Delete this later
     place_and_route_dropx(current_device)
 
-    exit(0)
+    sys.exit(0)
     # We exit the process if only convert is set to true
     # # Do Terminal Assignment
     # assign_single_port_terminals(current_device)
@@ -168,7 +165,7 @@ def place_and_route_mint(
             json.dump(current_device.to_parchmint_v1_x(), f)
 
         print("Completed Routing Operation, exiting...")
-        exit(0)
+        sys.exit(0)
 
     # Check if the device netlist is planar
     graph = current_device.G
@@ -218,9 +215,9 @@ def place_and_route_mint(
         print(
             "Place and Route completed with errors, please check the terminal output for information"
         )
-        exit(-1)
+        sys.exit(-1)
 
-    exit(0)
+    sys.exit(0)
 
     layout = Layout()
 
