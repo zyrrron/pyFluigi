@@ -1,8 +1,9 @@
-import networkx as nx
 import matplotlib.pyplot as plt
-from fluigi.pnr.layout import Layout
-from fluigi.pnr.hola import adaptagrams as adg
+import networkx as nx
+
 import fluigi.parameters as parameters
+from fluigi.pnr.hola import adaptagrams as adg
+from fluigi.pnr.layout import Layout
 
 
 def generatePlanarLayout(layout: Layout):
@@ -77,7 +78,6 @@ def generateSpringLayout(layout: Layout):
 
 
 def generateHOLALayout(layout: Layout):
-
     cell_node_map = dict()
     net_edge_map = dict()
     hola_graph = adg.Graph()

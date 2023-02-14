@@ -1,12 +1,10 @@
-from math import floor
-from typing import Dict, List, Optional
-from fluigi.pnr.place_and_route import (
-    PlacementCell as CCell,
-    Terminal as CTerminal,
-    Net as CNet,
-)
 import random
 from enum import Enum
+from math import floor
+from typing import Dict, List, Optional
+
+from fluigi.pnr.place_and_route import PlacementCell as CCell
+from fluigi.pnr.place_and_route import Terminal as CTerminal
 
 
 class TerminalLocation(Enum):
@@ -76,7 +74,6 @@ def calc_position(
     sink_cell: CCell,
     sink_terminal: CTerminal,
 ) -> int:
-
     sx = source_terminal.x
     sy = source_terminal.y
 
@@ -119,7 +116,6 @@ def calc_position(
 
 
 def get_terminal(cell, label) -> CTerminal:
-
     # warning ! only access using for i in range pattern
     for i in range(len(cell.ports)):
         if cell.ports[i].label == label:
@@ -186,7 +182,6 @@ class AlgDataStorage:
                 self._data[param].append(None)
             self._data[param].append(data)
         else:
-
             self._data[param] = []
             # fill None's as padding
             for i in range(self._size - 1):
@@ -205,9 +200,7 @@ class AlgDataStorage:
         self.pad_data()
         text = ",".join(self._data.keys()) + "\n"
         for i in range(self._size):
-            text += (
-                ",".join([str(self._data[key][i]) for key in self._data.keys()])
-            ) + "\n"
+            text += (",".join([str(self._data[key][i]) for key in self._data])) + "\n"
         f = open("SA-Data.csv", "w")
         f.write(text)
         f.close()

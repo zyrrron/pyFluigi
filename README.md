@@ -8,18 +8,19 @@ First, run the following commands for recursively cloning all the required depen
 
 ```
 git clone --recurse-submodules -j8 https://github.com/cidarlab/pyfluigi
-cd Neptune
+cd pyfluigi
 git submodule update --init --recursive
 git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
 ```
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
 
-On starting the dev container, install the dependencies using `pip` (due to active errors in `poetry`, the wheel installation for `dafd` is failing). Because the poetry lock file is present, it should install all dependencies from there. Please use `poetry` for adding new dependencies.
+Please use `poetry` for adding new dependencies, installing the environment, and running the tests.
 
 ```
-pip install .
+poetry install
 ```
 
+Use the vscode development container for development. The container will automatically install the required dependencies and set up the environment.
 
 ## Dependencies
 
@@ -31,7 +32,8 @@ pip install .
 sudo apt-get install libbz2-dev libcairo2-dev pkg-config python3-dev libffi-dev graphviz
 ```
 
-## Running Benchmark Test Scripts
+## Running Benchmark Test Scripts (For full Fluigi Pipeline)
+
 
 ```
 cd scripts

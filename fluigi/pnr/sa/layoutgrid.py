@@ -1,16 +1,17 @@
 from __future__ import annotations
+
 from math import ceil
-from fluigi.pnr.layout import Layout
 from typing import Dict, List, Tuple
-from fluigi.pnr.place_and_route import PlacementCell as CCell
+
 from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA, SA_GRID_BLOCK_SIZE
+from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.sa.utils import (
+    bottom_edge,
     left_edge,
     move,
     overlap_area,
     right_edge,
     top_edge,
-    bottom_edge,
 )
 
 
@@ -49,9 +50,7 @@ class LayoutGrid:
 
     def apply_move(self) -> None:
         if self.c is None:
-            raise Exception(
-                "Could not apply move becuase current component is set to None"
-            )
+            raise Exception("Could not apply move becuase current component is set to None")
         move(self.c, -self.x_offset_memory, -self.y_offset_memory)
 
         self.remove_component(self.c)
@@ -66,9 +65,7 @@ class LayoutGrid:
 
     def undo_move(self) -> None:
         if self.c is None:
-            raise Exception(
-                "Could not apply move becuase current component is set to None"
-            )
+            raise Exception("Could not apply move becuase current component is set to None")
 
         move(self.c, -self.x_offset_memory, -self.y_offset_memory)
 
