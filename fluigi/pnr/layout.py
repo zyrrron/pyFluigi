@@ -1,26 +1,27 @@
-import cairo
-from fluigi import parameters
-from fluigi.pnr.sa.utils import get_terminal
-from math import floor
-import networkx as nx
-from typing import Optional, List
-from pymint.mintdevice import MINTDevice
 import sys
 from enum import Enum
-from fluigi.parameters import PT_TO_UM, PT_TO_MM
+from math import floor
+from typing import List, Optional
 
-from fluigi.pnr.place_and_route import Terminal as CTerminal
+import cairo
+import networkx as nx
+from pymint.mintdevice import MINTDevice
+
+from fluigi import parameters
+from fluigi.parameters import PT_TO_MM, PT_TO_UM
+from fluigi.pnr.place_and_route import Cell as Obstacle
 from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.place_and_route import Placer as CPlacer
+from fluigi.pnr.place_and_route import Route
+from fluigi.pnr.place_and_route import Router as AARFRouter
+from fluigi.pnr.place_and_route import Terminal as CTerminal
+from fluigi.pnr.place_and_route import Vertex
+from fluigi.pnr.sa.utils import get_terminal
 
 # from fluigi.pnr.aarf import Cell as Obstacle
 # from fluigi.pnr.aarf import Router as AARFRouter
 # from fluigi.pnr.aarf import Vertex, Route
-
-from fluigi.pnr.place_and_route import Cell as Obstacle
-from fluigi.pnr.place_and_route import Router as AARFRouter
-from fluigi.pnr.place_and_route import Vertex, Route
 
 
 class RouterAlgorithms(Enum):
@@ -57,11 +58,7 @@ class Layout:
                     path.append((vertex.x, vertex.y))
 
                 connection.add_waypoints_path(None, None, path)
-                print(
-                    "Updating connection: {} with path {}".format(
-                        connection.ID, str(path)
-                    )
-                )
+                print("Updating connection: {} with path {}".format(connection.ID, str(path)))
 
     def ensureLegalCoordinates(self):
         # Make sure all the cell coordinates are positive
@@ -82,7 +79,6 @@ class Layout:
                 maxy = cell.y + cell.y_span
 
     def importMINTwithoutConstraints(self, device: MINTDevice) -> None:
-
         self.__original_device = device
 
         pcells = []
@@ -157,11 +153,7 @@ class Layout:
                         t = get_terminal(pcell, sink.port)
                         sink_terminals.append(t)
                     except Exception:
-                        print(
-                            "Could not find Terminal for source port: {} for connection: {}".format(
-                                source.id, id
-                            )
-                        )
+                        print("Could not find Terminal for source port: {} for connection: {}".format(source.id, id))
 
                 else:
                     if len(pcell.ports) == 1:
@@ -204,7 +196,6 @@ class Layout:
         raise Exception("Not Implemented")
 
     def route_nets(self, router_type: RouterAlgorithms = RouterAlgorithms.AARF) -> None:
-
         # Step 1 - generate the source and targets points for all the connections
         all_routes = []
         obstacle_check_vertices = []
@@ -266,9 +257,7 @@ class Layout:
         print("Routed route:")
         for route in all_routes:
             print(
-                "Route: Start - ({}, {}) End - ({}, {})".format(
-                    route.start.x, route.start.y, route.end.x, route.end.y
-                )
+                "Route: Start - ({}, {}) End - ({}, {})".format(route.start.x, route.start.y, route.end.x, route.end.y)
             )
             print("Waypoints:")
             for waypoint in route.waypoints:

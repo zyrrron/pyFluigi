@@ -1,5 +1,13 @@
 from __future__ import annotations
 
+import sys
+
+from fluigi.parameters import AREA_PENALTY, OVERLAP_PENALTY, WIRE_PENALTY
+from fluigi.pnr.layout import Layout
+from fluigi.pnr.place_and_route import Net as CNet
+from fluigi.pnr.place_and_route import PlacementCell as CCell
+from fluigi.pnr.place_and_route import Terminal as CTerminal
+from fluigi.pnr.sa.layoutgrid import LayoutGrid
 from fluigi.pnr.sa.utils import (
     bottom_edge,
     calc_position,
@@ -7,15 +15,9 @@ from fluigi.pnr.sa.utils import (
     manhattan_dist,
     overlap_area,
     right_edge,
-    top_edge,
     storage,
+    top_edge,
 )
-from fluigi.pnr.sa.layoutgrid import LayoutGrid
-from fluigi.parameters import AREA_PENALTY, OVERLAP_PENALTY, WIRE_PENALTY
-from fluigi.pnr.place_and_route import PlacementCell as CCell, Terminal as CTerminal
-from fluigi.pnr.place_and_route import Net as CNet
-from fluigi.pnr.layout import Layout
-import sys
 
 
 class SALayout(Layout):
@@ -42,7 +44,6 @@ class SALayout(Layout):
         self.pre_move_wirelength = 0
 
     def calc_init_cost(self) -> float:
-
         self.old_area = self.cur_area
         self.cur_area = self.calculate_area()
 
@@ -54,35 +55,23 @@ class SALayout(Layout):
 
         self.old_cost = self.cur_cost
         self.cur_cost = (
-            self.cur_wirelength * WIRE_PENALTY
-            + self.cur_area * AREA_PENALTY
-            + self.cur_overlap * OVERLAP_PENALTY
+            self.cur_wirelength * WIRE_PENALTY + self.cur_area * AREA_PENALTY + self.cur_overlap * OVERLAP_PENALTY
         )
         return self.cur_cost
 
     def calculate_cost(self, randc: CCell) -> float:
         self.old_wirelength = self.cur_wirelength
-        self.cur_wirelength = (
-            self.old_wirelength
-            - self.pre_move_wirelength
-            + self.calc_comp_wirelength(randc)
-        )
+        self.cur_wirelength = self.old_wirelength - self.pre_move_wirelength + self.calc_comp_wirelength(randc)
 
         self.old_area = self.cur_area
         self.cur_area = self.calculate_area()
 
         self.old_overlap = self.cur_overlap
-        self.cur_overlap = (
-            self.old_overlap
-            - self.pre_move_comp_overlap
-            + self.calculate_comp_overlap(randc)
-        )
+        self.cur_overlap = self.old_overlap - self.pre_move_comp_overlap + self.calculate_comp_overlap(randc)
 
         self.old_cost = self.cur_cost
         self.cur_cost = (
-            self.cur_wirelength * WIRE_PENALTY
-            + self.cur_area * AREA_PENALTY
-            + self.cur_overlap * OVERLAP_PENALTY
+            self.cur_wirelength * WIRE_PENALTY + self.cur_area * AREA_PENALTY + self.cur_overlap * OVERLAP_PENALTY
         )
         return self.cur_cost
 
@@ -118,9 +107,7 @@ class SALayout(Layout):
                 # print("Sink ID: {}".format(sink_cell.id))
                 sink_terminal = net.sink_terminals[i]
                 m_dist = manhattan_dist(source_terminal, sink_terminal)
-                penalty = calc_position(
-                    source_cell, source_terminal, sink_cell, sink_terminal
-                )
+                penalty = calc_position(source_cell, source_terminal, sink_cell, sink_terminal)
                 wire_sum += m_dist + OVERLAP_PENALTY / 2 * penalty
         return wire_sum
 
@@ -128,9 +115,7 @@ class SALayout(Layout):
         # print("prev", self.pre_move_wirelength)
         self.pre_move_wirelength = self.calc_comp_wirelength(c)
         # print("after", self.pre_move_wirelength)
-        storage.store_data(
-            "instance-premove-comp-wire-length-after-calc", self.pre_move_wirelength
-        )
+        storage.store_data("instance-premove-comp-wire-length-after-calc", self.pre_move_wirelength)
 
     def calc_comp_wirelength(self, c: CCell) -> float:
         wire_sum = 0
@@ -142,9 +127,7 @@ class SALayout(Layout):
                 sink_cell = net.sinks[i]
                 sink_terminal = net.sink_terminals[i]
                 dist = manhattan_dist(source_terminal, sink_terminal)
-                penalty = calc_position(
-                    source_cell, source_terminal, sink_cell, sink_terminal
-                )
+                penalty = calc_position(source_cell, source_terminal, sink_cell, sink_terminal)
                 wire_sum += dist + OVERLAP_PENALTY / 2 * penalty
         storage.store_data("instance-comp-wirelenght-randc", wire_sum)
 
@@ -220,9 +203,7 @@ class SALayout(Layout):
         self.cur_overlap = self.calculate_overlap()
         self.cur_wirelength = self.calculate_wirelength()
         self.cur_cost = (
-            self.cur_wirelength * WIRE_PENALTY
-            + self.cur_area * AREA_PENALTY
-            + self.cur_overlap * OVERLAP_PENALTY
+            self.cur_wirelength * WIRE_PENALTY + self.cur_area * AREA_PENALTY + self.cur_overlap * OVERLAP_PENALTY
         )
 
         return self.cur_cost

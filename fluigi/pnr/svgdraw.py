@@ -1,7 +1,8 @@
 from __future__ import annotations
-import cairo
-from fluigi.parameters import OUTPUT_DIR, DEVICE_X_DIM, DEVICE_Y_DIM
 
+import cairo
+
+from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, OUTPUT_DIR
 
 PT_TO_UM = 1 / 352.778
 
@@ -12,9 +13,7 @@ class SVGDraw(object):
         self._layout = layout
 
     def generate_output(self) -> None:
-        surface = cairo.SVGSurface(
-            str(self._file_path), DEVICE_X_DIM * PT_TO_UM, DEVICE_Y_DIM * PT_TO_UM
-        )
+        surface = cairo.SVGSurface(str(self._file_path), DEVICE_X_DIM * PT_TO_UM, DEVICE_Y_DIM * PT_TO_UM)
         ctx = cairo.Context(surface)
         ctx.scale(PT_TO_UM, PT_TO_UM)
 

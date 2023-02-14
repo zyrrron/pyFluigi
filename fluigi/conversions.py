@@ -1,15 +1,12 @@
 import json
 from pathlib import Path
-from fluigi import utils
-import fluigi.parameters as parameters
+
 from pymint.mintdevice import MINTDevice
+
+import fluigi.parameters as parameters
+from fluigi import utils
 from fluigi.pnr.utils import assign_component_ports
-from fluigi.primitives import (
-    pull_defaults,
-    pull_dimensions,
-    pull_terminals,
-    size_nodes,
-)
+from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals, size_nodes
 
 
 def add_spacing(current_device: MINTDevice) -> None:
@@ -19,14 +16,10 @@ def add_spacing(current_device: MINTDevice) -> None:
 
     for connection in current_device.device.connections:
         if connection.params.exists("connectionSpacing") is False:
-            connection.params.set_param(
-                "connectionSpacing", parameters.CONNECTION_SPACING
-            )
+            connection.params.set_param("connectionSpacing", parameters.CONNECTION_SPACING)
 
 
-def generate_device_from_mint(
-    file_path: str, skip_constraints: bool = False
-) -> MINTDevice:
+def generate_device_from_mint(file_path: str, skip_constraints: bool = False) -> MINTDevice:
     current_device = MINTDevice.from_mint_file(file_path, skip_constraints)
     if current_device is None:
         raise Exception("Error generating device from the MINT file !")
