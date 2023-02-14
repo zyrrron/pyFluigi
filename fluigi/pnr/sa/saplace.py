@@ -15,11 +15,7 @@ from fluigi.parameters import (
     SIGMA_MULTIPLIER,
 )
 from fluigi.pnr.sa.salayout import SALayout
-from fluigi.pnr.sa.utils import (
-    select_random_component,
-    storage,
-    update_terminals,
-)
+from fluigi.pnr.sa.utils import select_random_component, storage, update_terminals
 
 
 class SAPlace:

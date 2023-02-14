@@ -2,10 +2,6 @@ from fluigi.pnr.sfc.compositecell import CompositeCell
 from fluigi.pnr.sfc.primitivecell import PrimitiveCell
 
 
-
-
-
-
 def generate_new_primitive(x, y):
     return PrimitiveCell(x_coord=x, y_coord=y, size=100, ports_exists=[])
 

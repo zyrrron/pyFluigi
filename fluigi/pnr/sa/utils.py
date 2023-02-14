@@ -2,6 +2,7 @@ import random
 from enum import Enum
 from math import floor
 from typing import Dict, List, Optional
+
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.place_and_route import Terminal as CTerminal
 
