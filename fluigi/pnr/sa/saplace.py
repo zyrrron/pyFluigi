@@ -16,7 +16,6 @@ from fluigi.parameters import (
 )
 from fluigi.pnr.sa.salayout import SALayout
 from fluigi.pnr.sa.utils import (
-    AlgDataStorage,
     select_random_component,
     storage,
     update_terminals,

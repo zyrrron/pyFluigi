@@ -1,5 +1,4 @@
 import pytest
-from parchmint.port import Port
 from tests.conftest import east_ports, north_ports
 
 from fluigi.pnr.sfc.port_spread import (
@@ -83,9 +82,6 @@ def test_generate_bin_map(north_ports, east_ports, component):
     assert bin_map == {0: 0, 1: 2, 2: 5, 3: 7, 4: 9}
 
     # # This is a 5 spread array
-    # spread_array = [True, True, True, True, True, True]
-    # bin_map = generate_bin_map(spread_array, east_ports, component, ComponentSide.EAST)
-    # assert bin_map == {0: 1, 1: 3, 2: 4, 3: 5}
 
 
 def test_shift_furthest_fesible_point():

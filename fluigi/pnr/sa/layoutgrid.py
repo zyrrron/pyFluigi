@@ -4,7 +4,6 @@ from math import ceil
 from typing import Dict, List, Tuple
 
 from fluigi.parameters import DEVICE_X_DIM, DEVICE_Y_DIM, LAMBDA, SA_GRID_BLOCK_SIZE
-from fluigi.pnr.layout import Layout
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.sa.utils import (
     bottom_edge,

@@ -1,7 +1,4 @@
 from __future__ import annotations
-
-from enum import Enum
-from queue import Queue
 from typing import Dict, List, NamedTuple
 
 from parchmint.component import Component
@@ -25,12 +22,12 @@ class CompositeCell:
             ValueError: If the cell list is empty / the coordinates of the cells are incorrect
         """
         # Check to ensure all primitive cell indexes are correct
-        for row_index in range(len(cell_list)):
-            for column_index in range(len(cell_list[row_index])):
-                temp_cell = cell_list[row_index][column_index]
+        for row_index, _ in enumerate(cell_list):
+            for column_index, item in enumerate(cell_list[row_index]):
+                temp_cell = item
                 if (temp_cell.y_offset, temp_cell.x_offset) != (row_index, column_index):
                     raise ValueError(
-                        f"Cell at index ({temp_cell.y_offset}, {temp_cell.x_offset}) has an incorrect index of {cell_list[row_index][column_index]}"
+                        f"Cell at index ({temp_cell.y_offset}, {temp_cell.x_offset}) has an incorrect index of {item}"
                     )
 
         self._cells = cell_list
@@ -88,27 +85,27 @@ class CompositeCell:
         west_side = [cell.west_port for cell in [row[0] for row in backup_cells_list]]
 
         # Activate the east ports in the new cell list by looking at the north side of the old cell list
-        for index in range(len(north_side)):
+        for index, item in enumerate(north_side):
             # Check if true on the north side
-            if north_side[index]:
+            if item:
                 cell_list[index][-1].activate_port(ComponentSide.EAST)
 
         # Activate the south ports in the new cell list by looking at the east side of the old cell list
-        for index in range(len(east_side)):
+        for index, item in enumerate(east_side):
             # Check if true on the east side
-            if east_side[index]:
+            if item:
                 cell_list[-1][index].activate_port(ComponentSide.SOUTH)
 
         # Activate the west ports in the new cell list by looking at the south side of the old cell list
-        for index in range(len(south_side)):
+        for index, item in enumerate(south_side):
             # Check if true on the south side
-            if south_side[index]:
+            if item:
                 cell_list[index][0].activate_port(ComponentSide.WEST)
 
         # Activate the north ports in the new cell list by looking at the west side of the old cell list
-        for index in range(len(west_side)):
+        for index, item in enumerate(west_side):
             # Check if true on the west side
-            if west_side[index]:
+            if item:
                 cell_list[0][index].activate_port(ComponentSide.NORTH)
 
         # Assign the new cell list to the property
@@ -119,12 +116,12 @@ class CompositeCell:
             # Check if types are correct
             if len(self._cells) == len(o.cells):
                 # Check if the dimensions are the same
-                for i in range(len(self._cells)):
-                    if len(self._cells[i]) != len(o.cells[i]):
+                for i, item in enumerate(self._cells):
+                    if len(item) != len(o.cells[i]):
                         return False
                 # Check if the cells are the same
-                for i in range(len(self._cells)):
-                    for j in range(len(self._cells[i])):
+                for i, item in enumerate(self._cells):
+                    for j in range(len(item)):
                         if self.get_cell(j, i) != o.get_cell(j, i):
                             print(f"Cell at ({i}, {j}) is not the same")
                             return False
@@ -259,12 +256,10 @@ class CompositeCell:
         Returns:
             CompositeCell: Composite cell generated from the component
         """
-
         # TODO - Figure out if this the right way to do this.
         # Currently setting the dimension to be the threshold /
         # We should change the spacer function to be a relaxer
         # eveywhere
-
         computed_dimension = SPACER_THRESHOLD
 
         # Create a list of lists of primitive cells
@@ -386,7 +381,6 @@ class CompositeCell:
 
     def print_cell(self):
         """Prints the composite cell"""
-
         for row in self._cells:
             top_row_string_full_row = ""
             spacer_row_string_full_row = ""
@@ -411,7 +405,6 @@ class CompositeCell:
 
     def print_cell_indexes(self):
         """Prints the composite cell indexes"""
-
         for row in self._cells:
             row_str = ""
             for cell in row:

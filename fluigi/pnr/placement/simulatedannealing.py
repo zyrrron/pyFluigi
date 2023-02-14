@@ -1,4 +1,3 @@
-# from jpype.types import *
 import json
 
 from pymint.mintdevice import MINTDevice

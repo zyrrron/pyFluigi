@@ -136,7 +136,6 @@ def insert_vertical_spacer_column(
         insert_index (int): The absolute x coordinate of the insertion
         spacer_insert (SpacerInsert): The spacer insert object that holds the information about the insertion
     """
-
     # Extract the port setting information from the spacer insert
     #  [ ][ ][BN][AN][ ][ ][ ]
     #  [ ][ ][BS][AS][ ][ ][ ]

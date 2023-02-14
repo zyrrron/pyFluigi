@@ -4,9 +4,7 @@ import sys
 
 from fluigi.parameters import AREA_PENALTY, OVERLAP_PENALTY, WIRE_PENALTY
 from fluigi.pnr.layout import Layout
-from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
-from fluigi.pnr.place_and_route import Terminal as CTerminal
 from fluigi.pnr.sa.layoutgrid import LayoutGrid
 from fluigi.pnr.sa.utils import (
     bottom_edge,

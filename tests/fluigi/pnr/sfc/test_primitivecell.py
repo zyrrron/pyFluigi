@@ -1,4 +1,3 @@
-import pytest
 
 from fluigi.pnr.sfc.compositecell import ComponentSide, PrimitiveCell
 

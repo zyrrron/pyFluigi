@@ -1,8 +1,6 @@
-from parchmint.port import Port
-from tests.conftest import cell_test1, cell_test2, cell_test3, generate_new_primitive
+from tests.conftest import cell_test1, cell_test3
 
 from fluigi.pnr.sfc.compositecell import CompositeCell
-from fluigi.pnr.sfc.primitivecell import PrimitiveCell
 from fluigi.pnr.sfc.spacer_insert import (
     SpacerInsert,
     get_spacer_size,

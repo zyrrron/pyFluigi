@@ -2,8 +2,6 @@ import random
 from enum import Enum
 from math import floor
 from typing import Dict, List, Optional
-
-from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
 from fluigi.pnr.place_and_route import Terminal as CTerminal
 
@@ -201,7 +199,7 @@ class AlgDataStorage:
         self.pad_data()
         text = ",".join(self._data.keys()) + "\n"
         for i in range(self._size):
-            text += (",".join([str(self._data[key][i]) for key in self._data.keys()])) + "\n"
+            text += (",".join([str(self._data[key][i]) for key in self._data])) + "\n"
         f = open("SA-Data.csv", "w")
         f.write(text)
         f.close()

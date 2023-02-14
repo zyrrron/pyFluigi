@@ -8,7 +8,7 @@ import networkx as nx
 from pymint.mintdevice import MINTDevice
 
 from fluigi import parameters
-from fluigi.parameters import PT_TO_MM, PT_TO_UM
+from fluigi.parameters import PT_TO_UM
 from fluigi.pnr.place_and_route import Cell as Obstacle
 from fluigi.pnr.place_and_route import Net as CNet
 from fluigi.pnr.place_and_route import PlacementCell as CCell
