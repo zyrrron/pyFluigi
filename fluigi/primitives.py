@@ -73,9 +73,9 @@ def get_terminals(mint: str, params):
         python_object = []
 
         for terminal in terminals:
-            componentport = Port(terminal)
+            componentport = Port(json_data=terminal)
             python_object.append(componentport)
-            # print(componentport)
+            print(componentport)
 
         return python_object
 
