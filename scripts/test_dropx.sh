@@ -10,6 +10,6 @@ for f in ~/CIDAR/MINT-TestCases/dropx/*.mint;
 
 do
     echo "Running File $f";
-    fluigi $f -c --out ~/Desktop/MINT-to-json/dropx
-    fluigi $f --out ~/Desktop/MINT-to-par/dropx
+    fluigi $f convert-to-parchmint --outpath ~/Desktop/MINT-to-json/dropx
+    fluigi $f mint-compile --outpath ~/Desktop/MINT-to-par/dropx
 done

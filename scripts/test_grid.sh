@@ -10,6 +10,6 @@ for f in ~/CIDAR/MINT-TestCases/grid/*.mint;
 
 do
     echo "Runnign File $f";
-    fluigi $f -c --out ~/Desktop/MINT-to-json/grid
-    fluigi $f --out ~/Desktop/MINT-to-par/grid
+    fluigi $f convert-to-parchmint --outpath ~/Desktop/MINT-to-json/grid
+    fluigi $f mint-compile --outpath ~/Desktop/MINT-to-par/grid
 done

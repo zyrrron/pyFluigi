@@ -8,7 +8,7 @@ do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/chthesis
+    fluigi mint-compile $f --outpath ~/Desktop/MINT-to-par/chthesis
 done
 
 echo "-----------------------"
@@ -18,7 +18,7 @@ do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/dropx
+    fluigi mint-compile $f --outpath ~/Desktop/MINT-to-par/dropx
 done
 
 
@@ -29,5 +29,5 @@ do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/grid
+    fluigi mint-compile $f --outpath ~/Desktop/MINT-to-par/grid
 done
