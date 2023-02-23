@@ -6,10 +6,14 @@ date
 
 echo "-----------------------"
 
-for f in ~/CIDAR/MINT-TestCases/chthesis/*.mint;
+FOLDER=out/par/benchmarking_out_"`date +"%d-%m-%Y-%T"`"
+
+echo "Generating results in $FOLDER"
+
+for f in ./Microfluidics-Benchmarks/MINT-TestCases/chthesis/*.mint;
 
 do
     echo "Running File $f";
-    fluigi $f -c --out ~/Desktop/MINT-to-json/chthesis
-    fluigi $f --out ~/Desktop/MINT-to-par/chthesis
+    fluigi  convert-to-parchmint --outpath "$FOLDER/MINT-to-json/chthesis" $f
+    fluigi mint-compile --outpath "$FOLDER/MINT-to-par/chthesis" $f
 done

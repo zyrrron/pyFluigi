@@ -1,20 +1,20 @@
 import json
 from pathlib import Path
 
+from parchmint.device import Device
 from pymint.mintdevice import MINTDevice
-
 import fluigi.parameters as parameters
 from fluigi import utils
 from fluigi.pnr.utils import assign_component_ports
 from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals, size_nodes
 
 
-def add_spacing(current_device: MINTDevice) -> None:
-    for component in current_device.device.components:
+def add_spacing(current_device: Device) -> None:
+    for component in current_device.components:
         if component.params.exists("componentSpacing") is False:
             component.params.set_param("componentSpacing", parameters.COMPONENT_SPACING)
 
-    for connection in current_device.device.connections:
+    for connection in current_device.connections:
         if connection.params.exists("connectionSpacing") is False:
             connection.params.set_param("connectionSpacing", parameters.CONNECTION_SPACING)
 
@@ -27,7 +27,7 @@ def generate_device_from_mint(file_path: str, skip_constraints: bool = False) ->
         pull_defaults(current_device.device)
         pull_dimensions(current_device.device)
         pull_terminals(current_device.device)
-        add_spacing(current_device)
+        add_spacing(current_device.device)
         size_nodes(current_device.device)
     except Exception as e:
         print("Error getting Primitive data: {}".format(e))

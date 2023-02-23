@@ -11,8 +11,8 @@ from pymint import MINTDevice
 
 import fluigi.parameters as parameters
 import fluigi.utils as utils
-from fluigi.conversions import add_spacing
-from fluigi.pnr.dropx import place_and_route_dropx
+from fluigi.conversions import add_spacing, generate_device_from_mint
+# from fluigi.pnr.dropx import place_and_route_dropx
 from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
 from fluigi.pnr.placement.graph import (
     generateHOLALayout,
@@ -36,25 +36,6 @@ from fluigi.primitives import (  # stop_java_vm,
 
 faulthandler.enable()
 
-
-def generate_device_from_mint(file_path: str, skip_constraints: bool = False) -> MINTDevice:
-    current_device = MINTDevice.from_mint_file(file_path, skip_constraints)
-    if current_device is None:
-        raise Exception("Error generating device from the MINT file !")
-    try:
-        # start_java_vm()
-        pull_defaults(current_device)
-        pull_dimensions(current_device)
-        pull_terminals(current_device)
-        # stop_java_vm()
-    except Exception as e:
-        print("Error getting Primitive data: {}".format(e))
-    print(
-        "Setting Default MAX Dimensions to the device: ({}, {})".format(
-            parameters.DEVICE_X_DIM, parameters.DEVICE_Y_DIM
-        )
-    )
-    return current_device
 
 
 def generate_device_from_parchmint(file_path: str) -> Device:
@@ -85,11 +66,13 @@ def place_and_route_mint(
         path = Path(parameters.OUTPUT_DIR)
         path.mkdir(parents=True)
 
+    mint_device = None
     current_device = None
 
     extension = Path(input_file).suffix
     if extension == ".mint" or extension == ".uf":
-        current_device = generate_device_from_mint(input_file, ignore_layout_constraints)
+        mint_device = generate_device_from_mint(input_file, ignore_layout_constraints)
+        current_device = mint_device.device
         # Set the device dimensions
         current_device.params.set_param("x-span", parameters.DEVICE_X_DIM)
         current_device.params.set_param("y-span", parameters.DEVICE_Y_DIM)
@@ -123,14 +106,14 @@ def place_and_route_mint(
 
     temp_parchmint_file = os.path.join(parameters.OUTPUT_DIR, "{}_no_par.json".format(current_device.name))
     with open(temp_parchmint_file, "w") as f:
-        json.dump(current_device.to_parchmint_v1_x(), f)
+        json.dump(current_device.to_parchmint_v1_2(), f)
 
     # print(current_device.G.edges)
 
-    utils.printgraph(current_device.G, current_device.name + ".dot")
+    utils.printgraph(current_device.graph, current_device.name + ".dot")
 
     # TODO - Delete this later
-    place_and_route_dropx(current_device)
+    # place_and_route_dropx(current_device)
 
     sys.exit(0)
     # We exit the process if only convert is set to true
