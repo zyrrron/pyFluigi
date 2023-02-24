@@ -51,17 +51,17 @@ def convert_to_parchmint(
     """
     extension = input_file.suffix
     if extension in (".mint", ".uf"):
-        current_device = generate_device_from_mint(str(input_file), skip_constraints)
+        mint_device = generate_device_from_mint(str(input_file), skip_constraints)
         # Set the device dimensions
-        current_device.device.params.set_param("x-span", parameters.DEVICE_X_DIM)
-        current_device.device.params.set_param("y-span", parameters.DEVICE_Y_DIM)
+        mint_device.device.params.set_param("x-span", parameters.DEVICE_X_DIM)
+        mint_device.device.params.set_param("y-span", parameters.DEVICE_Y_DIM)
 
         # Assign terminals
         if assign_terminals:
-            assign_component_ports(current_device)
+            assign_component_ports(mint_device.device)
 
         # Save the device parchmint v1_2 to a file
-        parchmint_text = current_device.to_parchmint()
+        parchmint_text = mint_device.to_parchmint()
 
         # Create new file in outpath with the same name as the current device
         outpath.mkdir(parents=True, exist_ok=True)
@@ -70,6 +70,6 @@ def convert_to_parchmint(
 
             json.dump(parchmint_text, f, indent=4)
 
-        utils.printgraph(current_device.device.graph, current_device.device.name)
+        utils.printgraph(mint_device.device.graph, mint_device.device.name)
     else:
         raise Exception("Unsupported file extension: {}".format(extension))
