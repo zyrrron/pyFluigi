@@ -1,4 +1,4 @@
-# Fluigi
+# Fluigi <img align="right" src="fluigiLogo.png" width="250">
 
 ## Development Guide
 
