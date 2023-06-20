@@ -45,9 +45,7 @@ def generate_device_from_mint(file_path: str, skip_constraints: bool = False) ->
     pull_terminals(current_device.device)
     add_default_spacing(current_device)
     size_nodes(current_device.device)
-    print(
-        f"Setting Default MAX Dimensions to the device: ({parameters.DEVICE_X_DIM}, {parameters.DEVICE_Y_DIM})"
-    )
+    print(f"Setting Default MAX Dimensions to the device: ({parameters.DEVICE_X_DIM}, {parameters.DEVICE_Y_DIM})")
     return current_device
 
 

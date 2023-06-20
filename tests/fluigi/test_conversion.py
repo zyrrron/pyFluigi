@@ -1,12 +1,12 @@
 import json
 
 from pymint.mintdevice import MINTDevice
+
 from fluigi.pnr.utils import assign_component_ports
 from fluigi.primitives import pull_defaults, pull_dimensions, pull_terminals, size_nodes
 
 
 def test_dx10_ref():
-        
     mint_device = MINTDevice.from_mint_file("/workspaces/pyfluigi/tests/dx10_ref.mint")
 
     current_device = mint_device.device

@@ -49,9 +49,7 @@ def generate_device_from_mint(file_path: str, skip_constraints: bool = False) ->
         # stop_java_vm()
     except Exception as exception:
         print(f"Error getting Primitive data: {exception}")
-    print(
-        f"Setting Default MAX Dimensions to the device: ({parameters.DEVICE_X_DIM}, {parameters.DEVICE_Y_DIM})"
-    )
+    print(f"Setting Default MAX Dimensions to the device: ({parameters.DEVICE_X_DIM}, {parameters.DEVICE_Y_DIM})")
     return current_device
 
 
@@ -63,7 +61,7 @@ def generate_device_from_parchmint(file_path: str) -> Device:
 
     Returns:
         Device: Device that is read from the JSON
-    """    
+    """
     with open(file_path, "r", encoding="utf-8") as data_file:
         text = data_file.read()
         device_json = json.loads(text)
