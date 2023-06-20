@@ -14,13 +14,14 @@ git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gi
 ```
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
 
-Please use `poetry` for adding new dependencies, installing the environment, and running the tests.
+Next, Use the vscode development container for development. You will need to launch it inside vscode. The container will automatically install the required dependencies and set up the environment. You will need to have Docker installed for development containers to work.
+
+Finally, use `poetry` for adding new dependencies, installing the environment, and running the tests.
 
 ```
 poetry install
 ```
 
-Use the vscode development container for development. The container will automatically install the required dependencies and set up the environment.
 
 ## Dependencies
 
