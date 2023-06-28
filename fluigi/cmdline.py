@@ -299,8 +299,8 @@ def utils_render_svg(
     parameters.OUTPUT_DIR = outpath
 
     for input_file in input_files:
-        devicejson = json.load(open(input_file))
-        device = Device(devicejson)
+        devicejson = json.load(open(input_file, "r", encoding="utf-8"))
+        device = Device.from_parchmint_v1_2(json_data=devicejson)
         render_svg(device, "")
 
 

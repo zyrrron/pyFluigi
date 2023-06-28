@@ -12,7 +12,8 @@ from pymint import MINTDevice
 import fluigi.parameters as parameters
 import fluigi.utils as utils
 from fluigi.conversions import add_default_spacing
-from fluigi.pnr.dropx import place_and_route_dropx
+
+# from fluigi.pnr.dropx import place_and_route_dropx
 from fluigi.pnr.layout import Layout, PlaceAndRouteAlgorithms, RouterAlgorithms
 from fluigi.pnr.placement.graph import (
     generateHOLALayout,
@@ -42,11 +43,9 @@ def generate_device_from_mint(file_path: str, skip_constraints: bool = False) ->
     if current_device is None:
         raise ValueError("Error generating device from the MINT file !")
     try:
-        # start_java_vm()
         pull_defaults(current_device.device)
         pull_dimensions(current_device.device)
         pull_terminals(current_device.device)
-        # stop_java_vm()
     except Exception as exception:
         print(f"Error getting Primitive data: {exception}")
     print(f"Setting Default MAX Dimensions to the device: ({parameters.DEVICE_X_DIM}, {parameters.DEVICE_Y_DIM})")
@@ -93,7 +92,7 @@ def place_and_route_mint(
     current_device = None
 
     extension = Path(input_file).suffix
-    if extension == ".mint" or extension == ".uf":
+    if extension in (".mint", ".uf"):
         current_mint_device = generate_device_from_mint(input_file, ignore_layout_constraints)
         # Set the device dimensions
         current_mint_device.device.params.set_param("x-span", parameters.DEVICE_X_DIM)
@@ -131,8 +130,6 @@ def place_and_route_mint(
     temp_parchmint_file = os.path.join(parameters.OUTPUT_DIR, f"{current_device.name}_no_par.json")
     with open(temp_parchmint_file, "w", encoding="utf-8") as f:
         json.dump(current_device.to_parchmint_v1_2(), f)
-
-    # print(current_device.G.edges)
 
     utils.printgraph(current_device.graph, current_device.name + ".dot")
 
@@ -217,8 +214,6 @@ def place_and_route_mint(
 
     layout.print_layout("preview")
 
-    # layout.route_nets(RouterAlgorithms.AARF)
-
     layout.apply_layout()
 
     temp_parchmint_file = os.path.join(parameters.OUTPUT_DIR, "{}_placed_and_routed.json".format(current_device.name))
@@ -258,7 +253,6 @@ def place_and_route_mint(
     # generateHOLALayout(layout)
     # layout.applyLayout()
     layout.ensureLegalCoordinates()
-    # layout.print_layout()
 
     temp_parchmint_file = os.path.join(parameters.OUTPUT_DIR, "{}_hola_par.json".format(current_device.name))
     with open(temp_parchmint_file, "w") as f:
