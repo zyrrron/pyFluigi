@@ -3,6 +3,7 @@ from pathlib import Path
 
 from parchmint.device import Device
 from pymint.mintdevice import MINTDevice
+
 import fluigi.parameters as parameters
 from fluigi import utils
 from fluigi.pnr.utils import assign_component_ports
@@ -16,14 +17,10 @@ def add_spacing(current_device: Device) -> None:
 
     for connection in current_device.connections:
         if connection.params.exists("connectionSpacing") is False:
-            connection.params.set_param(
-                "connectionSpacing", parameters.CONNECTION_SPACING
-            )
+            connection.params.set_param("connectionSpacing", parameters.CONNECTION_SPACING)
 
 
-def generate_device_from_mint(
-    file_path: str, skip_constraints: bool = False
-) -> MINTDevice:
+def generate_device_from_mint(file_path: str, skip_constraints: bool = False) -> MINTDevice:
     """Generate the device from MINT
 
     Args:
@@ -81,9 +78,7 @@ def convert_to_parchmint(
 
         # Create new file in outpath with the same name as the current device
         outpath.mkdir(parents=True, exist_ok=True)
-        with open(
-            str(outpath.joinpath(input_file.stem + ".json")), "w", encoding="utf-8"
-        ) as f:
+        with open(str(outpath.joinpath(input_file.stem + ".json")), "w", encoding="utf-8") as f:
             print(f"Writing to file: {f.name}")
 
             json.dump(parchmint_text, f, indent=4)
