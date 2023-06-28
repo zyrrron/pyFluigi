@@ -2,7 +2,7 @@
 
 echo "Testing the parchmint Files"
 
-for f in ~/Desktop/MINT-to-json/chthesis/*.json;
+for f in $1/MINT-to-json/chthesis/*.json;
 
 do
     echo "Running File $f";
@@ -10,7 +10,7 @@ do
 done
 
 
-for f in ~/Desktop/MINT-to-json/grid/*.json;
+for f in $1/MINT-to-json/grid/*.json;
 
 do
     echo "Running File $f";
