@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "pylfr"
+		},
+		{
+			"path": "pylfr/pymint"
+		},
+		{
+			"path": "pylfr/pyparchmint"
+		}
+	],
+	"settings": {
+		"python.formatting.provider": "black"
+	}
+}

@@ -1,33 +1,38 @@
 #!/bin/sh
 
 echo "Place and route the MINT Files"
+echo "-----------------------"
 
-for f in ~/CIDAR/MINT-TestCases/chthesis/*.mint;
+FOLDER=out/par/benchmarking_out_"`date +"%d-%m-%Y-%T"`"
+
+echo "Generating results in $FOLDER"
+
+for f in ./Microfluidics-Benchmarks/MINT-TestCases/chthesis/*.mint;
 
 do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/chthesis
+    fluigi mint-compile --outpath "$FOLDER/MINT-to-par/chthesis" $f
 done
 
 echo "-----------------------"
-for f in ~/CIDAR/MINT-TestCases/dropx_ref/*.mint;
+for f in ./Microfluidics-Benchmarks/MINT-TestCases/dropx_ref/*.mint;
 
 do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/dropx
+    fluigi mint-compile $f --outpath "$FOLDER/MINT-to-par/dropx" $f
 done
 
 
 echo "-----------------------"
-for f in ~/CIDAR/MINT-TestCases/grid/*.mint;
+for f in ./Microfluidics-Benchmarks/MINT-TestCases/grid/*.mint;
 
 do
     echo "-----------------------"
     echo "`date +"%d-%m-%Y-%T"`";
     echo "Running File $f";
-    fluigi $f --out ~/Desktop/MINT-to-par/grid
+    fluigi mint-compile "$FOLDER/MINT-to-par/grid" $f
 done

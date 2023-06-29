@@ -78,8 +78,8 @@ def generateSpringLayout(layout: Layout):
 
 
 def generateHOLALayout(layout: Layout):
-    cell_node_map = dict()
-    net_edge_map = dict()
+    cell_node_map = {}
+    net_edge_map = {}
     hola_graph = adg.Graph()
 
     # First convert layout into a dialect graph
