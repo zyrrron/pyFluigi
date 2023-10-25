@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Fluigi <img align="right" src="logo-Fluigi-color.png" width="250">
+=======
+# Fluigi <img align="right" src="fluigiLogo.png" width="250">
+>>>>>>> 4456493eb2a5187c1078a2a26a53121fe09ed7c3
 
 ## Command Line Interface
 
@@ -154,7 +158,6 @@ Please use `poetry` for adding new dependencies, installing the environment, and
 poetry install
 ```
 
-Use the vscode development container for development. The container will automatically install the required dependencies and set up the environment.
 
 In order to access the `fluigi` command and have visibility of the python dependencies. A new poetry shell needs to be spawned:
 
@@ -185,6 +188,33 @@ Generating renders
 find ../solverpnr/result/dropx_ref/*.json -exec fluigi utils-render-svg {} +
 ```
 
+## Poetry Environment
+
+In order to access the `fluigi` command and have visibility of the python dependencies. A new poetry shell needs to be spawned:
+
+```
+poetry shell
+```
+
+To verify if everything is working, you can try the following command:
+
+```
+fluigi --help
+```
+
+
+
+## Dependencies
+
+- Python 3.8+
+- Cairo
+- GraphViz
+
+```bash
+sudo apt-get install libbz2-dev libcairo2-dev pkg-config python3-dev libffi-dev graphviz
+```
+
+
 
 ## Dependencies
 
@@ -203,3 +233,7 @@ sudo apt-get install libbz2-dev libcairo2-dev pkg-config python3-dev libffi-dev 
 BSD-3-Clause
 
 Copyright (c) 2023, CIDAR LAB All rights reserved.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4456493eb2a5187c1078a2a26a53121fe09ed7c3

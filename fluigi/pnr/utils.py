@@ -51,7 +51,11 @@ def check_ref_and_assign_port(source_ref, connection, parchmint_device: Device, 
 
 def assign_component_ports(parchmint_device: Device) -> None:
     print("Starting terminal/port assignment ...")
+<<<<<<< HEAD
     global_port_assign_map = dict()
+=======
+    global_port_assign_map = {}
+>>>>>>> 4456493eb2a5187c1078a2a26a53121fe09ed7c3
     for connection in parchmint_device.connections:
         source_ref = connection.source
         check_ref_and_assign_port(source_ref, connection, parchmint_device, global_port_assign_map)

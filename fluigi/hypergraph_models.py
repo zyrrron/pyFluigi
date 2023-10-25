@@ -5,10 +5,10 @@ import networkx as nx
 
 
 class HyperGraph(nx.Graph):
-    """HyperGraph representing hypergraph. """
+    """HyperGraph representing hypergraph."""
 
     def __init__(self, *args, **kwargs):
-        """@todo: to be defined1. """
+        """@todo: to be defined1."""
         super().__init__(*args, **kwargs)
         self.hyperedge = []
         self.hadj = {}
@@ -54,7 +54,6 @@ class HyperGraph(nx.Graph):
         >>> G.add_edge((1, 2), weight=4)   # update data for key=0
         >>> G.add_edge((1, 3, 4), weight=7, capacity=15, length=342.7)
         """
-
         edge = set(edge)
         # set up attribute dict
         if attr_dict is None:
@@ -63,14 +62,13 @@ class HyperGraph(nx.Graph):
             try:
                 attr_dict.update(attr)
             except AttributeError:
-                raise nx.NetworkXError(
-                    "The attr_dict argument must be a dictionary.")
+                raise nx.NetworkXError("The attr_dict argument must be a dictionary.")
         # add nodes
         for node in edge:
             if node not in self.adj:
                 self.adj[node] = {}
                 self.node[node] = {}
-            for v in set(edge) - set([node]):
+            for v in set(edge) - {node}:
                 datadict = self.adj[node].get(v, {})
                 datadict.update(attr_dict)
                 self.adj[node][v] = datadict
@@ -130,8 +128,7 @@ class HyperGraph(nx.Graph):
             try:
                 attr_dict.update(attr)
             except AttributeError:
-                raise nx.NetworkXError(
-                    "The attr_dict argument must be a dictionary.")
+                raise nx.NetworkXError("The attr_dict argument must be a dictionary.")
         # process ebunch
         for e in ebunch:
             self.add_edge(e, attr_dict=attr_dict)
@@ -240,5 +237,3 @@ class HyperGraph(nx.Graph):
         """
         for e in ebunch:
             self.remove_edge(e)
-
-

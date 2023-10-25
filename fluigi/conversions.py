@@ -20,6 +20,18 @@ def add_spacing(current_device: Device) -> None:
 
 
 def generate_device_from_mint(file_path: str, skip_constraints: bool = False) -> MINTDevice:
+    """Generate the device from MINT
+
+    Args:
+        file_path (str): file path (absolute)
+        skip_constraints (bool, optional): Skip generating the layout constraints. Defaults to False.
+
+    Raises:
+        ValueError: If no mint device is generated
+
+    Returns:
+        MINTDevice: device parsed from the mint
+    """
     current_device = MINTDevice.from_mint_file(file_path, skip_constraints)
     if current_device is None:
         raise Exception("Error generating device from the MINT file !")
@@ -65,11 +77,11 @@ def convert_to_parchmint(
 
         # Create new file in outpath with the same name as the current device
         outpath.mkdir(parents=True, exist_ok=True)
-        with open(str(outpath.joinpath(input_file.stem + ".json")), "w") as f:
-            print("Writing to file: {}".format(f.name))
+        with open(str(outpath.joinpath(input_file.stem + ".json")), "w", encoding="utf-8") as f:
+            print(f"Writing to file: {f.name}")
 
             json.dump(parchmint_text, f, indent=4)
 
         utils.printgraph(mint_device.device.graph, mint_device.device.name)
     else:
-        raise Exception("Unsupported file extension: {}".format(extension))
+        raise ValueError(f"Unsupported file extension: {extension}")

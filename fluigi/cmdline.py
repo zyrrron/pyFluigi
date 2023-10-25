@@ -29,7 +29,9 @@ def print_version(ctx, param, value):
 
 
 @click.group()
-@click.option("--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True)
+@click.option(
+    "--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True
+)
 def default_cli():
     ascii_banner = pyfiglet.figlet_format("Fluigi")
     print(ascii_banner)
@@ -49,7 +51,9 @@ def default_cli():
     default="dropx",
     help="Technology Platform for LFR to compile the design into",
 )
-@click.option("--library-path", default="", help="Library to use", type=click.Path(exists=True))
+@click.option(
+    "--library-path", default="", help="Library to use", type=click.Path(exists=True)
+)
 @click.option(
     "--pre-load",
     multiple=True,
@@ -66,6 +70,9 @@ def synthesize(
     library_path: str,
     pre_load: List[str],
 ):
+    """Takes in the list of LFR files and generate the final Microfluidic Design.
+    This command executes the syntheis, placement and routing of the microfluidic design.
+    """
     outpath = create_default_output_dir(outpath)
     synthesize(input_files, outpath, technology, library_path, pre_load)
 
@@ -100,7 +107,10 @@ def synthesize(
     "--no-annotations",
     type=click.BOOL,
     default=False,
-    help=("Force the compiler to skip reading postprocess annotations like #MAP and" " #CONSTRAIN"),
+    help=(
+        "Force the compiler to skip reading postprocess annotations like #MAP and"
+        " #CONSTRAIN"
+    ),
 )
 @click.option("--no-gen", type=click.BOOL, default=False)
 @click.option(
@@ -122,7 +132,7 @@ def lfr_compile(
     pre_load: List[str],
 ):
     """
-    Compile a list of input files into a single output file.
+    Compile a list of LFR input files into MINT design of the microfluidic device.
     :param input_files: list of input files
     :param output_path: output file path
     :param library: library name
@@ -139,7 +149,9 @@ def lfr_compile(
     if library_path == "":
         library_path = str(LFR_LIB_DIR)
 
-    print(input_files, outpath, technology, library_path, no_gen, no_annotations, pre_load)
+    print(
+        input_files, outpath, technology, library_path, no_gen, no_annotations, pre_load
+    )
 
     compile_lfr(
         input_files=input_files,
@@ -192,7 +204,7 @@ def mint_compile(
     ignore_layout_constraints: bool,
 ):
     """
-    Compile a list of input files into a single output file.
+    Compile a list of input MINT files into the final placed and routed device.
     :param input_files: list of input files
     :param output_path: output file path
     :param route: flag to only perform routing
@@ -256,7 +268,7 @@ def convert_to_parchmint(
     generate_graph_view: bool,
 ):
     """
-    Convert a list of input files into a single output file.
+    Convert a list of input files into the parchmint files.
     :param input_files: list of input files
     :param output_path: output file path
     :return:
@@ -294,13 +306,15 @@ def utils_render_svg(
     input_files: List[str],
     outpath: Path,
 ):
+    """This command takes in the input parchmint files and generates renders.
+    """
     outpath = create_default_output_dir(outpath)
 
     parameters.OUTPUT_DIR = outpath
 
     for input_file in input_files:
-        devicejson = json.load(open(input_file))
-        device = Device(devicejson)
+        devicejson = json.load(open(input_file, "r", encoding="utf-8"))
+        device = Device.from_parchmint_v1_2(json_data=devicejson)
         render_svg(device, "")
 
 
