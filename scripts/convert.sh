@@ -23,14 +23,14 @@ echo "Generating results in $FOLDER"
 #     fluigi convert-to-parchmint --assign-terminals --generate-graph-view --outpath "$FOLDER/MINT-to-json/dropx_ref" $f
 # done
 
-for f in Microfluidics-Benchmarks/MINT-TestCases/new_grid/grid_02.mint;
+# for f in Microfluidics-Benchmarks/MINT-TestCases/new_grid/grid_02.mint;
 
-do
-    echo "Runnign File $f";
-    fluigi convert-to-parchmint --assign-terminals --generate-graph-view --outpath "$FOLDER/MINT-to-json/grid" $f
-done
+# do
+#     echo "Runnign File $f";
+#     fluigi convert-to-parchmint --assign-terminals --generate-graph-view --outpath "$FOLDER/MINT-to-json/grid" $f
+# done
 
-for f in Microfluidics-Benchmarks/MINT-TestCases/grid/grid_03.mint;
+for f in Microfluidics-Benchmarks/MINT-TestCases/grid_eric/grid_03.mint;
 
 do
     echo "Runnign File $f";

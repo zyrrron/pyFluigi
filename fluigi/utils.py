@@ -49,6 +49,8 @@ def calcuate_waypoint(device: Device, target: Target) -> Tuple[float, float]:
             int(component.xpos + component.xspan / 2),
             int(component.ypos + component.yspan / 2),
         )
+    
+# def render_ty()
 
 
 def render_svg(d: Device, suffix: str) -> None:
